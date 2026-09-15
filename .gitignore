@@ -1,5 +1,5 @@
-# Your real Firebase web-app config — never commit it. Copy from firebase-config.example.js.
-firebase-config.js
+# firebase-config.js IS committed (GitHub Pages needs it; the household code in
+# the Firestore rules is the secret, and that never goes in this repo).
 
 .DS_Store
 node_modules/

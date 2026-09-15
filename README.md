@@ -15,6 +15,11 @@ asked → answered, built for the waiting room).
 
 ---
 
+**Live:** <https://pokerbrainupgrade-a11y.github.io/baby-hightower/> — scan
+[qr-install.png](qr-install.png) with the phone camera, then Share → Add to Home
+Screen. Firebase project `baby-hightower` is wired in (`firebase-config.js` is
+committed; the household code lives only in the Firestore rules and on the phones).
+
 ## 1. Run it locally
 
 ```bash
