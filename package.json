@@ -1,0 +1,13 @@
+{
+  "name": "baby-hightower",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private PWA for Q & Staci — pregnancy timeline, checklists, notes and OB questions. No build step.",
+  "type": "module",
+  "scripts": {
+    "start": "npx --yes serve -l 5173 .",
+    "test": "node --test",
+    "seed": "node tools/extract-seed.mjs",
+    "icons": "node tools/make-icons.mjs"
+  }
+}

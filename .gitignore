@@ -1,0 +1,6 @@
+# Your real Firebase web-app config — never commit it. Copy from firebase-config.example.js.
+firebase-config.js
+
+.DS_Store
+node_modules/
+.claude/

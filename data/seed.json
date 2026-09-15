@@ -1,0 +1,679 @@
+{
+  "source": "2026-09-14_BabyHightower_Companion_v1.html",
+  "extractedAt": "2026-09-15",
+  "meta": {
+    "eyebrow": "Q & Staci are expecting",
+    "due": "Due May 11, 2027 · Renewal Center for Birth, Scottsdale",
+    "footer": "Q & Staci · Baby Hightower · Spring 2027",
+    "legend": [
+      "Medical & milestones",
+      "Family & travel",
+      "Money, admin & buying",
+      "Baby is growing"
+    ]
+  },
+  "trimesters": [
+    {
+      "id": "t1",
+      "title": "First trimester",
+      "range": "now → Nov 8 · weeks 1–13",
+      "sub": "Lock in the care team, keep it quiet, take it easy. Nausea and fatigue peak weeks 6–10 — the calendar is intentionally light.",
+      "events": [
+        {
+          "id": "2026-09-14-this-week-about-6-weeks-the-heart-has-ju",
+          "order": 0,
+          "date": "2026-09-14",
+          "category": "dev",
+          "title": "This week: about 6 weeks — the heart has just started beating (~110–160 bpm). Blueberry-sized."
+        },
+        {
+          "id": "2026-09-16-call-wombkeepers-book-the-first-visit",
+          "order": 1,
+          "date": "2026-09-16",
+          "category": "medical",
+          "title": "Call Wombkeepers — book the first visit",
+          "dateLabel": "WED SEP 16 · WEEK 6",
+          "note": "480-454-4490. Ask about the dating ultrasound, fees & insurance billing, and flag the supplement list.",
+          "linkLabel": "Provider plan →",
+          "guide": "g-provider"
+        },
+        {
+          "id": "2026-09-29-first-prenatal-visit-dating-ultrasound",
+          "order": 2,
+          "date": "2026-09-29",
+          "category": "medical",
+          "title": "First prenatal visit + dating ultrasound",
+          "dateLabel": "SEP 29 – OCT 19 · WEEKS 8–10",
+          "note": "Bloodwork, history, supplement review — and the ultrasound that confirms May 11 (or refines it).",
+          "linkLabel": "What happens at this visit →",
+          "guide": "g-medical"
+        },
+        {
+          "id": "2026-10-05-week-9-10-every-major-organ-has-formed-f",
+          "order": 3,
+          "date": "2026-10-05",
+          "category": "dev",
+          "title": "Week 9–10: every major organ has formed. From here it's all growth."
+        },
+        {
+          "id": "2026-10-13-nipt-blood-draw-screening-the-sex",
+          "order": 4,
+          "date": "2026-10-13",
+          "category": "medical",
+          "title": "NIPT blood draw — screening + the sex 💛",
+          "dateLabel": "FROM TUE OCT 13 · WEEK 10",
+          "note": "Results in ~7–10 days. You two will know before anyone else does.",
+          "linkLabel": "Genetic screening explained →",
+          "guide": "g-medical"
+        },
+        {
+          "id": "2026-11-01-pin-down-open-enrollment-both-employers",
+          "order": 5,
+          "date": "2026-11-01",
+          "category": "money",
+          "title": "Pin down open enrollment — both employers",
+          "dateLabel": "SUN NOV 1",
+          "note": "The one shot to move Staci onto the better delivery plan. Wombkeepers' billing answer comes first.",
+          "linkLabel": "Insurance game plan →",
+          "guide": "g-money"
+        },
+        {
+          "id": "2026-11-03-first-trimester-complete",
+          "order": 6,
+          "date": "2026-11-03",
+          "category": "star",
+          "title": "First trimester complete 🎉",
+          "dateLabel": "TUE NOV 3 · WEEK 13",
+          "note": "Risk drops sharply. The telling season officially opens.",
+          "linkLabel": "The announcement plan →",
+          "guide": "g-telling"
+        }
+      ]
+    },
+    {
+      "id": "t2",
+      "title": "Second trimester",
+      "range": "Nov 9 → Feb 15 · weeks 14–27",
+      "sub": "The energy window. Everything project-shaped — telling the families, classes, nursery, legal, leave — is front-loaded here on purpose.",
+      "events": [
+        {
+          "id": "2026-11-13-wyoming-tell-staci-s-parents-in-person",
+          "order": 7,
+          "date": "2026-11-13",
+          "category": "family",
+          "title": "Wyoming — tell Staci's parents in person 🤍",
+          "dateLabel": "FRI–SUN NOV 13–15 · WEEK 14",
+          "note": "They hear first, before anyone. NIPT results in hand — share the sex if you want. Book flights by mid-October.",
+          "linkLabel": "Why this order →",
+          "guide": "g-telling"
+        },
+        {
+          "id": "2026-11-20-weeks-16-22-staci-may-feel-the-first-mov",
+          "order": 8,
+          "date": "2026-11-20",
+          "category": "dev",
+          "title": "Weeks 16–22: Staci may feel the first movements — flutters at first, then unmistakable kicks."
+        },
+        {
+          "id": "2026-11-26-thanksgiving-tell-q-s-parents-az",
+          "order": 9,
+          "date": "2026-11-26",
+          "category": "family",
+          "title": "Thanksgiving — tell Q's parents (AZ)",
+          "dateLabel": "THU NOV 26 · WEEK 16",
+          "note": "Both sets of parents now know, in person. The wider circle opens after this.",
+          "linkLabel": "Announcement tiers →",
+          "guide": "g-telling"
+        },
+        {
+          "id": "2026-12-01-book-the-anatomy-scan-class-series",
+          "order": 10,
+          "date": "2026-12-01",
+          "category": "medical",
+          "title": "Book the anatomy scan + class series",
+          "dateLabel": "TUE DEC 1",
+          "note": "Natural childbirth series, breastfeeding, infant CPR — all through Wombkeepers' wellness center, classes landing Jan–Feb.",
+          "linkLabel": "Class & skills schedule →",
+          "guide": "g-classes"
+        },
+        {
+          "id": "2026-12-08-anatomy-scan-the-big-one",
+          "order": 11,
+          "date": "2026-12-08",
+          "category": "medical",
+          "title": "Anatomy scan — the big one",
+          "dateLabel": "DEC 8 – JAN 11 · WEEKS 18–22",
+          "note": "Full structural ultrasound, done in-house at Wombkeepers. The best pictures of the whole pregnancy.",
+          "linkLabel": "Medical timeline →",
+          "guide": "g-medical"
+        },
+        {
+          "id": "2026-12-22-halfway-decision-day",
+          "order": 12,
+          "date": "2026-12-22",
+          "category": "star",
+          "title": "Halfway 🎯 — decision day",
+          "dateLabel": "TUE DEC 22 · WEEK 20",
+          "note": "Doula yes/no (Wombkeepers has them in-house). Registry goes live. Nursery plan locked, furniture ordered by mid-Jan.",
+          "linkLabel": "Nursery & registry plan →",
+          "guide": "g-nursery"
+        },
+        {
+          "id": "2027-01-05-file-leave-paperwork-both-jobs",
+          "order": 13,
+          "date": "2027-01-05",
+          "category": "money",
+          "title": "File leave paperwork — both jobs",
+          "dateLabel": "TUE JAN 5",
+          "note": "Staci: 6 wks maternity + FMLA + PTO stack. Q: 8 wks paternity, split to cover the handoff. Get it in writing.",
+          "linkLabel": "Leave strategy →",
+          "guide": "g-leave"
+        },
+        {
+          "id": "2027-01-12-legal-block-done",
+          "order": 14,
+          "date": "2027-01-12",
+          "category": "money",
+          "title": "Legal block done",
+          "dateLabel": "TUE JAN 12",
+          "note": "Wills, guardianship, beneficiaries, term life priced. One afternoon of adulthood, then it's handled.",
+          "linkLabel": "Legal checklist →",
+          "guide": "g-legal"
+        },
+        {
+          "id": "2027-01-19-glucose-screening",
+          "order": 15,
+          "date": "2027-01-19",
+          "category": "medical",
+          "title": "Glucose screening",
+          "dateLabel": "JAN 19 – FEB 15 · WEEKS 24–28",
+          "note": "The sugary-drink test. Matters extra for a birth-center plan — details in the guide.",
+          "linkLabel": "Why this one matters →",
+          "guide": "g-medical"
+        },
+        {
+          "id": "2027-01-19-week-24-viability-milestone-week-26-eyes",
+          "order": 16,
+          "date": "2027-01-19",
+          "category": "dev",
+          "title": "Week 24: viability milestone. Week 26: eyes open for the first time."
+        },
+        {
+          "id": "2027-02-01-shower-invites-out-registry-linked",
+          "order": 17,
+          "date": "2027-02-01",
+          "category": "family",
+          "title": "Shower invites out — registry linked",
+          "dateLabel": "BY SAT FEB 6",
+          "note": "Host and venue were locked in January; invites give guests 5 weeks' notice for the March date.",
+          "linkLabel": "Baby shower plan →",
+          "guide": "g-shower"
+        }
+      ]
+    },
+    {
+      "id": "t3",
+      "title": "Third trimester",
+      "range": "Feb 16 → baby · weeks 28–40",
+      "sub": "Everything converges on week 36: after Apr 13 you're simply ready, and anything after that is bonus time.",
+      "events": [
+        {
+          "id": "2027-02-16-third-trimester-visits-go-biweekly",
+          "order": 18,
+          "date": "2027-02-16",
+          "category": "star",
+          "title": "Third trimester — visits go biweekly",
+          "dateLabel": "TUE FEB 16 · WEEK 28",
+          "note": "Buy the car seat this month. Staci's Tdap shot window is open (weeks 27–36) — and grandparents need theirs current too.",
+          "linkLabel": "Purchase schedule →",
+          "guide": "g-buying"
+        },
+        {
+          "id": "2027-03-02-pediatrician-locked-go-bag-shopping",
+          "order": 19,
+          "date": "2027-03-02",
+          "category": "medical",
+          "title": "Pediatrician locked · go-bag shopping",
+          "dateLabel": "TUE MAR 2 · WEEK 30",
+          "note": "Buy every go-bag item now so week-36 packing is assembly, not shopping.",
+          "linkLabel": "The go-bag list →",
+          "guide": "g-gobag"
+        },
+        {
+          "id": "2027-03-11-illinois-baby-shower-saturday-mar-13",
+          "order": 20,
+          "date": "2027-03-11",
+          "category": "family",
+          "title": "Illinois — baby shower Saturday Mar 13 🎀",
+          "dateLabel": "THU–MON MAR 11–15 · WEEK 31",
+          "note": "Early afternoon, both families together where you're both from. Staci's parents travel in. The last flight of the pregnancy.",
+          "linkLabel": "Shower logistics →",
+          "guide": "g-shower"
+        },
+        {
+          "id": "2027-03-16-home-stretch-nursery-month",
+          "order": 21,
+          "date": "2027-03-16",
+          "category": "star",
+          "title": "Home stretch — nursery month",
+          "dateLabel": "TUE MAR 16 · WEEK 32",
+          "note": "Flying's done. Assemble the office/nursery, integrate the shower haul, start freezer meals, finish birth-center paperwork.",
+          "linkLabel": "Nursery build →",
+          "guide": "g-nursery"
+        },
+        {
+          "id": "2027-03-23-weeks-32-34-practicing-breathing-gaining",
+          "order": 22,
+          "date": "2027-03-23",
+          "category": "dev",
+          "title": "Weeks 32–34: practicing breathing, gaining ~half a pound a week, usually turning head-down."
+        },
+        {
+          "id": "2027-04-13-everything-ready",
+          "order": 23,
+          "date": "2027-04-13",
+          "category": "star",
+          "title": "Everything ready ✅",
+          "dateLabel": "TUE APR 13 · WEEK 36",
+          "note": "Go-bag in the car, car seat inspected, birth preferences reviewed with the midwives, GBS swab, weekly visits begin, Marques briefed.",
+          "linkLabel": "Labor day protocol →",
+          "guide": "g-labor"
+        },
+        {
+          "id": "2027-04-20-week-37-early-term-week-39-may-3-full-te",
+          "order": 24,
+          "date": "2027-04-20",
+          "category": "dev",
+          "title": "Week 37: early term. Week 39 (May 3): full term — baby can arrive any day and be fully ready."
+        },
+        {
+          "id": "2027-05-11-due-date",
+          "order": 25,
+          "date": "2027-05-11",
+          "category": "star",
+          "title": "🌟 Due date",
+          "dateLabel": "TUE MAY 11 · WEEK 40",
+          "note": "Only ~5% of babies arrive on the day itself — the real window is late April into mid-May. You'll be ready either way.",
+          "linkLabel": "The first 30 days →",
+          "guide": "g-fourth"
+        }
+      ]
+    }
+  ],
+  "guide": [
+    {
+      "id": "g-anchor",
+      "tagKind": "med",
+      "tag": "The anchor",
+      "title": "One date runs everything",
+      "sub": "Aug 3, 2026 LMP · due May 11, 2027 · all dates America/Phoenix",
+      "html": "<p>Every date in this system counts forward from August 3 (last menstrual period, confirmed). The dating ultrasound at the first visit may nudge the due date a few days — if it does, the whole calendar shifts with it and this guide gets a version bump. Until then, <b>May 11 is the anchor</b> and the week counter at the top of this app is live math against it.</p>\n<div class=\"callout\">Trimester lines: <b>T1</b> through Nov 8 (wk 13) · <b>T2</b> Nov 9 – Feb 15 (wks 14–27) · <b>T3</b> Feb 16 → birth.</div>"
+    },
+    {
+      "id": "g-provider",
+      "tagKind": "med",
+      "tag": "Care team",
+      "title": "Wombkeepers & the Renewal Center",
+      "sub": "16700 N Thompson Peak Pkwy #130, Scottsdale · 480-454-4490 · emergency pager 602-201-0865",
+      "html": "<p>You chose well for a natural-if-possible plan: Wombkeepers is an OB-owned practice with an integrated midwifery team and its own freestanding birth center on site. That structure is the safety net — if anything needs escalation during labor, their own obstetrician and a direct transfer path to <b>HonorHealth Scottsdale Shea</b> (Level III NICU) or <b>Sonoran Crossing</b> are already wired in. You get the low-intervention birth with hospital-grade backup.</p>\n<h3>Ask at the first call / visit</h3>\n<ul>\n<li><b>Dating ultrasound</b> — is it done at the first visit? Bring the Aug 3 LMP date.</li>\n<li><b>Money</b> — birth-center fee schedule, what they bill to insurance vs. cash-pay, payment plans. This answer feeds the open-enrollment decision in November, so get it early.</li>\n<li><b>Risk-out criteria</b> — what conditions move the delivery from the birth center to the hospital (e.g., gestational diabetes, breech, blood pressure), and what the transfer looks like mid-labor.</li>\n<li><b>Supplements</b> — bring the full list: Thorne prenatal, DHA, D+K, magnesium (all expected to be fine), and confirm Fertility Support and the mushroom-coffee adaptogens stay paused.</li>\n<li><b>Visit cadence and who you'll see</b> — how the midwife team rotates, who's on call.</li>\n</ul>\n<div class=\"callout ob\">Anything symptom-shaped — bleeding, severe pain, anything that worries either of you — goes to the practice, not to a search bar. That's what the pager number is for.</div>"
+    },
+    {
+      "id": "g-medical",
+      "tagKind": "med",
+      "tag": "Medical timeline",
+      "title": "Visits & tests, start to finish",
+      "sub": "The standard arc — Wombkeepers may adjust; their word wins",
+      "html": "<table>\n<tr><th>When</th><th>What</th><th>Window</th></tr>\n<tr><td><b>First visit</b></td><td>Dating ultrasound, full bloodwork, history, supplement review</td><td>Sep 29 – Oct 19</td></tr>\n<tr><td><b>NIPT</b></td><td>Cell-free DNA screen + fetal sex; carrier screening for you both</td><td>from Oct 13</td></tr>\n<tr><td>Routine visits</td><td>Every 4 weeks through week 27</td><td>Oct – Feb</td></tr>\n<tr><td><b>Anatomy scan</b></td><td>Full structural ultrasound (wks 18–22)</td><td>Dec 8 – Jan 11</td></tr>\n<tr><td><b>Glucose screen</b></td><td>Gestational diabetes test (wks 24–28)</td><td>Jan 19 – Feb 15</td></tr>\n<tr><td>Biweekly visits</td><td>Every 2 weeks (wks 28–35)</td><td>Feb 16 – Apr 12</td></tr>\n<tr><td><b>Tdap</b></td><td>Staci, weeks 27–36 — passes antibodies to baby</td><td>Feb – Mar</td></tr>\n<tr><td><b>GBS swab</b></td><td>Group B strep (wks 36–37)</td><td>Apr 13 – 26</td></tr>\n<tr><td>Weekly visits</td><td>Week 36 to delivery</td><td>Apr 13 →</td></tr>\n</table>\n<h3>The two that carry extra weight for a birth-center plan</h3>\n<ul>\n<li><b>Glucose screen:</b> a gestational-diabetes diagnosis is one of the common triggers that moves a delivery from birth center to hospital. Not a reason to worry — a reason to ask Wombkeepers up front how they handle a positive.</li>\n<li><b>NIPT:</b> decide together beforehand what you'd do with the information — that determines how much screening is worth running. It also answers the sex question, which you've said yes to.</li>\n</ul>\n<div class=\"callout ob\">Screening results, risk numbers, and anything diagnostic are conversations with the midwife team — the guide schedules the tests, it doesn't interpret them.</div>"
+    },
+    {
+      "id": "g-telling",
+      "tagKind": "fam",
+      "tag": "The announcement plan",
+      "title": "Who finds out, and when",
+      "sub": "Both sets of parents in person · nobody before week 13",
+      "html": "<p>The constraint set: Staci's parents are in Wyoming, yours are in Illinois but will be <b>in Arizona for Thanksgiving</b>, and you don't want anyone told before the first trimester closes (Nov 3). The plan that satisfies all of it:</p>\n<ul>\n<li><b>Tier 1 — Staci's parents, in person, first.</b> Fly to Wyoming the weekend of <b>Nov 13–15</b> (week 14). Past the risk window, NIPT results back, and if you want, you can tell them the sex on the spot. Her parents hearing first, on their home turf, is the right order given yours get the built-in Thanksgiving moment.</li>\n<li><b>Tier 2 — Q's parents, Thanksgiving Day, Nov 26,</b> here in Arizona. Eleven days after Wyoming — short enough that nothing leaks, long enough that each telling is its own moment.</li>\n<li><b>Tier 3 — the wider family:</b> Marques, your sister and her crew, cousin Steph — after Thanksgiving. One consideration: <b>Marques is the emergency contact</b>, so if you'd rather he know sooner for practical reasons, telling him quietly after the first ultrasound is a reasonable exception. Your call.</li>\n<li><b>Tier 4 — friends, work, social:</b> December onward, on your terms. Note that employers hear before <b>Jan 5</b> regardless, because leave paperwork forces the conversation.</li>\n</ul>\n<div class=\"callout\">Book the Wyoming flights by <b>mid-October</b> — November fares into small-market airports climb late.</div>"
+    },
+    {
+      "id": "g-shower",
+      "tagKind": "fam",
+      "tag": "Baby shower",
+      "title": "Illinois, Saturday March 13",
+      "sub": "Week 31 · early afternoon (1–4 pm) · both families, home turf",
+      "html": "<p>Since both families are from Illinois and the guest list lives mostly there, the shower travels to them — one gathering instead of three. Week 31 is the sweet spot: showers conventionally land 4–8 weeks before the due date, Staci is comfortably inside the flying window, and the return flight (Mar 15, right at week 32) becomes the natural last flight of the pregnancy.</p>\n<h3>The plan</h3>\n<ul>\n<li><b>Trip:</b> Thursday Mar 11 → Monday Mar 15. Book flights in January.</li>\n<li><b>Host:</b> your sister is the natural candidate (local, has run kid events three times over) — confirm host + venue by <b>mid-January</b>. Cousin Steph as co-host spreads the load.</li>\n<li><b>Invites:</b> out by <b>Feb 6</b> (5 weeks' notice), registry linked.</li>\n<li><b>Staci's parents</b> travel in from Wyoming — flag the date to them at the Wyoming telling in November so it's on their calendar four months out.</li>\n<li><b>The gift logistics trick:</b> for an away-from-home shower, note on the invite that <b>gifts ship to the AZ registry address</b> — you cannot fly a stroller home. Guests bring cards; boxes arrive in Phoenix.</li>\n</ul>\n<div class=\"callout\">If Staci would rather not be the reason 40 people fly nowhere — a small Phoenix friend-shower or sip-and-see after the birth stacks fine on top of this. Decide by January.</div>"
+    },
+    {
+      "id": "g-classes",
+      "tagKind": "med",
+      "tag": "Classes & skills",
+      "title": "The skills schedule",
+      "sub": "Everything books Dec 1 · classes land Jan–Feb · all through Wombkeepers where possible",
+      "html": "<p>Wombkeepers' wellness center runs its own childbirth education, breastfeeding classes, lactation counseling, and prenatal yoga — taught by the people who'll actually be in the room with you. Booking through them keeps the philosophy consistent with the birth you're planning.</p>\n<ul class=\"checks\">\n<li><b>Natural childbirth series</b> — multi-week, aim to finish by week 30 (early March). Covers labor stages, comfort techniques, when to come in.</li>\n<li><b>Breastfeeding class</b> — Staci, ideally both of you; late Feb.</li>\n<li><b>Infant CPR &amp; safety</b> — both of you, plus a slot for Marques and any grandparent doing solo baby time. Feb–Mar.</li>\n<li><b>Prenatal yoga</b> — ongoing option through Wombkeepers whenever Staci wants it; also a good way to meet other due-around-May parents.</li>\n<li><b>Birth-center orientation</b> — Renewal Center walkthrough + paperwork; do it in March, done before week 36.</li>\n</ul>"
+    },
+    {
+      "id": "g-nursery",
+      "tagKind": "mon",
+      "tag": "Nursery",
+      "title": "The office/nursery hybrid",
+      "sub": "Staci's office stays an office · baby zone added · paint approved",
+      "html": "<p>The room does two jobs, so plan it as two zones: the desk wall keeps working, and the opposite wall becomes crib, dresser-changer, and chair. The palette on these pages — sage, cream, blush, sand — was picked as the nursery direction, so paint and textiles can pull straight from it.</p>\n<h3>Build sequence</h3>\n<ul>\n<li><b>Dec (wk 20):</b> zone layout decided, paint color picked, registry built around the real list.</li>\n<li><b>Early Jan:</b> office declutter — anything not used in 6 months leaves the room. Paint weekend.</li>\n<li><b>Mid-Jan:</b> crib + dresser ordered (lead times run 8–12 weeks — ordering by Jan 15 lands everything by week 32).</li>\n<li><b>March (wks 32–35):</b> furniture assembled, shower haul washed and shelved, safe-sleep space made up and ready.</li>\n</ul>\n<div class=\"callout\">Safe-sleep is the one non-negotiable in the room: bare crib, firm flat mattress, fitted sheet, nothing else in it. Everything decorative lives outside the crib.</div>"
+    },
+    {
+      "id": "g-buying",
+      "tagKind": "mon",
+      "tag": "Purchases",
+      "title": "$4,000, spent on schedule",
+      "sub": "Registry offsets the March column · buy nothing before its window",
+      "html": "<p>Spreading the spend matches cash flow to need and lets the registry absorb whatever it will before you buy the remainder. Rough allocation against the ceiling:</p>\n<table>\n<tr><th>When</th><th>What</th><th>Budget</th></tr>\n<tr><td>Dec–Jan</td><td>Paint + room prep</td><td>$200</td></tr>\n<tr><td>Mid-Jan</td><td>Crib + mattress + dresser/changer</td><td>$900</td></tr>\n<tr><td>Feb (wk 28)</td><td>Car seat (infant seat or travel system)</td><td>$450</td></tr>\n<tr><td>Feb–Mar</td><td>Glider/chair for the nursery zone</td><td>$300</td></tr>\n<tr><td>Mar (wk 30)</td><td>Go-bag items + postpartum supplies</td><td>$250</td></tr>\n<tr><td>Mar–Apr</td><td>Post-shower gap fill: feeding, carrier, monitor, clothing, diapers</td><td>$1,100</td></tr>\n<tr><td>Held back</td><td>Buffer for what you learn you need after baby arrives</td><td>$800</td></tr>\n<tr><td></td><td><b>Total</b></td><td><b>$4,000</b></td></tr>\n</table>\n<ul>\n<li><b>Breast pump: don't buy one.</b> Insurance plans are required to cover a pump — order through the insurer once the plan decision settles. That's a $150–300 line item back in your pocket.</li>\n<li><b>Buy-new vs. fine-used:</b> car seat and crib mattress new, always. Clothing, books, swing/bouncer, and even the crib frame are fair game secondhand — Phoenix parent-resale is strong.</li>\n<li><b>Wait on:</b> anything size-dependent (carriers Staci hasn't tried), the \"second month\" gear (activity mats, high chair). The $800 buffer exists for exactly this.</li>\n</ul>"
+    },
+    {
+      "id": "g-gobag",
+      "tagKind": "mon",
+      "tag": "Go bag",
+      "title": "Packed for a birth center",
+      "sub": "Buy by week 30 (Mar 2) · packed and in the car by week 36 (Apr 13)",
+      "html": "<p>Birth-center reality changes the bag: after an uncomplicated delivery you're typically <b>home the same day, within hours</b> — not two nights in a hospital wing. So you pack one lean main bag, plus a small transfer kit that only matters if the plan changes.</p>\n<h3>Main bag — the birth center hours</h3>\n<ul class=\"checks\">\n<li>Wombkeepers paperwork + ID + insurance cards, birth-preferences one-pager</li>\n<li>Labor comfort: robe, cozy socks, hair ties, lip balm, massage tools from class, playlist + small speaker</li>\n<li>Fuel: electrolyte drinks, honey sticks, easy snacks for both of you</li>\n<li>Phone chargers (long cables), camera if you're using one</li>\n<li>Staci going-home outfit (soft, loose), postpartum kit (pads, mesh underwear, peri bottle)</li>\n<li>Baby: two going-home outfits (newborn + 0–3), swaddle, hat, blanket for the car</li>\n<li>Toiletries kit, towel, flip-flops</li>\n</ul>\n<h3>Transfer kit — stays in the car, hopefully never opened</h3>\n<ul class=\"checks\">\n<li>Two nights' clothes for both, extra toiletries, extra chargers, cash/card</li>\n<li>Pillow from home, longer snack supply</li>\n</ul>\n<div class=\"callout\">The car seat is not go-bag cargo — it's <b>installed</b> by week 35 and inspected (AZ fire stations and hospitals do free checks). You cannot leave with the baby without it.</div>"
+    },
+    {
+      "id": "g-money",
+      "tagKind": "mon",
+      "tag": "Money & insurance",
+      "title": "The money track",
+      "sub": "Separate insurance today · open enrollment this fall is the one lever",
+      "html": "<ul>\n<li><b>Step 1 — Wombkeepers billing first (Sept):</b> get their fee schedule and how they bill. Birth centers are often out-of-network or partly cash-pay; the real question is which of your two plans treats Wombkeepers + HonorHealth Shea best.</li>\n<li><b>Step 2 — plan comparison (Oct):</b> deductible, out-of-pocket max, maternity coinsurance, network status for the birth center and the backup hospital, on both plans. The delivering parent's plan covers the birth.</li>\n<li><b>Step 3 — open enrollment (verify windows Nov 1):</b> execute the switch if one plan clearly wins. If either plan is HSA-eligible, max the HSA — delivery and birth-center fees are HSA-payable.</li>\n<li><b>Step 4 — the fund:</b> target = 2027 out-of-pocket max (or the birth-center cash price if that's the route) + the $4K gear budget + income gap for any unpaid leave weeks. Build it monthly from now to April.</li>\n<li><b>After birth:</b> baby goes on either plan within 30 days (birth is a qualifying life event — you can rearrange everything then regardless of enrollment windows). Then 529 once the SSN exists, and dependent-care FSA if daycare enters the picture.</li>\n</ul>\n<div class=\"callout\">Childcare fork: if daycare is the plan after leave ends (~July 2027), Phoenix infant waitlists run 6–12 months — get on lists in the <b>second trimester</b>. If it's grandparents/other, skip this line entirely. Open decision.</div>"
+    },
+    {
+      "id": "g-leave",
+      "tagKind": "mon",
+      "tag": "Leave",
+      "title": "Leave strategy",
+      "sub": "Staci: 6 wks maternity + FMLA + PTO · Q: 8 wks paternity + PTO + full WFH",
+      "html": "<p>The raw material is good. The design question is <b>sequencing</b> — Arizona has no state paid-leave program, so the stack is employer policy + FMLA (12 weeks unpaid, job-protected, if eligible) + PTO. What to nail down in writing by Jan 5:</p>\n<ul>\n<li><b>Staci:</b> does FMLA run concurrent with the paid 6 weeks or extend after it? Can PTO be stapled on to stretch paid time to 8–10 weeks? What's the notice deadline?</li>\n<li><b>Q — the split play:</b> with 8 weeks and full WFH flexibility, the strongest configuration is usually <b>weeks at birth + weeks held in reserve</b> — e.g., 4–5 weeks starting delivery day, then the remaining 3–4 when Staci's leave ends, so the baby has a parent home longer before any childcare starts. Confirm your policy allows splitting.</li>\n<li><b>Both:</b> FMLA needs 30 days' notice minimum; the Jan 5 filing date clears every deadline with margin, and it's timed after the wider announcement so work hears in the right order.</li>\n</ul>"
+    },
+    {
+      "id": "g-legal",
+      "tagKind": "mon",
+      "tag": "Legal",
+      "title": "The legal block",
+      "sub": "One January afternoon · done by Jan 12",
+      "html": "<ul class=\"checks\">\n<li>Wills for both of you</li>\n<li><b>Guardianship designation</b> — the conversation to have early, not at the signing table. Marques local vs. family in Illinois/Wyoming is the real discussion.</li>\n<li>Beneficiary updates: life insurance, 401(k)s/retirement accounts</li>\n<li>Term life insurance priced for both (if not already held) — cheapest it will ever be is now</li>\n<li>Healthcare directives / powers of attorney while the notary's already out</li>\n</ul>\n<p class=\"mini\">After the birth: update wills and beneficiaries with the baby's legal name. This is also the natural on-ramp to the Hightower Family Legacy structure — a thread to pick up post-May, not before.</p>"
+    },
+    {
+      "id": "g-labor",
+      "tagKind": "med",
+      "tag": "Labor day",
+      "title": "When it starts",
+      "sub": "Everything below exists by week 36 so the day itself is simple",
+      "html": "<ul>\n<li><b>First call: Wombkeepers</b> — office 480-454-4490, after-hours pager 602-201-0865. The midwife team tells you when to come in; they'll give you the exact thresholds (contraction pattern, water breaking, bleeding) at your week-36 visit. Their thresholds, not the internet's.</li>\n<li><b>Second call: Marques</b> — emergency contact, house/dog coverage, and the only person who needs to know in real time.</li>\n<li><b>The parent tree:</b> Staci's parents (likely already in AZ or en route — their travel window gets confirmed at week 36), then your parents. One text each, sent by Q, not Staci.</li>\n<li><b>Drive:</b> route to Renewal Center (Thompson Peak Pkwy, Scottsdale) saved in both phones, car above half a tank always from week 36 on.</li>\n<li><b>If transfer happens:</b> it's a plan change, not an emergency by default — the midwives run it, HonorHealth Shea is the destination, the transfer kit is already in the car, and your job is to stay with Staci.</li>\n</ul>"
+    },
+    {
+      "id": "g-fourth",
+      "tagKind": "fam",
+      "tag": "Fourth trimester",
+      "title": "The first 30 days",
+      "sub": "Decide before, execute after — future-you is sleep-deprived",
+      "html": "<h3>Admin (calendar these the day of delivery)</h3>\n<ul class=\"checks\">\n<li>Birth certificate + Social Security number — initiated through the birth center's paperwork; confirm their process at orientation</li>\n<li><b>Add baby to insurance within 30 days</b> — the one hard legal deadline in this whole guide</li>\n<li>Pediatrician visit at day 3–5 — practice already chosen and expecting the call</li>\n<li>Update wills/beneficiaries with baby's name</li>\n</ul>\n<h3>People &amp; support</h3>\n<ul>\n<li><b>Staci's parents</b> around the birth and after — set expectations early on what \"help\" means (meals, laundry, dog — not holding the baby while you two do chores).</li>\n<li><b>Q's parents</b> visit just before or after — stagger the two visits rather than overlapping them; two consecutive support waves beat one crowded week.</li>\n<li><b>Lactation:</b> Wombkeepers has lactation counseling in-house — save the contact before delivery, book proactively for week 1.</li>\n<li><b>Night shifts:</b> agree the division before night one. Q's WFH flexibility is the asset here — design around it.</li>\n<li><b>The 6-week checks:</b> Staci's postpartum visit, and an honest mood check for <b>both</b> of you — postpartum depression and anxiety screening applies to partners too. Wombkeepers has maternal mental-health support on staff; using it early is the strong move, not the weak one.</li>\n</ul>"
+    },
+    {
+      "id": "g-decisions",
+      "tagKind": "mon",
+      "tag": "Open decisions",
+      "title": "Decision log",
+      "sub": "Mirrors the master plan (v2) in Drive — that doc is the source of truth",
+      "html": "<table>\n<tr><th>#</th><th>Decision</th><th>Status</th></tr>\n<tr><td>1</td><td>Real due date</td><td>LMP confirmed · ultrasound refines</td></tr>\n<tr><td>2</td><td>Provider</td><td><b>Closed — Wombkeepers</b></td></tr>\n<tr><td>3</td><td>Insurance / open enrollment</td><td>Open · decide Nov</td></tr>\n<tr><td>4</td><td>Genetic screening scope</td><td>Sex yes · scope by wk 10</td></tr>\n<tr><td>5</td><td>Supplements (adaptogens)</td><td>Paused · confirm at first visit</td></tr>\n<tr><td>6</td><td>Announcement tiers</td><td><b>Closed — plan set</b></td></tr>\n<tr><td>7</td><td>Doula yes/no</td><td>Open · decide Dec 22</td></tr>\n<tr><td>8</td><td>Cord blood</td><td>Open · decide by wk 34</td></tr>\n<tr><td>9</td><td>Childcare after leave</td><td>Open · fork in T2</td></tr>\n<tr><td>10</td><td>Shower host + AZ mini-shower</td><td>Open · decide mid-Jan</td></tr>\n<tr><td>11</td><td>Guardianship choice</td><td>Open · decide by Jan 12</td></tr>\n</table>"
+    }
+  ],
+  "lists": [
+    {
+      "id": "gobag",
+      "title": "Go Bag",
+      "sub": "Buy by week 30 (Mar 2) · packed and in the car by week 36 (Apr 13)",
+      "guide": "g-gobag",
+      "items": [
+        {
+          "id": "gobag-1",
+          "order": 0,
+          "group": "Main bag — the birth center hours",
+          "text": "Wombkeepers paperwork + ID + insurance cards, birth-preferences one-pager"
+        },
+        {
+          "id": "gobag-2",
+          "order": 1,
+          "group": "Main bag — the birth center hours",
+          "text": "Labor comfort: robe, cozy socks, hair ties, lip balm, massage tools from class, playlist + small speaker"
+        },
+        {
+          "id": "gobag-3",
+          "order": 2,
+          "group": "Main bag — the birth center hours",
+          "text": "Fuel: electrolyte drinks, honey sticks, easy snacks for both of you"
+        },
+        {
+          "id": "gobag-4",
+          "order": 3,
+          "group": "Main bag — the birth center hours",
+          "text": "Phone chargers (long cables), camera if you're using one"
+        },
+        {
+          "id": "gobag-5",
+          "order": 4,
+          "group": "Main bag — the birth center hours",
+          "text": "Staci going-home outfit (soft, loose), postpartum kit (pads, mesh underwear, peri bottle)"
+        },
+        {
+          "id": "gobag-6",
+          "order": 5,
+          "group": "Main bag — the birth center hours",
+          "text": "Baby: two going-home outfits (newborn + 0–3), swaddle, hat, blanket for the car"
+        },
+        {
+          "id": "gobag-7",
+          "order": 6,
+          "group": "Main bag — the birth center hours",
+          "text": "Toiletries kit, towel, flip-flops"
+        },
+        {
+          "id": "gobag-8",
+          "order": 7,
+          "group": "Transfer kit — stays in the car, hopefully never opened",
+          "text": "Two nights' clothes for both, extra toiletries, extra chargers, cash/card"
+        },
+        {
+          "id": "gobag-9",
+          "order": 8,
+          "group": "Transfer kit — stays in the car, hopefully never opened",
+          "text": "Pillow from home, longer snack supply"
+        }
+      ]
+    },
+    {
+      "id": "purchases",
+      "title": "Purchases · $4K budget",
+      "sub": "Registry offsets the March column · buy nothing before its window",
+      "guide": "g-buying",
+      "items": [
+        {
+          "id": "purchases-1",
+          "order": 0,
+          "group": "Spend schedule",
+          "text": "Paint + room prep — Dec–Jan · $200"
+        },
+        {
+          "id": "purchases-2",
+          "order": 1,
+          "group": "Spend schedule",
+          "text": "Crib + mattress + dresser/changer — Mid-Jan · $900"
+        },
+        {
+          "id": "purchases-3",
+          "order": 2,
+          "group": "Spend schedule",
+          "text": "Car seat (infant seat or travel system) — Feb (wk 28) · $450"
+        },
+        {
+          "id": "purchases-4",
+          "order": 3,
+          "group": "Spend schedule",
+          "text": "Glider/chair for the nursery zone — Feb–Mar · $300"
+        },
+        {
+          "id": "purchases-5",
+          "order": 4,
+          "group": "Spend schedule",
+          "text": "Go-bag items + postpartum supplies — Mar (wk 30) · $250"
+        },
+        {
+          "id": "purchases-6",
+          "order": 5,
+          "group": "Spend schedule",
+          "text": "Post-shower gap fill: feeding, carrier, monitor, clothing, diapers — Mar–Apr · $1,100"
+        },
+        {
+          "id": "purchases-7",
+          "order": 6,
+          "group": "Spend schedule",
+          "text": "Buffer for what you learn you need after baby arrives — Held back · $800"
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "title": "Legal",
+      "sub": "One January afternoon · done by Jan 12",
+      "guide": "g-legal",
+      "items": [
+        {
+          "id": "legal-1",
+          "order": 0,
+          "group": "The legal block",
+          "text": "Wills for both of you"
+        },
+        {
+          "id": "legal-2",
+          "order": 1,
+          "group": "The legal block",
+          "text": "Guardianship designation — the conversation to have early, not at the signing table. Marques local vs. family in Illinois/Wyoming is the real discussion."
+        },
+        {
+          "id": "legal-3",
+          "order": 2,
+          "group": "The legal block",
+          "text": "Beneficiary updates: life insurance, 401(k)s/retirement accounts"
+        },
+        {
+          "id": "legal-4",
+          "order": 3,
+          "group": "The legal block",
+          "text": "Term life insurance priced for both (if not already held) — cheapest it will ever be is now"
+        },
+        {
+          "id": "legal-5",
+          "order": 4,
+          "group": "The legal block",
+          "text": "Healthcare directives / powers of attorney while the notary's already out"
+        }
+      ]
+    },
+    {
+      "id": "nursery",
+      "title": "Nursery Build",
+      "sub": "Staci's office stays an office · baby zone added · paint approved",
+      "guide": "g-nursery",
+      "items": [
+        {
+          "id": "nursery-1",
+          "order": 0,
+          "group": "Build sequence",
+          "text": "Dec (wk 20): zone layout decided, paint color picked, registry built around the real list."
+        },
+        {
+          "id": "nursery-2",
+          "order": 1,
+          "group": "Build sequence",
+          "text": "Early Jan: office declutter — anything not used in 6 months leaves the room. Paint weekend."
+        },
+        {
+          "id": "nursery-3",
+          "order": 2,
+          "group": "Build sequence",
+          "text": "Mid-Jan: crib + dresser ordered (lead times run 8–12 weeks — ordering by Jan 15 lands everything by week 32)."
+        },
+        {
+          "id": "nursery-4",
+          "order": 3,
+          "group": "Build sequence",
+          "text": "March (wks 32–35): furniture assembled, shower haul washed and shelved, safe-sleep space made up and ready."
+        }
+      ]
+    },
+    {
+      "id": "first30",
+      "title": "First 30 Days",
+      "sub": "Decide before, execute after — future-you is sleep-deprived",
+      "guide": "g-fourth",
+      "items": [
+        {
+          "id": "first30-1",
+          "order": 0,
+          "group": "Admin (calendar these the day of delivery)",
+          "text": "Birth certificate + Social Security number — initiated through the birth center's paperwork; confirm their process at orientation"
+        },
+        {
+          "id": "first30-2",
+          "order": 1,
+          "group": "Admin (calendar these the day of delivery)",
+          "text": "Add baby to insurance within 30 days — the one hard legal deadline in this whole guide"
+        },
+        {
+          "id": "first30-3",
+          "order": 2,
+          "group": "Admin (calendar these the day of delivery)",
+          "text": "Pediatrician visit at day 3–5 — practice already chosen and expecting the call"
+        },
+        {
+          "id": "first30-4",
+          "order": 3,
+          "group": "Admin (calendar these the day of delivery)",
+          "text": "Update wills/beneficiaries with baby's name"
+        }
+      ]
+    },
+    {
+      "id": "classes",
+      "title": "Classes",
+      "sub": "Everything books Dec 1 · classes land Jan–Feb · all through Wombkeepers where possible",
+      "guide": "g-classes",
+      "items": [
+        {
+          "id": "classes-1",
+          "order": 0,
+          "group": "The skills schedule",
+          "text": "Natural childbirth series — multi-week, aim to finish by week 30 (early March). Covers labor stages, comfort techniques, when to come in."
+        },
+        {
+          "id": "classes-2",
+          "order": 1,
+          "group": "The skills schedule",
+          "text": "Breastfeeding class — Staci, ideally both of you; late Feb."
+        },
+        {
+          "id": "classes-3",
+          "order": 2,
+          "group": "The skills schedule",
+          "text": "Infant CPR & safety — both of you, plus a slot for Marques and any grandparent doing solo baby time. Feb–Mar."
+        },
+        {
+          "id": "classes-4",
+          "order": 3,
+          "group": "The skills schedule",
+          "text": "Prenatal yoga — ongoing option through Wombkeepers whenever Staci wants it; also a good way to meet other due-around-May parents."
+        },
+        {
+          "id": "classes-5",
+          "order": 4,
+          "group": "The skills schedule",
+          "text": "Birth-center orientation — Renewal Center walkthrough + paperwork; do it in March, done before week 36."
+        }
+      ]
+    }
+  ]
+}
