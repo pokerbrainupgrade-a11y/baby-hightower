@@ -1,0 +1,122 @@
+// In-memory state + write-through to IndexedDB, with an optional remote hook
+// (sync.js) that mirrors every local write to Firestore. Last-write-wins per
+// document via `updatedAt`.
+//
+// Document shape: { id: 'coll/key', coll, key, updatedAt, updatedBy, ...fields }
+// Collections: events (per-timeline-event state), items (checklist items),
+// notes, questions. Deletes are soft (`deleted: true`) so they replicate.
+import * as db from './db.js';
+
+const IDENTITY_KEY = 'bh.identity';
+
+export const store = {
+  docs: new Map(),
+  seed: null,
+  identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
+  remote: null,         // (doc) => Promise — set by sync.js when active
+  listeners: new Set(),
+
+  async init() {
+    this.seed = await fetch('./data/seed.json').then((r) => r.json());
+    for (const d of await db.getAll()) this.docs.set(d.id, d);
+    try { this.identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch { this.identity = null; }
+    return this;
+  },
+
+  setIdentity(identity) {
+    this.identity = identity;
+    localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
+    this.emit();
+  },
+
+  get user() { return this.identity?.user || '?'; },
+
+  subscribe(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); },
+  emit() { for (const fn of this.listeners) fn(); },
+
+  get(coll, key) { return this.docs.get(`${coll}/${key}`); },
+  list(coll) {
+    const out = [];
+    for (const d of this.docs.values()) if (d.coll === coll && !d.deleted) out.push(d);
+    return out;
+  },
+  /** Soft-deleted docs in a collection (so deletions reconcile on connect). */
+  deletedIn(coll) {
+    const out = [];
+    for (const d of this.docs.values()) if (d.coll === coll && d.deleted) out.push(d);
+    return out;
+  },
+
+  /** Merge `patch` into coll/key, stamp author + time, persist, mirror. */
+  async write(coll, key, patch) {
+    const id = `${coll}/${key}`;
+    const prev = this.docs.get(id) || { id, coll, key, createdAt: Date.now(), createdBy: this.user };
+    const doc = { ...prev, ...patch, updatedAt: Date.now(), updatedBy: this.user };
+    this.docs.set(id, doc);
+    await db.put(doc);
+    this.emit();
+    if (this.remote) this.remote(doc);
+    return doc;
+  },
+
+  remove(coll, key) { return this.write(coll, key, { deleted: true }); },
+
+  /** A document arriving from the other phone. Newer wins; ties keep local. */
+  async applyRemote(doc) {
+    if (!doc?.id || !doc.coll || !doc.key) return false;
+    const local = this.docs.get(doc.id);
+    if (local && (local.updatedAt || 0) >= (doc.updatedAt || 0)) return false;
+    this.docs.set(doc.id, doc);
+    await db.put(doc);
+    this.emit();
+    return true;
+  },
+
+  uid() {
+    return (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2, 10)).replace(/-/g, '').slice(0, 20);
+  },
+
+  // ---------- derived views over seed + docs ----------
+
+  /** All timeline events, flattened, with live state merged in. */
+  events() {
+    const out = [];
+    for (const t of this.seed.trimesters) for (const e of t.events) out.push({ ...e, trimester: t.id, state: this.get('events', e.id) || {} });
+    return out;
+  },
+  event(id) { return this.events().find((e) => e.id === id); },
+  guide(id) { return this.seed.guide.find((g) => g.id === id); },
+
+  /** Checklist items for a list: seed items (with overrides) + custom ones, minus deleted. */
+  items(listId) {
+    const list = this.seed.lists.find((l) => l.id === listId);
+    if (!list) return [];
+    const out = [];
+    for (const it of list.items) {
+      const d = this.get('items', it.id);
+      if (d?.deleted) continue;
+      out.push({ ...it, listId, ...(d || {}), seed: true });
+    }
+    // seed items keep their v1 order; custom ones follow, oldest first
+    const custom = this.list('items').filter((d) => d.custom && d.listId === listId)
+      .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    for (const d of custom) out.push({ ...d, seed: false });
+    return out;
+  },
+  listFor(guideId) { return this.seed.lists.find((l) => l.guide === guideId) || null; },
+  progress(listId) {
+    const items = this.items(listId);
+    const done = items.filter((i) => i.done).length;
+    return { done, total: items.length, pct: items.length ? Math.round((done / items.length) * 100) : 0 };
+  },
+
+  notes() { return this.list('notes').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); },
+  questions() { return this.list('questions').sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)); },
+
+  exportJSON() {
+    return JSON.stringify({
+      app: 'baby-hightower', exportedAt: new Date().toISOString(), exportedBy: this.user,
+      seedSource: this.seed.source, docs: [...this.docs.values()],
+    }, null, 2);
+  },
+};
