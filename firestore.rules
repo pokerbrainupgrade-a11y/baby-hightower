@@ -1,0 +1,17 @@
+// Firestore security rules for Baby Hightower.
+// Paste into Firebase console → Firestore Database → Rules, replace the code
+// below with your household code (exactly as typed into the app), Publish.
+//
+// Only documents under households/<your code>/... are readable or writable.
+// Every other path is denied. The household code is the shared secret, so
+// treat it like a password: 12+ characters, not guessable.
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /households/{code}/{document=**} {
+      allow read, write: if code == 'CHANGE-ME-household-code'
+        && (request.method != 'create' && request.method != 'update'
+            || request.resource.data.size() <= 40);
+    }
+  }
+}
