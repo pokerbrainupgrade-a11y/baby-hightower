@@ -5,7 +5,7 @@ import { views } from './views.js';
 import { summary } from './dates.js';
 
 const $ = (s, r = document) => r.querySelector(s);
-const TABS = ['today', 'timeline', 'checklists', 'notes', 'questions'];
+const TABS = ['today', 'timeline', 'checklists', 'notes', 'questions', 'obcall'];
 let current = null;   // active view object
 let currentKey = '';  // "tab/params" of what's rendered
 let pendingUpdate = false;

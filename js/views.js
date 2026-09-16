@@ -1,9 +1,10 @@
-// The five tabs + detail pages + settings. Each view is { render(root, params), update() }.
+// The six tabs + detail pages + settings. Each view is { render(root, params), update() }.
 // render() builds the static frame once and binds listeners on it; update()
 // re-renders only the live containers, so the frame's inputs keep focus.
 import { store } from './store.js';
 import { summary, todayISO, formatGestation, formatStamp, formatDate } from './dates.js';
 import { APP_VERSION, LMP, DUE, USERS } from './config.js';
+import { OB_CALL } from './obcall.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const go = (hash) => { location.hash = hash; };
@@ -416,6 +417,184 @@ const questions = {
   },
 };
 
+// ---------- OB CALL ----------
+// The Wombkeepers first-call phone reference (js/obcall.js, verbatim) as a live
+// checklist. State is the `obcall` collection, one document per thing:
+//   <checkId>       { done, checkedBy, checkedAt }   every checkbox, incl. the scripts
+//   f-<fieldId>     { value }                        fill-in fields
+//   notes-<secId>   { notes }                        free notes under each step
+const ob = {
+  get: (key) => store.get('obcall', key) || {},
+  checks: (sec) => sec.blocks.filter((b) => b.type === 'item' || b.type === 'quote'),
+  progress(sections) {
+    let done = 0, total = 0;
+    for (const s of sections) for (const b of this.checks(s)) { total++; if (this.get(b.id).done) done++; }
+    return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
+  },
+  /** Escape, then apply the tiny inline markup the content uses. `fill` values are already HTML. */
+  rich(text, fill) {
+    let s = esc(text).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/«(.+?)»/g, '<i class="say">$1</i>');
+    if (fill) s = s.replace(/\{(\w+)\}/g, (m, k) => fill[k] ?? m);
+    return s;
+  },
+};
+
+const obcall = {
+  render(root) {
+    root.innerHTML = `<section class="obcall" id="obFrame"></section>`;
+    this.frame = root.firstElementChild;
+    this.timers = new Map();
+    const f = this.frame;
+    f.addEventListener('change', (e) => {
+      const cb = e.target.closest('input[data-ob-check]');
+      if (!cb) return;
+      const done = cb.checked;
+      store.write('obcall', cb.dataset.obCheck, { done, checkedBy: done ? store.user : null, checkedAt: done ? Date.now() : null });
+    });
+    f.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-ob-opt],[data-ob-reset],[data-er-jump]');
+      if (!t) return;
+      if (t.dataset.obOpt !== undefined) {
+        const key = `f-${t.dataset.obOpt}`;
+        const val = ob.get(key).value === t.dataset.val ? '' : t.dataset.val; // tap again to clear
+        store.write('obcall', key, { value: val });
+      } else if (t.dataset.obReset !== undefined) this.reset();
+      else if (t.dataset.erJump !== undefined) f.querySelector('#erBox')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    // Typed fields: debounce while typing, flush on blur and when the phone locks mid-call.
+    f.addEventListener('input', (e) => {
+      const el = e.target.closest('[data-ob-field],[data-ob-notes]');
+      if (el) this.queue(el);
+    });
+    f.addEventListener('focusout', (e) => this.flush(e.target));
+    if (!this.bound) {
+      this.bound = true;
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') this.flushAll(); });
+      addEventListener('pagehide', () => this.flushAll());
+    }
+    this.update();
+  },
+  keyFor(el) { return el.dataset.obField !== undefined ? `f-${el.dataset.obField}` : `notes-${el.dataset.obNotes}`; },
+  queue(el) {
+    const key = this.keyFor(el);
+    clearTimeout(this.timers.get(key)?.t);
+    const write = () => {
+      this.timers.delete(key);
+      store.write('obcall', key, el.dataset.obField !== undefined ? { value: el.value } : { notes: el.value });
+    };
+    this.timers.set(key, { t: setTimeout(write, 400), write });
+  },
+  flush(el) {
+    if (!el?.dataset || (el.dataset.obField === undefined && el.dataset.obNotes === undefined)) return;
+    const p = this.timers.get(this.keyFor(el));
+    if (p) { clearTimeout(p.t); p.write(); }
+  },
+  flushAll() { for (const p of [...this.timers.values()]) { clearTimeout(p.t); p.write(); } },
+  reset() {
+    if (!confirm('Reset the checklist? Every check, answer and note on this page is cleared — on both phones.')) return;
+    for (const p of this.timers.values()) clearTimeout(p.t);
+    this.timers.clear();
+    for (const d of store.list('obcall')) {
+      if (d.key.startsWith('f-')) { if (d.value) store.write('obcall', d.key, { value: '' }); }
+      else if (d.key.startsWith('notes-')) { if (d.notes) store.write('obcall', d.key, { notes: '' }); }
+      else if (d.done) store.write('obcall', d.key, { done: false, checkedBy: null, checkedAt: null });
+    }
+    window.toast?.('Checklist reset');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+  update() {
+    const C = OB_CALL;
+    const g = summary().g;
+    const gest = `${g.weeks} week${g.weeks === 1 ? '' : 's'}, ${g.day} day${g.day === 1 ? '' : 's'}`;
+    const steps = C.sections.filter((s) => !s.optional);
+    const p = ob.progress(steps);
+    const anyState = store.list('obcall').some((d) => d.done || d.value || d.notes);
+    this.frame.innerHTML = `
+      <div class="ob-head">
+        <div class="hdr-eyebrow">${esc(C.sub)}</div>
+        <h2 class="title">${esc(C.title)}</h2>
+        <div class="ob-progress"><b>${p.done} of ${p.total} done</b><small>${p.done === p.total ? 'all four steps covered' : 'steps 1–4 · saves on both phones'}</small></div>
+        ${progressBar(p)}
+      </div>
+      <div class="facts">
+        <div class="facts-title">${esc(C.facts.title)}</div>
+        ${C.facts.rows.map((r) => `<div class="fact"><span class="k">${esc(r.k)}</span><span class="v">${ob.rich(r.v, { gestation: esc(gest) })}</span></div>`).join('')}
+      </div>
+      ${C.sections.map((s) => this.section(s)).join('')}
+      <aside class="er" id="erBox">
+        <div class="er-title">${esc(C.er.title)}</div>
+        <ul>${C.er.items.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      </aside>
+      <p class="ob-foot">${esc(C.footer)}</p>
+      <button class="btn danger ghost ob-reset" data-ob-reset ${anyState ? '' : 'disabled'}>Reset checklist</button>
+      <button class="er-pin" data-er-jump aria-label="Jump to the ER warning"><span>${esc(C.er.title)}</span><i>↓</i></button>`;
+    this.watchER();
+  },
+  section(s) {
+    const p = ob.progress([s]);
+    let html = '', ul = [];
+    const closeUl = () => { if (ul.length) { html += `<ul class="items">${ul.join('')}</ul>`; ul = []; } };
+    for (const b of s.blocks) {
+      if (b.type === 'item') { ul.push(this.item(b)); continue; }
+      closeUl();
+      if (b.type === 'text') html += `<p class="ob-text">${ob.rich(b.text)}</p>`;
+      else if (b.type === 'quote') html += this.quote(b);
+    }
+    closeUl();
+    const n = ob.get(`notes-${s.id}`);
+    return `<section class="ob-sec" id="ob-${esc(s.id)}">
+      <div class="ob-sec-head"><div>${s.step ? `<span class="step">${esc(s.step)}</span>` : ''}<h2 class="serif">${esc(s.title)}</h2></div><span class="cnt">${p.done}/${p.total}</span></div>
+      <div class="checklist ob-list">${html}</div>
+      <label class="field ob-notes"><span>Their answers · notes</span>
+        <textarea data-hold data-ob-notes="${esc(s.id)}" placeholder="Write down what they say…">${esc(n.notes || '')}</textarea>
+        ${n.notes ? `<small>Last edited by ${stamp(n.updatedBy, n.updatedAt)}</small>` : ''}
+      </label>
+    </section>`;
+  },
+  item(b) {
+    const st = ob.get(b.id);
+    return `<li class="item${st.done ? ' done' : ''}">
+      <label class="chk"><input type="checkbox" data-ob-check="${esc(b.id)}" ${st.done ? 'checked' : ''}><span class="box"></span></label>
+      <div class="item-body">
+        ${b.text ? `<div class="item-text">${ob.rich(b.text)}</div>` : ''}
+        ${(b.fields || []).map((f) => this.field(f)).join('')}
+        ${st.done ? `<div class="item-meta">Checked by ${stamp(st.checkedBy, st.checkedAt)}</div>` : ''}
+      </div></li>`;
+  },
+  field(f) {
+    const val = ob.get(`f-${f.id}`).value || '';
+    const digits = f.tel ? val.replace(/\D/g, '') : '';
+    return `<div class="fld">
+      ${f.label ? `<span class="fld-k">${esc(f.label)}</span>` : ''}
+      ${f.options ? `<div class="opts">${f.options.map((o) => `<button type="button" class="opt${val === o ? ' on' : ''}" data-ob-opt="${esc(f.id)}" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>` : ''}
+      <div class="fld-row">
+        <input type="${f.tel ? 'tel' : 'text'}" data-hold data-ob-field="${esc(f.id)}" value="${esc(val)}" placeholder="${esc(f.placeholder || (f.options ? 'or type it' : ''))}" autocomplete="off" enterkeyhint="done">
+        ${digits.length >= 7 ? `<a class="btn sm" href="tel:${digits}">Call</a>` : ''}
+      </div></div>`;
+  },
+  quote(b) {
+    const st = ob.get(b.id);
+    const fill = {};
+    for (const [k, fid] of Object.entries(b.fill || {})) {
+      const v = ob.get(`f-${fid}`).value;
+      fill[k] = v ? `<mark>${esc(v)}</mark>` : `<span class="blank">${esc(b.blank[k])}</span>`;
+    }
+    return `<div class="say-block${st.done ? ' done' : ''}">
+      <p class="say-text">${ob.rich(b.text, fill)}</p>
+      <label class="say-check"><input type="checkbox" data-ob-check="${esc(b.id)}" ${st.done ? 'checked' : ''}><span class="box"></span>
+        <span class="say-lbl">${esc(b.check)}${st.done ? `<small>by ${stamp(st.checkedBy, st.checkedAt)}</small>` : '<small>read it word for word</small>'}</span></label>
+    </div>`;
+  },
+  /** Hide the pinned ER strip while the full ER box itself is on screen. */
+  watchER() {
+    this.io?.disconnect();
+    const box = this.frame.querySelector('#erBox'), pin = this.frame.querySelector('.er-pin');
+    if (!box || !pin || !('IntersectionObserver' in window)) return;
+    this.io = new IntersectionObserver(([en]) => pin.classList.toggle('hide', en.isIntersecting), { threshold: 0.3 });
+    this.io.observe(box);
+  },
+};
+
 // ---------- SETTINGS ----------
 const settings = {
   render(root) {
@@ -488,4 +667,4 @@ export async function exportJSON() {
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 }
 
-export const views = { today, timeline, checklists, notes, questions, settings };
+export const views = { today, timeline, checklists, notes, questions, obcall, settings };

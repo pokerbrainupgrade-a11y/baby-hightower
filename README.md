@@ -7,11 +7,14 @@ Vanilla JS, no build step, one static folder. Everything is stored on the phone
 (IndexedDB) and works fully offline; if a `firebase-config.js` is present the
 two phones sync in real time through Firestore.
 
-Five tabs: **Today** (live week counter, countdown, next three events, baby-development
+Six tabs: **Today** (live week counter, countdown, next three events, baby-development
 note) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes) · **Lists** (Go Bag, Purchases, Legal,
 Nursery Build, First 30 Days, Classes) · **Notes** · **OB Questions** (to ask →
-asked → answered, built for the waiting room).
+asked → answered, built for the waiting room) · **OB Call** (the Wombkeepers
+first-call phone guide as a live checklist: facts, Steps 1–4 with the scripted
+lines, fill-in fields, nice-to-haves and the ER box; every check, answer and
+note saves on the phone and syncs to the other one).
 
 ---
 
@@ -56,15 +59,17 @@ npm run icons
 | `js/dates.js` · `tests/dates.test.js` | Week/countdown math (pure functions) + tests |
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
-| `js/views.js` · `js/app.js` | The five tabs, detail pages, settings · router, identity, SW update flow |
+| `js/views.js` · `js/app.js` | The six tabs, detail pages, settings · router, identity, SW update flow |
+| `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
 | `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1 |
 | `tools/extract-seed.mjs` · `tools/make-icons.mjs` | Seed extractor · dependency-free icon generator |
 | `sw.js` · `manifest.webmanifest` · `icons/` | PWA bits |
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across four collections — `events` (per-event
-done/notes), `items` (checklist checks, edits, custom items), `notes`, `questions`.
+updatedAt, updatedBy, ...fields }` across five collections — `events` (per-event
+done/notes), `items` (checklist checks, edits, custom items), `notes`, `questions`,
+`obcall` (first-call checks, fill-in fields and per-step notes).
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.
 
