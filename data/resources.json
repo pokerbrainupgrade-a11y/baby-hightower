@@ -1,0 +1,132 @@
+{
+  "source": "Pregnancy_Podcast_Guide_v2.pdf",
+  "addedAt": "2026-09-17",
+  "listen": {
+    "title": "Listen",
+    "sub": "podcast episodes, grouped by host",
+    "groups": [
+      {
+        "id": "fmf",
+        "host": "Dr. Rhonda Patrick — FoundMyFitness",
+        "note": "Deepest episodes are behind her premium membership (The Aliquot, ~$15/mo). The rest are free.",
+        "episodes": [
+          {
+            "id": "fmf-aliquot-100",
+            "title": "Aliquot #100: Optimizing for a Healthy Pregnancy & Early Childhood",
+            "desc": "Her flagship: preconception through toddlerhood, evidence-based, plus her own supplement decisions.",
+            "tag": "members-only",
+            "url": "https://www.foundmyfitness.com/episodes/aliquot-100-child-development-2"
+          },
+          {
+            "id": "fmf-qa-mashup-1",
+            "title": "Q&A Mashup #1: Pregnancy and Child Development",
+            "desc": "Pre-pregnancy diet, exercise, sleep; supplements she took and avoided; omega-3s vs. mercury risk.",
+            "tag": "members-only",
+            "url": "https://www.foundmyfitness.com/episodes/q-a-mashup-1-pregnancy-and-child-development"
+          },
+          {
+            "id": "fmf-omega-3-preterm",
+            "title": "Does Omega-3 DHA Prevent Preterm Birth?",
+            "desc": "Free clip on DHA and the omega-3 index in pregnancy.",
+            "tag": "free",
+            "url": "https://www.foundmyfitness.com/episodes/omega-3-preterm-birth"
+          },
+          {
+            "id": "fmf-pregnancy-tag",
+            "title": "Full Pregnancy Topic Page",
+            "desc": "Every pregnancy-related episode, Q&A, and clip in one place.",
+            "tag": "free index",
+            "url": "https://www.foundmyfitness.com/tags/pregnancy"
+          },
+          {
+            "id": "fmf-jre-1054",
+            "title": "Joe Rogan Experience #1054 with Rhonda Patrick",
+            "desc": "Phospholipid DHA (fish roe/krill), exercise capacity in pregnancy, paternal factors.",
+            "tag": "free",
+            "url": "https://www.foundmyfitness.com/episodes/jre-1054"
+          }
+        ]
+      },
+      {
+        "id": "bg",
+        "host": "Ben Greenfield",
+        "note": "All free. Older catalog, guest-interview format.",
+        "episodes": [
+          {
+            "id": "bg-mama-natural",
+            "title": "The Mama Natural Week-by-Week Guide to Pregnancy and Childbirth",
+            "desc": "His best general pregnancy episode: exercise, caffeine, sex during pregnancy, birth approaches.",
+            "url": "https://bengreenfieldlife.com/podcast/nutrition-podcasts/the-mama-natural-week-by-week-guide-to-pregnancy-and-childbirth/"
+          },
+          {
+            "id": "bg-nathan-riley",
+            "title": "What Hospitals Have Wrong About Childbirth & Fertility",
+            "desc": "With Dr. Nathan Riley, OB-GYN. Hospital vs. holistic birth models.",
+            "url": "https://bengreenfieldlife.com/podcast/nathan-riley-podcast/"
+          },
+          {
+            "id": "bg-exercise-pregnant",
+            "title": "How Hard Can You Exercise When You're Pregnant",
+            "desc": "Prenatal exercise intensity, morning-sickness workouts, postpartum recovery.",
+            "url": "https://bengreenfieldlife.com/podcast/fitness-podcasts/how-hard-can-you-exercise-when-youre-pregnant/"
+          },
+          {
+            "id": "bg-episode-141",
+            "title": "Episode #141: What Is a Good Pregnancy Exercise Routine?",
+            "desc": "Pregnancy nutrition and training. From 2011, fundamentals hold.",
+            "url": "https://bengreenfieldlife.com/podcast/episode-141-what-is-a-good-pregnancy-exercise-routine/"
+          },
+          {
+            "id": "bg-grow-healthy-baby",
+            "title": "How To Grow a Healthy Baby",
+            "desc": "Early episode with his wife Jessa. Short, more anecdotal.",
+            "url": "https://bengreenfieldlife.com/podcast/nutrition-podcasts/weekend-special-update-how-to-grow-a-healthy-baby/"
+          },
+          {
+            "id": "bg-dadicated-joe-50",
+            "title": "Dadicated Joe #50: The Pregnancy Fitness Truth Nobody Tells You",
+            "desc": "Ben as guest, 2026. Staying active until birth, the dad's role, what he'd do differently.",
+            "tag": "best one for Q",
+            "url": "https://www.dadicatedjoe.com/podcast/drwsla3ympmzz3r-h6gjs-2xzb9-c38km"
+          }
+        ]
+      },
+      {
+        "id": "doac",
+        "host": "Steven Bartlett — The Diary Of A CEO",
+        "note": "All free. Long-form interviews, 2–2.5 hrs.",
+        "episodes": [
+          {
+            "id": "doac-inchauspe",
+            "title": "Pregnancy Diet Expert: The Pregnancy Diet That Rewrites DNA",
+            "desc": "Jessie Inchauspé on glucose spikes in the womb, protein and supplement gaps, blood-sugar strategies.",
+            "tag": "2026 · start here",
+            "url": "https://open.spotify.com/episode/0JBPWdsbtVcDXUaqUPioHv"
+          },
+          {
+            "id": "doac-crawford",
+            "title": "The Pregnancy Doctor: Everything You Need To Know About Fertility",
+            "desc": "Dr. Natalie Crawford on reproductive health as whole-body health, plastics and pollutants, when pain warrants a visit.",
+            "tag": "2024 · 2h 23m",
+            "url": "https://podcasts.apple.com/gb/podcast/the-pregnancy-doctor-pregnancy-halves-every-year/id1291423644?i=1000657626660"
+          },
+          {
+            "id": "doac-saxbe",
+            "title": "The Scientist Who Scans Fathers' Brains",
+            "desc": "Dr. Darby Saxbe on how fatherhood rewires the male brain, why hands-on caregiving drives it, and how couple dynamics during pregnancy predict birth outcomes.",
+            "tag": "2026 · best one for Q",
+            "url": "https://open.spotify.com/episode/1f4OeZIWjhDhsUDvz0V2lz"
+          },
+          {
+            "id": "doac-komisar",
+            "title": "Child Attachment Expert: Dr. Erica Komisar",
+            "desc": "Attachment in the first three years, parental presence, childcare decisions. Bears on leave planning.",
+            "tag": "2025 · contested",
+            "url": "https://podcasts.apple.com/us/podcast/child-attachment-expert-hidden-dangers-of-daycare-it/id1291423644?i=1000697314264"
+          }
+        ]
+      }
+    ],
+    "footer": "Trust levels vary. Rhonda Patrick is the most rigorous. Greenfield is useful on exercise and the dad's role but leans thin on some claims. Diary Of A CEO guests are credentialed but the titles overstate — Komisar's daycare claims are contested among developmental researchers. Anything about supplements, risk, or birth decisions goes to the OB."
+  }
+}

@@ -309,3 +309,24 @@ i.say{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:16.5px;co
 .er-pin span{flex:1}
 .er-pin i{font-style:normal;font-size:18px;flex:none}
 .er-pin.hide{opacity:0;pointer-events:none;transform:translate(-50%,8px)}
+
+/* ---------- notes & questions (segmented) ---------- */
+.seg{display:flex;gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;min-height:42px;border:0;border-radius:11px;background:none;font-weight:700;font-size:15px;color:var(--ink-soft);display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.seg button.on{background:var(--white);color:var(--ink);box-shadow:0 1px 2px rgba(68,62,54,.12)}
+.seg-n{font-family:'Fraunces',Georgia,serif;font-size:13px;font-weight:650;color:var(--sage-deep);background:var(--sage-tint);border-radius:999px;padding:1px 8px;line-height:1.4}
+
+/* ---------- resources ---------- */
+.res-group{padding-bottom:4px}
+.res-groupnote{font-size:13.5px;color:var(--ink-soft);padding:0 12px 8px;line-height:1.45}
+.ep{padding-right:4px}
+.ep-link{display:block;color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;border-radius:10px}
+.ep-link:active{background:var(--paper)}
+.ep .item-text{font-weight:700}
+.ep.done .item-text{text-decoration:none;color:var(--ink-soft)}
+.ep-desc{font-size:14px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
+.ep.done .ep-desc{opacity:.75}
+.ep-foot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:6px}
+.ep-foot .tag{margin-bottom:0}
+.ep-ext{flex:none;color:var(--sage-deep);font-size:17px;font-weight:700;padding-top:6px;width:22px;text-align:center}
+.res-note{font-size:13.5px;color:var(--ink-soft);margin:6px 2px 8px;line-height:1.5}

@@ -5,7 +5,11 @@ import { views } from './views.js';
 import { summary } from './dates.js';
 
 const $ = (s, r = document) => r.querySelector(s);
-const TABS = ['today', 'timeline', 'checklists', 'notes', 'questions', 'obcall'];
+const TABS = ['today', 'timeline', 'checklists', 'notes', 'resources'];
+// Routes from before 1.2.0, when OB Questions and OB Call were their own tabs.
+// Anything still pointing at them (bookmarks, the remembered tab, an old
+// linkrow) lands on the right segment / sub-page of the tab that absorbed them.
+const LEGACY = { questions: 'notes/questions', obcall: 'resources/obcall' };
 let current = null;   // active view object
 let currentKey = '';  // "tab/params" of what's rendered
 let pendingUpdate = false;
@@ -37,15 +41,25 @@ addEventListener('offline', () => window.toast('Offline — changes are saved on
 function route() {
   let hash = location.hash.slice(1);
   if (!hash) hash = localStorage.getItem('bh.tab') || 'today';
-  const [tab, ...params] = hash.split('/');
+  let [tab, ...params] = hash.split('/');
+  if (LEGACY[tab]) {
+    [tab, ...params] = LEGACY[tab].split('/').concat(params);
+    history.replaceState(null, '', `#${[tab, ...params].join('/')}`);
+  }
   const name = tab === 'settings' ? 'settings' : TABS.includes(tab) ? tab : 'today';
   if (TABS.includes(name)) localStorage.setItem('bh.tab', name);
   document.querySelectorAll('.tabbar button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
   const key = `${name}/${params.join('/')}`;
   if (key === currentKey) return;
   currentKey = key;
-  current = views[name];
-  current.render($('#view'), params);
+  if (current === views[name] && current.navigate) {
+    // same view, new params (e.g. a segment switch): move within the frame
+    // instead of rebuilding it, so half-typed inputs survive
+    current.navigate(params);
+  } else {
+    current = views[name];
+    current.render($('#view'), params);
+  }
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 

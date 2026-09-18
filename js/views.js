@@ -1,4 +1,7 @@
-// The six tabs + detail pages + settings. Each view is { render(root, params), update() }.
+// The five tabs + detail pages + settings. Each view is { render(root, params), update() }.
+// A view may also expose navigate(params): the router calls it instead of
+// render() when only the params change (segment switch, sub-page), so the
+// frame and its inputs are kept.
 // render() builds the static frame once and binds listeners on it; update()
 // re-renders only the live containers, so the frame's inputs keep focus.
 import { store } from './store.js';
@@ -152,7 +155,7 @@ const today = {
       <div class="sec"><div class="sec-head"><h2 class="serif">Up next</h2><small>${next.length ? 'tap for the plan' : ''}</small></div>
         ${next.length ? `<div class="spine">${next.map((e) => eventCard(e, s.iso)).join('')}</div>` : `<div class="empty"><b>Nothing left on the timeline</b>Everything's either done or behind you.</div>`}
       </div>
-      <button class="linkrow" data-go="questions"><span>${open ? `${open} question${open === 1 ? '' : 's'} queued for the next visit` : 'No questions queued for the next visit'}<small>Anyone can add one, anytime</small></span><span class="arrow">→</span></button>
+      <button class="linkrow" data-go="notes/questions"><span>${open ? `${open} question${open === 1 ? '' : 's'} queued for the next visit` : 'No questions queued for the next visit'}<small>Anyone can add one, anytime</small></span><span class="arrow">→</span></button>
       ${overdue.length ? `<button class="linkrow" data-go="timeline"><span>${overdue.length} past event${overdue.length === 1 ? '' : 's'} not marked complete<small>Open the timeline to tick them off</small></span><span class="arrow">→</span></button>` : ''}`;
   },
 };
@@ -417,6 +420,46 @@ const questions = {
   },
 };
 
+// ---------- NOTES & QUESTIONS (one tab, two segments) ----------
+// #notes → Questions (the waiting-room view) · #notes/notes → Notes.
+// Both panels above render into their own host and keep their own
+// collections (`questions`, `notes`) exactly as before 1.2.0 — nothing moved.
+const notesq = {
+  render(root, params) {
+    root.innerHTML = `<section id="nqFrame">
+      <div class="seg" role="tablist" aria-label="Notes &amp; Questions">
+        <button role="tab" data-go="notes/questions" data-seg="questions">Questions <span class="seg-n" id="segQCount" hidden></span></button>
+        <button role="tab" data-go="notes/notes" data-seg="notes">Notes</button>
+      </div>
+      <div id="segQuestions" role="tabpanel"></div>
+      <div id="segNotes" role="tabpanel" hidden></div>
+    </section>`;
+    this.frame = root.firstElementChild;
+    questions.render(this.frame.querySelector('#segQuestions'));
+    notes.render(this.frame.querySelector('#segNotes'));
+    this.navigate(params);
+  },
+  navigate(params) {
+    this.seg = params[0] === 'notes' ? 'notes' : 'questions';
+    this.frame.querySelectorAll('[data-seg]').forEach((b) => {
+      const on = b.dataset.seg === this.seg;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', on);
+    });
+    this.frame.querySelector('#segQuestions').hidden = this.seg !== 'questions';
+    this.frame.querySelector('#segNotes').hidden = this.seg !== 'notes';
+    this.update();
+  },
+  update() {
+    const open = store.questions().filter((q) => q.status !== 'answered').length;
+    const n = this.frame.querySelector('#segQCount');
+    n.textContent = open || '';
+    n.hidden = !open;
+    questions.update();
+    notes.update();
+  },
+};
+
 // ---------- OB CALL ----------
 // The Wombkeepers first-call phone reference (js/obcall.js, verbatim) as a live
 // checklist. State is the `obcall` collection, one document per thing:
@@ -595,6 +638,72 @@ const obcall = {
   },
 };
 
+// ---------- RESOURCES ----------
+// #resources → OB First Call entry + the Listen list (data/resources.json).
+// #resources/obcall → the OB Call page above, unchanged, under a back button.
+// Listened state is the `resources` collection, one doc per episode id:
+//   { done, checkedBy, checkedAt }  — the same shape as a checklist tick.
+const tagKind = (t) => (/members/i.test(t) ? 'mon' : /best/i.test(t) ? 'fam' : 'med');
+
+const resources = {
+  render(root, params) {
+    this.params = params;
+    if (params[0] === 'obcall') {
+      root.innerHTML = `<div class="page"><button class="back" data-go="resources">← Resources</button><div id="obHost"></div></div>`;
+      obcall.render(root.querySelector('#obHost'));
+      return;
+    }
+    root.innerHTML = `<section id="resFrame"></section>`;
+    this.frame = root.firstElementChild;
+    this.frame.addEventListener('change', (e) => {
+      const cb = e.target.closest('input[data-listen]');
+      if (!cb) return;
+      const done = cb.checked;
+      store.write('resources', cb.dataset.listen, { done, checkedBy: done ? store.user : null, checkedAt: done ? Date.now() : null });
+    });
+    this.update();
+  },
+  update() {
+    if (this.params[0] === 'obcall') return obcall.update();
+    const L = store.resources.listen;
+    const steps = OB_CALL.sections.filter((s) => !s.optional);
+    const p = ob.progress(steps);
+    const all = L.groups.flatMap((g) => g.episodes);
+    const lp = store.listenProgress(all);
+    this.frame.innerHTML = `
+      <div class="sec-head"><h2 class="serif">Resources</h2><small>guides & listening, shared</small></div>
+      <div class="grp">OB First Call</div>
+      <button class="list-card" data-go="resources/obcall">
+        <div class="t"><b>${esc(OB_CALL.title)}</b><span>${p.done}/${p.total}</span></div>
+        <div class="s">${esc(OB_CALL.sub)}</div>
+        ${progressBar(p)}
+      </button>
+      <div class="sec-head" style="margin-top:22px"><h2 class="serif">${esc(L.title)}</h2><small>${lp.done ? `${lp.done} of ${lp.total} listened` : esc(L.sub)}</small></div>
+      ${L.groups.map((g) => this.group(g)).join('')}
+      <p class="res-note">${esc(L.footer)}</p>`;
+  },
+  group(g) {
+    const p = store.listenProgress(g.episodes);
+    return `<div class="checklist res-group">
+      <div class="cl-head"><b>${esc(g.host)}</b><span>${p.done}/${p.total}</span></div>
+      ${g.note ? `<p class="res-groupnote">${esc(g.note)}</p>` : ''}
+      <ul class="items">${g.episodes.map((e) => this.episode(e)).join('')}</ul>
+    </div>`;
+  },
+  episode(e) {
+    const st = store.listened(e.id);
+    return `<li class="item ep${st.done ? ' done' : ''}">
+      <label class="chk" aria-label="Listened"><input type="checkbox" data-listen="${esc(e.id)}" ${st.done ? 'checked' : ''}><span class="box"></span></label>
+      <a class="item-body ep-link" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">
+        <div class="item-text">${esc(e.title)}</div>
+        <div class="ep-desc">${esc(e.desc)}</div>
+        <div class="ep-foot">${e.tag ? `<span class="tag ${tagKind(e.tag)}">${esc(e.tag)}</span>` : ''}${st.done ? `<span class="item-meta">Listened by ${stamp(st.checkedBy, st.checkedAt)}</span>` : ''}</div>
+      </a>
+      <span class="ep-ext" aria-hidden="true">↗</span>
+    </li>`;
+  },
+};
+
 // ---------- SETTINGS ----------
 const settings = {
   render(root) {
@@ -638,7 +747,7 @@ const settings = {
       </form>
       <div class="field"><span>Backup</span>
         <div class="stack"><button class="btn" data-act="export">Export everything as JSON</button></div>
-        <small>Every check, note, question and event state — the seed content is in the app itself.</small>
+        <small>Every check, note, question, listened episode and event state — the seed content is in the app itself.</small>
       </div>
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">
@@ -667,4 +776,4 @@ export async function exportJSON() {
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 }
 
-export const views = { today, timeline, checklists, notes, questions, obcall, settings };
+export const views = { today, timeline, checklists, notes: notesq, resources, settings };

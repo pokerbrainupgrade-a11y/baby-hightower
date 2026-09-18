@@ -4,7 +4,8 @@
 //
 // Document shape: { id: 'coll/key', coll, key, updatedAt, updatedBy, ...fields }
 // Collections: events (per-timeline-event state), items (checklist items),
-// notes, questions. Deletes are soft (`deleted: true`) so they replicate.
+// notes, questions, obcall (first-call checklist), resources (listened
+// episodes). Deletes are soft (`deleted: true`) so they replicate.
 import * as db from './db.js';
 
 const IDENTITY_KEY = 'bh.identity';
@@ -12,12 +13,15 @@ const IDENTITY_KEY = 'bh.identity';
 export const store = {
   docs: new Map(),
   seed: null,
+  resources: null,      // data/resources.json — the Resources tab's content
   identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
   remote: null,         // (doc) => Promise — set by sync.js when active
   listeners: new Set(),
 
   async init() {
-    this.seed = await fetch('./data/seed.json').then((r) => r.json());
+    [this.seed, this.resources] = await Promise.all(
+      ['./data/seed.json', './data/resources.json'].map((u) => fetch(u).then((r) => r.json())),
+    );
     for (const d of await db.getAll()) this.docs.set(d.id, d);
     try { this.identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch { this.identity = null; }
     return this;
@@ -108,6 +112,13 @@ export const store = {
     const items = this.items(listId);
     const done = items.filter((i) => i.done).length;
     return { done, total: items.length, pct: items.length ? Math.round((done / items.length) * 100) : 0 };
+  },
+
+  /** Listened state for one episode/resource: { done, checkedBy, checkedAt }. */
+  listened(id) { return this.get('resources', id) || {}; },
+  listenProgress(episodes) {
+    const done = episodes.filter((e) => this.listened(e.id).done).length;
+    return { done, total: episodes.length, pct: episodes.length ? Math.round((done / episodes.length) * 100) : 0 };
   },
 
   notes() { return this.list('notes').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); },
