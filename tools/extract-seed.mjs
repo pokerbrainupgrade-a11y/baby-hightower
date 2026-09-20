@@ -16,6 +16,38 @@ const decode = (s) => s
 const text = (s) => decode(s.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 const slug = (s) => text(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
 
+// ---------- date estimates ----------
+// v1 hard-coded every date. The app now treats those as *estimates* that are
+// either tied to the pregnancy week (they move when the due date moves) or
+// tied to the calendar (holidays, booked trips, enrollment season — they
+// don't). `est` on each event says which; the original `date` is kept
+// verbatim as the v1 reference (and it's what the stable id is built from).
+const dn = (iso) => { const [y, m, d] = iso.split('-').map(Number); return Math.floor(Date.UTC(y, m - 1, d) / 86400000); };
+const LMP = dn('2026-08-03');
+// Calendar-bound events: id → { date, span (days, for a multi-day window), pre ('by' | 'from') }
+const FIXED = {
+  '2026-11-01-pin-down-open-enrollment-both-employers': { date: '2026-11-01' },
+  '2026-11-13-wyoming-tell-staci-s-parents-in-person': { date: '2026-11-13', span: 2 },
+  '2026-11-26-thanksgiving-tell-q-s-parents-az': { date: '2026-11-26' },
+  '2027-02-01-shower-invites-out-registry-linked': { date: '2027-02-06', pre: 'by' },
+  '2027-03-11-illinois-baby-shower-saturday-mar-13': { date: '2027-03-11', span: 4 },
+};
+// Week-based windows that v1 wrote as ranges ("SEP 29 – OCT 19"): id → days from first to last day
+const SPAN = {
+  '2026-09-29-first-prenatal-visit-dating-ultrasound': 20,
+  '2026-12-08-anatomy-scan-the-big-one': 34,
+  '2027-01-19-glucose-screening': 27,
+};
+const PRE = { '2026-10-13-nipt-blood-draw-screening-the-sex': 'from' };
+const estimate = (id, date) => {
+  if (FIXED[id]) return { kind: 'fixed', ...FIXED[id] };
+  const days = dn(date) - LMP;
+  const est = { kind: 'week', week: Math.floor(days / 7), day: days % 7 };
+  if (SPAN[id]) est.span = SPAN[id];
+  if (PRE[id]) est.pre = PRE[id];
+  return est;
+};
+
 // ---------- timeline ----------
 const timelineHtml = html.slice(html.indexOf('<section id="timeline">'), html.indexOf('<section id="guide">'));
 const trimesters = [];
@@ -34,7 +66,8 @@ while ((m = triRe.exec(timelineHtml))) {
     const body = e[3];
     const category = cls.includes('dev') ? 'dev' : cls.includes('family') ? 'family' : cls.includes('money') ? 'money' : cls.includes('star') ? 'star' : 'medical';
     const title = text((body.match(/<div class="ev-title">([\s\S]*?)<\/div>/) || [])[1] || '');
-    const ev = { id: `${date}-${slug(title)}`, order: order++, date, category, title };
+    const id = `${date}-${slug(title)}`;
+    const ev = { id, order: order++, date, est: estimate(id, date), category, title };
     if (category !== 'dev') {
       ev.dateLabel = text((body.match(/<div class="ev-date">([\s\S]*?)<\/div>/) || [])[1] || '');
       ev.note = text((body.match(/<div class="ev-note">([\s\S]*?)<\/div>/) || [])[1] || '');

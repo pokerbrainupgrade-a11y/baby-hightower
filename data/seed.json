@@ -23,6 +23,11 @@
           "id": "2026-09-14-this-week-about-6-weeks-the-heart-has-ju",
           "order": 0,
           "date": "2026-09-14",
+          "est": {
+            "kind": "week",
+            "week": 6,
+            "day": 0
+          },
           "category": "dev",
           "title": "This week: about 6 weeks — the heart has just started beating (~110–160 bpm). Blueberry-sized."
         },
@@ -30,6 +35,11 @@
           "id": "2026-09-16-call-wombkeepers-book-the-first-visit",
           "order": 1,
           "date": "2026-09-16",
+          "est": {
+            "kind": "week",
+            "week": 6,
+            "day": 2
+          },
           "category": "medical",
           "title": "Call Wombkeepers — book the first visit",
           "dateLabel": "WED SEP 16 · WEEK 6",
@@ -41,6 +51,12 @@
           "id": "2026-09-29-first-prenatal-visit-dating-ultrasound",
           "order": 2,
           "date": "2026-09-29",
+          "est": {
+            "kind": "week",
+            "week": 8,
+            "day": 1,
+            "span": 20
+          },
           "category": "medical",
           "title": "First prenatal visit + dating ultrasound",
           "dateLabel": "SEP 29 – OCT 19 · WEEKS 8–10",
@@ -52,6 +68,11 @@
           "id": "2026-10-05-week-9-10-every-major-organ-has-formed-f",
           "order": 3,
           "date": "2026-10-05",
+          "est": {
+            "kind": "week",
+            "week": 9,
+            "day": 0
+          },
           "category": "dev",
           "title": "Week 9–10: every major organ has formed. From here it's all growth."
         },
@@ -59,6 +80,12 @@
           "id": "2026-10-13-nipt-blood-draw-screening-the-sex",
           "order": 4,
           "date": "2026-10-13",
+          "est": {
+            "kind": "week",
+            "week": 10,
+            "day": 1,
+            "pre": "from"
+          },
           "category": "medical",
           "title": "NIPT blood draw — screening + the sex 💛",
           "dateLabel": "FROM TUE OCT 13 · WEEK 10",
@@ -70,6 +97,10 @@
           "id": "2026-11-01-pin-down-open-enrollment-both-employers",
           "order": 5,
           "date": "2026-11-01",
+          "est": {
+            "kind": "fixed",
+            "date": "2026-11-01"
+          },
           "category": "money",
           "title": "Pin down open enrollment — both employers",
           "dateLabel": "SUN NOV 1",
@@ -81,6 +112,11 @@
           "id": "2026-11-03-first-trimester-complete",
           "order": 6,
           "date": "2026-11-03",
+          "est": {
+            "kind": "week",
+            "week": 13,
+            "day": 1
+          },
           "category": "star",
           "title": "First trimester complete 🎉",
           "dateLabel": "TUE NOV 3 · WEEK 13",
@@ -100,6 +136,11 @@
           "id": "2026-11-13-wyoming-tell-staci-s-parents-in-person",
           "order": 7,
           "date": "2026-11-13",
+          "est": {
+            "kind": "fixed",
+            "date": "2026-11-13",
+            "span": 2
+          },
           "category": "family",
           "title": "Wyoming — tell Staci's parents in person 🤍",
           "dateLabel": "FRI–SUN NOV 13–15 · WEEK 14",
@@ -111,6 +152,11 @@
           "id": "2026-11-20-weeks-16-22-staci-may-feel-the-first-mov",
           "order": 8,
           "date": "2026-11-20",
+          "est": {
+            "kind": "week",
+            "week": 15,
+            "day": 4
+          },
           "category": "dev",
           "title": "Weeks 16–22: Staci may feel the first movements — flutters at first, then unmistakable kicks."
         },
@@ -118,6 +164,10 @@
           "id": "2026-11-26-thanksgiving-tell-q-s-parents-az",
           "order": 9,
           "date": "2026-11-26",
+          "est": {
+            "kind": "fixed",
+            "date": "2026-11-26"
+          },
           "category": "family",
           "title": "Thanksgiving — tell Q's parents (AZ)",
           "dateLabel": "THU NOV 26 · WEEK 16",
@@ -129,6 +179,11 @@
           "id": "2026-12-01-book-the-anatomy-scan-class-series",
           "order": 10,
           "date": "2026-12-01",
+          "est": {
+            "kind": "week",
+            "week": 17,
+            "day": 1
+          },
           "category": "medical",
           "title": "Book the anatomy scan + class series",
           "dateLabel": "TUE DEC 1",
@@ -140,6 +195,12 @@
           "id": "2026-12-08-anatomy-scan-the-big-one",
           "order": 11,
           "date": "2026-12-08",
+          "est": {
+            "kind": "week",
+            "week": 18,
+            "day": 1,
+            "span": 34
+          },
           "category": "medical",
           "title": "Anatomy scan — the big one",
           "dateLabel": "DEC 8 – JAN 11 · WEEKS 18–22",
@@ -151,6 +212,11 @@
           "id": "2026-12-22-halfway-decision-day",
           "order": 12,
           "date": "2026-12-22",
+          "est": {
+            "kind": "week",
+            "week": 20,
+            "day": 1
+          },
           "category": "star",
           "title": "Halfway 🎯 — decision day",
           "dateLabel": "TUE DEC 22 · WEEK 20",
@@ -162,6 +228,11 @@
           "id": "2027-01-05-file-leave-paperwork-both-jobs",
           "order": 13,
           "date": "2027-01-05",
+          "est": {
+            "kind": "week",
+            "week": 22,
+            "day": 1
+          },
           "category": "money",
           "title": "File leave paperwork — both jobs",
           "dateLabel": "TUE JAN 5",
@@ -173,6 +244,11 @@
           "id": "2027-01-12-legal-block-done",
           "order": 14,
           "date": "2027-01-12",
+          "est": {
+            "kind": "week",
+            "week": 23,
+            "day": 1
+          },
           "category": "money",
           "title": "Legal block done",
           "dateLabel": "TUE JAN 12",
@@ -184,6 +260,12 @@
           "id": "2027-01-19-glucose-screening",
           "order": 15,
           "date": "2027-01-19",
+          "est": {
+            "kind": "week",
+            "week": 24,
+            "day": 1,
+            "span": 27
+          },
           "category": "medical",
           "title": "Glucose screening",
           "dateLabel": "JAN 19 – FEB 15 · WEEKS 24–28",
@@ -195,6 +277,11 @@
           "id": "2027-01-19-week-24-viability-milestone-week-26-eyes",
           "order": 16,
           "date": "2027-01-19",
+          "est": {
+            "kind": "week",
+            "week": 24,
+            "day": 1
+          },
           "category": "dev",
           "title": "Week 24: viability milestone. Week 26: eyes open for the first time."
         },
@@ -202,6 +289,11 @@
           "id": "2027-02-01-shower-invites-out-registry-linked",
           "order": 17,
           "date": "2027-02-01",
+          "est": {
+            "kind": "fixed",
+            "date": "2027-02-06",
+            "pre": "by"
+          },
           "category": "family",
           "title": "Shower invites out — registry linked",
           "dateLabel": "BY SAT FEB 6",
@@ -221,6 +313,11 @@
           "id": "2027-02-16-third-trimester-visits-go-biweekly",
           "order": 18,
           "date": "2027-02-16",
+          "est": {
+            "kind": "week",
+            "week": 28,
+            "day": 1
+          },
           "category": "star",
           "title": "Third trimester — visits go biweekly",
           "dateLabel": "TUE FEB 16 · WEEK 28",
@@ -232,6 +329,11 @@
           "id": "2027-03-02-pediatrician-locked-go-bag-shopping",
           "order": 19,
           "date": "2027-03-02",
+          "est": {
+            "kind": "week",
+            "week": 30,
+            "day": 1
+          },
           "category": "medical",
           "title": "Pediatrician locked · go-bag shopping",
           "dateLabel": "TUE MAR 2 · WEEK 30",
@@ -243,6 +345,11 @@
           "id": "2027-03-11-illinois-baby-shower-saturday-mar-13",
           "order": 20,
           "date": "2027-03-11",
+          "est": {
+            "kind": "fixed",
+            "date": "2027-03-11",
+            "span": 4
+          },
           "category": "family",
           "title": "Illinois — baby shower Saturday Mar 13 🎀",
           "dateLabel": "THU–MON MAR 11–15 · WEEK 31",
@@ -254,6 +361,11 @@
           "id": "2027-03-16-home-stretch-nursery-month",
           "order": 21,
           "date": "2027-03-16",
+          "est": {
+            "kind": "week",
+            "week": 32,
+            "day": 1
+          },
           "category": "star",
           "title": "Home stretch — nursery month",
           "dateLabel": "TUE MAR 16 · WEEK 32",
@@ -265,6 +377,11 @@
           "id": "2027-03-23-weeks-32-34-practicing-breathing-gaining",
           "order": 22,
           "date": "2027-03-23",
+          "est": {
+            "kind": "week",
+            "week": 33,
+            "day": 1
+          },
           "category": "dev",
           "title": "Weeks 32–34: practicing breathing, gaining ~half a pound a week, usually turning head-down."
         },
@@ -272,6 +389,11 @@
           "id": "2027-04-13-everything-ready",
           "order": 23,
           "date": "2027-04-13",
+          "est": {
+            "kind": "week",
+            "week": 36,
+            "day": 1
+          },
           "category": "star",
           "title": "Everything ready ✅",
           "dateLabel": "TUE APR 13 · WEEK 36",
@@ -283,6 +405,11 @@
           "id": "2027-04-20-week-37-early-term-week-39-may-3-full-te",
           "order": 24,
           "date": "2027-04-20",
+          "est": {
+            "kind": "week",
+            "week": 37,
+            "day": 1
+          },
           "category": "dev",
           "title": "Week 37: early term. Week 39 (May 3): full term — baby can arrive any day and be fully ready."
         },
@@ -290,6 +417,11 @@
           "id": "2027-05-11-due-date",
           "order": 25,
           "date": "2027-05-11",
+          "est": {
+            "kind": "week",
+            "week": 40,
+            "day": 1
+          },
           "category": "star",
           "title": "🌟 Due date",
           "dateLabel": "TUE MAY 11 · WEEK 40",
