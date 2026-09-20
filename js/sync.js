@@ -7,7 +7,7 @@
 // missing from) the server are pushed, so nothing is lost to a force-close.
 import { FIREBASE_SDK } from './config.js';
 
-const COLLS = ['events', 'items', 'notes', 'questions', 'obcall', 'resources'];
+const COLLS = ['events', 'items', 'notes', 'questions', 'obcall', 'resources', 'settings'];
 
 export async function startSync(store, code, setStatus) {
   let cfg = null;

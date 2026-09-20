@@ -3,10 +3,13 @@
 // document via `updatedAt`.
 //
 // Document shape: { id: 'coll/key', coll, key, updatedAt, updatedBy, ...fields }
-// Collections: events (per-timeline-event state), items (checklist items),
-// notes, questions, obcall (first-call checklist), resources (listened
-// episodes). Deletes are soft (`deleted: true`) so they replicate.
+// Collections: events (per-timeline-event state: done, notes, confirmed
+// date/time), items (checklist items), notes, questions, obcall (first-call
+// checklist), resources (listened episodes), settings (the household's due
+// date). Deletes are soft (`deleted: true`) so they replicate.
 import * as db from './db.js';
+import { DUE } from './config.js';
+import { setDue, estimateWindow, trimester, isISO } from './dates.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -24,6 +27,7 @@ export const store = {
     );
     for (const d of await db.getAll()) this.docs.set(d.id, d);
     try { this.identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch { this.identity = null; }
+    setDue(this.due);
     return this;
   },
 
@@ -36,7 +40,19 @@ export const store = {
   get user() { return this.identity?.user || '?'; },
 
   subscribe(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); },
-  emit() { for (const fn of this.listeners) fn(); },
+  // Every change (local or from the other phone) re-anchors the date math
+  // first, so a due-date edit is already in effect when the views redraw.
+  emit() { setDue(this.due); for (const fn of this.listeners) fn(); },
+
+  // ---------- due date ----------
+  /** The household's due date: settings/due if set (and sane), else the config default. */
+  get due() {
+    const d = this.get('settings', 'due')?.due;
+    return isISO(d) ? d : DUE;
+  },
+  get dueDoc() { return this.get('settings', 'due') || null; },
+  /** Set the due date ('YYYY-MM-DD'), or pass null to go back to the default. */
+  setDueDate(iso) { return this.write('settings', 'due', { due: isISO(iso) ? iso : null }); },
 
   get(coll, key) { return this.docs.get(`${coll}/${key}`); },
   list(coll) {
@@ -82,12 +98,33 @@ export const store = {
 
   // ---------- derived views over seed + docs ----------
 
-  /** All timeline events, flattened, with live state merged in. */
+  /**
+   * All timeline events with live state merged in, in date order.
+   * Each carries its estimate window (estFrom/estTo — recalculated from the
+   * current due date), the confirmed date/time if one was entered, and the
+   * effective window (from/to) the app sorts and judges "past" by.
+   */
   events() {
     const out = [];
-    for (const t of this.seed.trimesters) for (const e of t.events) out.push({ ...e, trimester: t.id, state: this.get('events', e.id) || {} });
-    return out;
+    for (const t of this.seed.trimesters) {
+      for (const e of t.events) {
+        const state = this.get('events', e.id) || {};
+        const { from: estFrom, to: estTo } = estimateWindow(e.est);
+        const confirmed = isISO(state.date);
+        const from = confirmed ? state.date : estFrom;
+        const to = confirmed ? state.date : estTo;
+        out.push({ ...e, state, estFrom, estTo, confirmed, from, to, time: confirmed ? state.time || '' : '', trimester: trimester(from) });
+      }
+    }
+    return out.sort((a, b) => (a.from < b.from ? -1 : a.from > b.from ? 1 : a.order - b.order));
   },
+  /** Confirm an event's date ('YYYY-MM-DD') and optional time ('HH:MM'); stamps who/when. */
+  setEventDate(id, date, time) {
+    if (!isISO(date)) return Promise.resolve(null);
+    return this.write('events', id, { date, time: /^\d{2}:\d{2}$/.test(time || '') ? time : null, dateBy: this.user, dateAt: Date.now() });
+  },
+  /** Back to the estimate. */
+  clearEventDate(id) { return this.write('events', id, { date: null, time: null, dateBy: null, dateAt: null }); },
   event(id) { return this.events().find((e) => e.id === id); },
   guide(id) { return this.seed.guide.find((g) => g.id === id); },
 
