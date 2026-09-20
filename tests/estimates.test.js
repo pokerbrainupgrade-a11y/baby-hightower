@@ -114,3 +114,9 @@ test('garbage never becomes the due date', () => {
   assert.equal(isISO('2027-05-11'), true);
   assert.equal(isISO('2027-5-11'), false);
 });
+
+test('labels can be rendered in sentence case for the editor', () => {
+  setDue(null);
+  assert.equal(windowLabel('2026-09-29', '2026-10-19', { caps: false }), 'Sep 29 – Oct 19 · weeks 8–10');
+  assert.equal(windowLabel('2026-10-13', '2026-10-13', { pre: 'from', caps: false }), 'from Tue Oct 13 · week 10');
+});

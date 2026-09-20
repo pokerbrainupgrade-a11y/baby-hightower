@@ -69,6 +69,23 @@
   </form>
 </div>
 
+<!-- date editor: opens from any tappable date on the timeline -->
+<div id="dateSheet" class="modal" hidden>
+  <form class="modal-card date-sheet" id="dateForm" autocomplete="off">
+    <div class="ds-kicker">Set the date</div>
+    <h2 class="serif" id="dsTitle"></h2>
+    <div class="ds-est" id="dsEst"></div>
+    <label class="field"><span>Date</span><input type="date" name="date" required></label>
+    <label class="field"><span>Time <em>(optional)</em></span><input type="time" name="time"></label>
+    <div class="ds-meta" id="dsMeta"></div>
+    <div class="stack">
+      <button type="submit" class="btn primary big">Save</button>
+      <button type="button" class="btn big" data-ds="clear">Clear — back to the estimate</button>
+      <button type="button" class="btn ghost" data-ds="cancel">Cancel</button>
+    </div>
+  </form>
+</div>
+
 <div id="toast" class="toast" hidden></div>
 <noscript>Baby Hightower needs JavaScript.</noscript>
 <script type="module" src="js/app.js"></script>

@@ -110,15 +110,16 @@ export function estimateWindow(est) {
  * The v1-style date line, e.g. 'WED SEP 16 · WEEK 6', 'SEP 29 – OCT 19 · WEEKS 8–10',
  * 'FROM TUE OCT 13 · WEEK 10', 'BY SAT FEB 6'. Pass { time } for a confirmed time.
  */
-export function windowLabel(from, to = from, { pre = '', week = true, time = '' } = {}) {
-  const up = (iso, wd) => formatDate(iso, { weekday: wd }).replace(',', '').toUpperCase();
+export function windowLabel(from, to = from, { pre = '', week = true, time = '', caps = true } = {}) {
+  const c = (t) => (caps ? t.toUpperCase() : t);
+  const up = (iso, wd) => c(formatDate(iso, { weekday: wd }).replace(',', ''));
   const w1 = gestation(from).weeks, w2 = gestation(to === from ? to : addDays(to, -1)).weeks;
   let s;
   if (to === from) s = up(from, true);
   else if (from.slice(0, 7) === to.slice(0, 7)) s = `${up(from, false)}–${Number(to.slice(8))}`;   // NOV 13–15
   else s = `${up(from, false)} – ${up(to, false)}`;                                            // SEP 29 – OCT 19
-  if (pre) s = `${pre.toUpperCase()} ${s}`;
-  if (week && w1 >= 0) s += w1 === w2 ? ` · WEEK ${w1}` : ` · WEEKS ${w1}–${w2}`;
+  if (pre) s = `${c(pre)} ${s}`;
+  if (week && w1 >= 0) s += w1 === w2 ? ` · ${c('week')} ${w1}` : ` · ${c('weeks')} ${w1}–${w2}`;
   if (time) s += ` · ${formatTime(time)}`;
   return s;
 }

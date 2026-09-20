@@ -1,7 +1,7 @@
 // Boot, hash router, identity gate, sync status, SW registration + update flow.
 import { store } from './store.js';
 import { startSync } from './sync.js';
-import { views } from './views.js';
+import { views, dateEditor } from './views.js';
 import { summary } from './dates.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -64,6 +64,9 @@ function route() {
 }
 
 document.addEventListener('click', (e) => {
+  // a tap on an event's date opens the editor instead of following the card
+  const d = e.target.closest('[data-edit-date]');
+  if (d) { e.preventDefault(); dateEditor.open(d.dataset.editDate); return; }
   const t = e.target.closest('[data-go],[data-tab]');
   if (!t) return;
   const target = t.dataset.go ?? t.dataset.tab;
@@ -137,6 +140,7 @@ async function registerSW() {
     return;
   }
   $('#app').hidden = false;
+  dateEditor.bind();
   updateMini();
   route();
   if (!store.identity?.user || !store.identity?.code) showIdentity();

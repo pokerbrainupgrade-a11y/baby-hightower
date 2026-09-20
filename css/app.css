@@ -86,6 +86,12 @@ button.card:active{background:var(--paper)}
 .ev-date{font-size:12.5px;font-weight:700;color:var(--sage-deep);letter-spacing:.03em}
 .ev.family .ev-date{color:var(--blush-deep)}
 .ev.money .ev-date{color:var(--sand-deep)}
+/* estimated vs confirmed: '~' muted, '✓' full weight; padded so the tap target is thumb-sized without moving the layout */
+.ev-date .mark{font-style:normal;display:inline-block;width:15px;opacity:.85}
+.ev-date.est{opacity:.7;font-weight:650}
+.ev-date.confirmed{font-weight:800}
+.ev-date[data-edit-date]{display:inline-block;padding:7px 6px 6px 0;margin:-7px 0 -6px;border-radius:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ev-date[data-edit-date]:active{background:var(--paper)}
 .ev-title{font-size:16.5px;font-weight:700;margin:1px 0 2px;line-height:1.35}
 .ev.dev .ev-title{font-weight:600;font-size:15px;color:var(--ink-soft)}
 .ev-note{font-size:14px;color:var(--ink-soft)}
@@ -106,6 +112,9 @@ button.card:active{background:var(--paper)}
 .back{display:inline-flex;align-items:center;gap:4px;background:none;border:0;padding:6px 0 10px;font-size:15px;font-weight:700;color:var(--sage-deep)}
 .page h2.title{font-family:'Fraunces',Georgia,serif;font-weight:640;font-size:26px;line-height:1.15;margin:2px 0 6px}
 .page .ev-note{font-size:15px}
+.date-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:0 0 2px}
+.date-row .ev-date{font-size:13.5px}
+.date-meta{display:block;font-size:12.5px;color:var(--ink-soft);margin:0 0 8px}
 .state-row{display:flex;gap:10px;margin:14px 0 4px}
 .btn{min-height:44px;border-radius:12px;padding:10px 16px;font-weight:700;font-size:15px;border:1.5px solid var(--line);background:var(--white);color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn:active{background:var(--paper)}
@@ -123,7 +132,11 @@ button.card:active{background:var(--paper)}
 .field{display:block;margin:14px 0}
 .field>span{display:block;font-size:12px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
 .field small,.hint{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:5px}
-input[type=text],input[type=search],textarea{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none}
+input[type=text],input[type=search],input[type=date],input[type=time],textarea{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none}
+/* native iOS pickers: keep them full-width and tall enough to hit, text left-aligned like every other field */
+input[type=date],input[type=time]{min-height:48px;display:block;text-align:left}
+input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:left;min-height:1.4em}
+.field>span em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:500}
 input:focus,textarea:focus{outline:none;border-color:var(--sage-deep);box-shadow:0 0 0 3px var(--sage-tint)}
 textarea{min-height:88px;resize:vertical;line-height:1.5}
 
@@ -242,6 +255,11 @@ details.archive summary small{font-family:inherit;font-size:13.5px;color:var(--i
 .modal-card{background:var(--cream);border-radius:22px;padding:22px 20px 20px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .modal-card h2{font-family:'Fraunces',Georgia,serif;font-weight:640;font-size:26px;margin:6px 0 12px}
 .modal-icon{display:block;border-radius:14px}
+.date-sheet .ds-kicker{font-size:12px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--sage-deep)}
+.date-sheet h2{font-size:22px;margin:4px 0 4px;line-height:1.2}
+.ds-est{font-size:14px;color:var(--ink-soft);margin-bottom:2px}
+.ds-meta{font-size:12.5px;color:var(--ink-soft);margin:-4px 0 14px}
+.date-sheet .stack{margin-top:4px}
 .who{display:flex;gap:10px;margin-bottom:8px}
 .who label{flex:1;position:relative}
 .who input{position:absolute;opacity:0;inset:0}

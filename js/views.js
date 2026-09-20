@@ -5,8 +5,8 @@
 // render() builds the static frame once and binds listeners on it; update()
 // re-renders only the live containers, so the frame's inputs keep focus.
 import { store } from './store.js';
-import { summary, todayISO, formatGestation, formatStamp, formatDate } from './dates.js';
-import { APP_VERSION, LMP, DUE, USERS } from './config.js';
+import { summary, todayISO, formatGestation, formatStamp, formatDate, formatTime, windowLabel, dateAt, currentLMP } from './dates.js';
+import { APP_VERSION, DUE, USERS } from './config.js';
 import { OB_CALL } from './obcall.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -15,11 +15,24 @@ const stamp = (who, ms) => (who ? `${esc(who)} · ${formatStamp(ms)}` : '');
 export const uiState = { answering: new Set(), editing: null };
 
 // ---------- shared pieces ----------
+/** v1 wording for an event's estimate window ('SEP 29 – OCT 19 · WEEKS 8–10'). */
+const estLabel = (e, caps = true) => windowLabel(e.estFrom, e.estTo, { pre: e.est.pre, week: e.category !== 'money', caps });
+
+/**
+ * An event's date line — the estimate, muted with a '~', or the confirmed
+ * date in full weight with a '✓'. Tapping it opens the date editor.
+ */
+function dateLine(e) {
+  const text = e.confirmed ? windowLabel(e.from, e.to, { week: e.category !== 'money', time: e.time }) : estLabel(e);
+  const hint = e.confirmed ? 'Confirmed — tap to change' : 'Estimated — tap to set the date';
+  return `<span class="ev-date ${e.confirmed ? 'confirmed' : 'est'}" data-edit-date="${esc(e.id)}" role="button" title="${hint}" aria-label="${hint}: ${esc(text)}"><i class="mark">${e.confirmed ? '✓' : '~'}</i>${esc(text)}</span>`;
+}
+
 function eventCard(e, today) {
   const done = !!e.state.done;
-  return `<div class="ev ${e.category}${e.date < today ? ' past' : ''}${done ? ' done' : ''}">
+  return `<div class="ev ${e.category}${e.to < today ? ' past' : ''}${done ? ' done' : ''}">
     <button class="card" data-go="timeline/ev/${esc(e.id)}">
-      ${e.dateLabel ? `<div class="ev-date">${esc(e.dateLabel)}</div>` : ''}
+      ${e.category !== 'dev' ? `<div>${dateLine(e)}</div>` : ''}
       <div class="ev-title">${done ? '<span class="tick">✓</span>' : ''}${esc(e.title)}</div>
       ${e.note ? `<div class="ev-note">${esc(e.note)}</div>` : ''}
       ${e.linkLabel ? `<span class="ev-link">${esc(e.linkLabel)}</span>` : ''}
@@ -134,19 +147,22 @@ const today = {
     const s = summary();
     const m = store.seed.meta;
     const evs = store.events();
-    const dev = evs.filter((e) => e.category === 'dev' && e.date <= s.iso).pop() || evs.find((e) => e.category === 'dev');
-    const next = evs.filter((e) => e.category !== 'dev' && e.date >= s.iso && !e.state.done).slice(0, 3);
-    const overdue = evs.filter((e) => e.category !== 'dev' && e.date < s.iso && !e.state.done);
+    // events() is already in date order; windows (from/to) follow confirmed dates + the live due date
+    const dev = evs.filter((e) => e.category === 'dev' && e.from <= s.iso).pop() || evs.find((e) => e.category === 'dev');
+    const next = evs.filter((e) => e.category !== 'dev' && e.to >= s.iso && !e.state.done).slice(0, 3);
+    const overdue = evs.filter((e) => e.category !== 'dev' && e.to < s.iso && !e.state.done);
     const open = store.questions().filter((q) => q.status !== 'answered').length;
     const pill = s.pastDue || s.dueToday
       ? `<b>40+</b><span>weeks — any moment now</span>`
       : `<b>${s.g.weeks}w ${s.g.day}d</b><span>pregnant today</span>`;
-    const count = s.pastDue ? `Due date was ${formatDate(DUE)} · baby's call now` : s.dueToday ? `Today is the due date 🌟` : `${s.left} days to May 11 · ${s.weeksLeft} weeks to go`;
+    const count = s.pastDue ? `Due date was ${formatDate(s.due)} · baby's call now` : s.dueToday ? `Today is the due date 🌟` : `${s.left} days to ${formatDate(s.due, { weekday: false })} · ${s.weeksLeft} weeks to go`;
+    // v1's "Due May 11, 2027 · Renewal Center…" line, with the live due date swapped in
+    const dueLine = m.due.replace(/^Due \w+ \d+, \d{4}/, `Due ${formatDate(s.due, { weekday: false, year: true })}`);
     this.frame.innerHTML = `
       <div class="hero">
         <div class="hdr-eyebrow">${esc(m.eyebrow)}</div>
         <h1 class="serif">Baby <span class="amp">Hightower</span></h1>
-        <div class="hdr-due">${esc(m.due)}</div>
+        <div class="hdr-due">${esc(dueLine)}</div>
         <div class="weekpill">${pill}</div>
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
@@ -189,6 +205,10 @@ const timeline = {
     if (kind === 'guide') return this.guide(id);
     const iso = todayISO();
     const legend = store.seed.meta.legend;
+    const evs = store.events(); // date order; each knows its trimester under the live due date
+    // v1's range lines ('Nov 9 → Feb 15 · weeks 14–27'), recomputed from the due date
+    const d = (w, dd) => formatDate(dateAt(w, dd), { weekday: false });
+    const ranges = [`now → ${d(13, 6)} · weeks 1–13`, `${d(14, 0)} → ${d(28, 0)} · weeks 14–27`, `${d(28, 1)} → baby · weeks 28–40`];
     this.frame.innerHTML = `
       <div class="legend">
         <span><i style="background:var(--sage)"></i>${esc(legend[0])}</span>
@@ -196,10 +216,10 @@ const timeline = {
         <span><i style="background:var(--sand-deep)"></i>${esc(legend[2])}</span>
         <span><i style="background:var(--cream);border:2px solid var(--sage-deep);width:8px;height:8px"></i>${esc(legend[3])}</span>
       </div>
-      ${store.seed.trimesters.map((t) => `
-        <div class="tri"><div class="tri-head"><h2 class="serif">${esc(t.title)}</h2><small>${esc(t.range)}</small></div>
+      ${store.seed.trimesters.map((t, i) => `
+        <div class="tri"><div class="tri-head"><h2 class="serif">${esc(t.title)}</h2><small>${esc(ranges[i])}</small></div>
         <p class="tri-sub">${esc(t.sub)}</p>
-        <div class="spine">${t.events.map((e) => eventCard({ ...e, state: store.get('events', e.id) || {} }, iso)).join('')}</div></div>`).join('')}
+        <div class="spine">${evs.filter((e) => e.trimester === i + 1).map((e) => eventCard(e, iso)).join('')}</div></div>`).join('')}
       <div class="sec"><div class="sec-head"><h2 class="serif">The Guide</h2><small>every section from v1</small></div>
         <div class="guide-index">${store.seed.guide.map((g) => `<button class="card" data-go="timeline/guide/${esc(g.id)}"><div class="ev-date">${esc(g.tag)}</div><div class="ev-title">${esc(g.title)}</div></button>`).join('')}</div>
       </div>`;
@@ -214,7 +234,8 @@ const timeline = {
     if (notesFocused) return; // don't clobber typing; a later update will catch up
     this.frame.innerHTML = `<div class="page">
       <button class="back" data-go="timeline">← Timeline</button>
-      ${e.dateLabel ? `<div class="ev-date">${esc(e.dateLabel)}</div>` : `<div class="ev-date">${esc(formatDate(e.date, { year: true }))} · ${formatGestation(summaryAt(e.date))}</div>`}
+      <div class="date-row">${dateLine(e)}<button class="btn sm ghost" data-edit-date="${esc(id)}">${e.confirmed ? 'Change' : 'Set date'} ›</button></div>
+      ${e.confirmed ? `<small class="date-meta">Confirmed by ${stamp(st.dateBy, st.dateAt)} · estimate was ${esc(estLabel(e, false))}</small>` : `<small class="date-meta">Estimate · ${formatGestation(summaryAt(e.from))} on ${esc(formatDate(e.from))}</small>`}
       <h2 class="title">${esc(e.title)}</h2>
       ${e.note ? `<p class="ev-note">${esc(e.note)}</p>` : ''}
       <div class="state-row">
@@ -717,9 +738,16 @@ const settings = {
       else if (act === 'export') exportJSON();
       else if (act === 'update') navigator.serviceWorker?.getRegistration().then((r) => r?.update()).then(() => window.toast?.('Checked for updates'));
       else if (act === 'reload') location.reload();
+      else if (act === 'due-reset') store.setDueDate(null).then(() => window.toast?.(`Due date back to ${formatDate(DUE, { year: true })}`));
     });
     this.frame.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (e.target.id === 'dueForm') {
+        const due = e.target.due.value;
+        if (!due) return;
+        store.setDueDate(due).then(() => window.toast?.(`Due date set to ${formatDate(due, { year: true })} — estimates updated`));
+        return;
+      }
       const code = e.target.code.value.trim();
       if (code.length < 4) return;
       store.setIdentity({ ...store.identity, code });
@@ -731,6 +759,7 @@ const settings = {
   update() {
     const id = store.identity || {};
     const s = store.syncStatus || { state: 'off', msg: 'Not syncing' };
+    const dueDoc = store.dueDoc;
     const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
     this.frame.innerHTML = `<div class="page">
       <button class="back" data-go="today">← Back</button>
@@ -741,7 +770,12 @@ const settings = {
         <div class="row"><span class="l">Sync</span><b class="status" data-state="${esc(s.state)}"><i></i>${esc(s.msg)}</b></div>
         <div class="row"><span class="l">Network</span><b>${navigator.onLine ? 'Online' : 'Offline'}</b></div>
       </div>
-      <form class="field"><span>Household code</span>
+      <form class="field" id="dueForm"><span>Due date</span>
+        <div class="addrow" style="padding:0"><input type="date" name="due" data-hold value="${esc(store.due)}" required><button class="btn sm primary" type="submit">Save</button></div>
+        <small>${dueDoc?.due ? `Set by ${stamp(dueDoc.updatedBy, dueDoc.updatedAt)}. ` : `The default (${formatDate(DUE, { year: true })}). `}Every "week N" estimate on the timeline moves with it; dates you've confirmed stay put. Weeks count from LMP ${formatDate(currentLMP(), { year: true })}.</small>
+        ${store.due !== DUE ? `<div class="stack" style="margin-top:8px"><button type="button" class="btn sm" data-act="due-reset">Reset to ${formatDate(DUE, { weekday: false, year: true })}</button></div>` : ''}
+      </form>
+      <form class="field" id="codeForm"><span>Household code</span>
         <div class="addrow" style="padding:0"><input type="text" name="code" value="${esc(id.code || '')}" autocapitalize="none" autocorrect="off" spellcheck="false" minlength="4" required><button class="btn sm primary" type="submit">Save</button></div>
         <small>Same code on both phones. Changing it reloads the app and joins that household.</small>
       </form>
@@ -752,7 +786,7 @@ const settings = {
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">
           <div class="row"><span class="l">Version</span><b>${esc(APP_VERSION)}</b></div>
-          <div class="row"><span class="l">Anchor</span><b>LMP ${formatDate(LMP, { year: true })} · due ${formatDate(DUE, { year: true })}</b></div>
+          <div class="row"><span class="l">Anchor</span><b>LMP ${formatDate(currentLMP(), { year: true })} · due ${formatDate(store.due, { year: true })}</b></div>
           <div class="row"><span class="l">Installed</span><b>${standalone ? 'Home screen app' : 'Browser tab'}</b></div>
         </div>
         <div class="stack"><button class="btn" data-act="update">Check for update</button><button class="btn" data-act="reload">Reload</button></div>
@@ -777,3 +811,46 @@ export async function exportJSON() {
 }
 
 export const views = { today, timeline, checklists, notes: notesq, resources, settings };
+
+// ---------- DATE EDITOR ----------
+// The bottom sheet behind every tappable date (#dateSheet in index.html).
+// Save confirms a date (+ optional time) for the event, Clear goes back to
+// the estimate; both are ordinary store writes, so they sync like a tick.
+export const dateEditor = {
+  id: null,
+  el: null,
+  bind() {
+    this.el = document.getElementById('dateSheet');
+    const form = this.el.querySelector('form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const date = form.date.value, time = form.time.value;
+      if (!date || !this.id) return;
+      const id = this.id;
+      this.close();
+      store.setEventDate(id, date, time).then(() => window.toast?.(`Confirmed ${formatDate(date)}${time ? ` · ${formatTime(time)}` : ''}`));
+    });
+    this.el.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-ds]');
+      if (e.target === this.el) return this.close(); // backdrop
+      if (!t) return;
+      if (t.dataset.ds === 'cancel') this.close();
+      else if (t.dataset.ds === 'clear') { const id = this.id; this.close(); store.clearEventDate(id).then(() => window.toast?.('Back to the estimate')); }
+    });
+  },
+  open(id) {
+    const e = store.event(id);
+    if (!e || !this.el) return;
+    this.id = id;
+    const form = this.el.querySelector('form');
+    this.el.querySelector('#dsTitle').textContent = e.title;
+    this.el.querySelector('#dsEst').textContent = `Estimate: ${estLabel(e, false)}`;
+    // prefilled with the estimate's first day, so Save with no change confirms the estimate as-is
+    form.date.value = e.confirmed ? e.from : e.estFrom;
+    form.time.value = e.time || '';
+    this.el.querySelector('#dsMeta').textContent = e.confirmed ? `Confirmed by ${e.state.dateBy || '?'} · ${formatStamp(e.state.dateAt)}` : 'Not confirmed yet — the timeline shows the estimate';
+    this.el.querySelector('[data-ds=clear]').hidden = !e.confirmed;
+    this.el.hidden = false;
+  },
+  close() { if (this.el) this.el.hidden = true; this.id = null; },
+};
