@@ -2,7 +2,7 @@
 // shell, network-first for firebase-config.js, stale-while-revalidate for the
 // Firebase SDK. Bump VERSION (and APP_VERSION in js/config.js) on every deploy —
 // the app shows an "Update ready" toast and reloads on tap.
-const VERSION = '1.2.0';
+const VERSION = '1.3.0';
 const SHELL = `bh-shell-${VERSION}`;
 const RUNTIME = 'bh-runtime';
 

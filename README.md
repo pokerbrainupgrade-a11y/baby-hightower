@@ -9,7 +9,8 @@ two phones sync in real time through Firestore.
 
 Five tabs: **Today** (live week counter, countdown, next three events, baby-development
 note) · **Timeline** (the v1 trimester timeline; every event opens its guide,
-checklist, completion toggle and notes) · **Lists** (Go Bag, Purchases, Legal,
+checklist, completion toggle and notes — and every date is tappable: set the
+real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (Go Bag, Purchases, Legal,
 Nursery Build, First 30 Days, Classes) · **Notes & Questions** (one tab, two
 segments: **Questions** — to ask → asked → answered, built for the waiting room,
 and the default — and **Notes**) · **Resources** (**OB First Call**: the
@@ -62,22 +63,24 @@ npm run icons
 |---|---|
 | `index.html`, `css/app.css` | Shell + the v1 visual design (cream/sage/blush/sand, Fraunces) |
 | `js/config.js` | **LMP, due date, timezone, version** — the only constants |
-| `js/dates.js` · `tests/dates.test.js` | Week/countdown math (pure functions) + tests |
+| `js/dates.js` · `tests/dates.test.js` · `tests/estimates.test.js` | Week/countdown math, the live due-date anchor, estimate windows + v1-style labels (pure functions) + tests |
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` | The five tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
-| `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1 |
+| `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1; each event also carries `est` — its estimate as week/day of pregnancy, or a fixed calendar date |
 | `data/resources.json` · `tests/resources.test.js` | Resources tab content (Listen episodes, verbatim from `Pregnancy_Podcast_Guide_v2.pdf`) + shape tests. Add new resources here. |
 | `tools/extract-seed.mjs` · `tools/make-icons.mjs` | Seed extractor · dependency-free icon generator |
 | `sw.js` · `manifest.webmanifest` · `icons/` | PWA bits |
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across six collections — `events` (per-event
-done/notes), `items` (checklist checks, edits, custom items), `notes`, `questions`,
+updatedAt, updatedBy, ...fields }` across seven collections — `events` (per-event
+done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
+entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
-(listened ticks, keyed by episode id).
+(listened ticks, keyed by episode id), `settings` (one doc, `due`, the
+household's due date — absent means the config default).
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.
 
@@ -223,10 +226,20 @@ export contains every check, note, question and event state. The seed content
 
 * **Week math.** Weeks count from LMP (Aug 3), exactly as v1 did: the due date
   is 40w1d and every "WEEK N" Tuesday on the timeline is Nw1d. The countdown
-  counts to May 11. One nuance: by strict counting the third trimester (28w0d)
-  begins Mon Feb 15, one day before v1's "Feb 16" line — the app follows the
-  math, the timeline text is verbatim. If the dating ultrasound moves the due
-  date, change `LMP`/`DUE` in `js/config.js` and re-run `npm test`.
+  counts to the due date. One nuance: by strict counting the third trimester
+  (28w0d) begins Mon Feb 15, one day before v1's "Feb 16" line — the app
+  follows the math for grouping, and draws the T3 range line at 28w1d like v1.
+* **Due date.** Settings → Due date. It's stored in Firestore (`settings/due`)
+  so both phones agree; changing it moves the LMP with it (due stays 40w1d) and
+  every week-based estimate, the trimester ranges, the week counter and the
+  countdown follow. `DUE`/`LMP` in `js/config.js` are only the defaults now.
+* **Estimated vs confirmed dates.** Every timeline event shows either its
+  estimate (`~`, muted — recalculated from the due date, or fixed for
+  calendar-bound things like Thanksgiving and the two trips) or a confirmed
+  date (`✓`, full weight, optional time). Tap the date anywhere to set or clear
+  it. Confirmed dates never move automatically; they live on the event's own
+  `events/<id>` doc, keyed by the stable id, so app updates can't wipe them.
+  The timeline re-sorts (and re-groups by trimester) on every change.
 * **Two phones, one item, both offline.** Last write wins per document when
   they reconnect. Nothing merges character-by-character — that's by design.
 * **Identity** is per phone (Settings → Switch) and stamped on every write.
@@ -236,4 +249,8 @@ export contains every check, note, question and event state. The seed content
   in-flight ones).
 * **Seed edits.** Change text in v1 → `npm run seed` → commit. Item ids are
   positional (`gobag-3`), so inserting an item mid-list shifts ids after it
-  (checks on those would move); append instead.
+  (checks on those would move); append instead. Event ids embed the v1 date,
+  and `tests/estimates.test.js` pins all 26 of them — don't change dates in the
+  v1 HTML (set them in the app instead); if you must, the test tells you which
+  ids moved. Which events are calendar-fixed lives in `FIXED` in
+  `tools/extract-seed.mjs`.
