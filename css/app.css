@@ -199,6 +199,51 @@ textarea{min-height:88px;resize:vertical;line-height:1.5}
 .addrow{display:flex;gap:8px;padding:10px 8px 4px}
 .addrow input{flex:1}
 
+/* ---------- sectioned lists (Clothing, Nursery Essentials) ---------- */
+.filters{display:flex;gap:6px;flex-wrap:wrap;padding:6px 10px 2px}
+.filters .opt{min-height:36px;padding:4px 12px;font-size:13.5px}
+.filters .opt em{font-style:normal;font-weight:650;font-size:11.5px;opacity:.65;margin-left:5px;font-variant-numeric:tabular-nums}
+.filters .opt.on em{opacity:.85}
+.filter-note{font-size:13px;color:var(--ink-soft);padding:12px 12px 4px}
+details.sec-grp summary{list-style:none;display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 12px 4px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+details.sec-grp summary::-webkit-details-marker{display:none}
+details.sec-grp summary .grp{padding:0;flex:1;display:flex;align-items:baseline;gap:6px}
+details.sec-grp summary .grp::before{content:'▾';display:inline-block;color:var(--sage-deep);font-size:13px;transition:transform .15s;flex:none}
+details.sec-grp:not([open]) summary .grp::before{transform:rotate(-90deg)}
+details.sec-grp summary .cnt{font-size:12.5px;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+details.sec-grp+details.sec-grp{border-top:1px solid var(--line);margin-top:4px}
+.sec-intro,.sec-note{font-size:13.5px;color:var(--ink-soft);padding:2px 12px 6px;line-height:1.45}
+.sec-note{padding-top:8px}
+.sec-note b,.sec-intro b{color:var(--ink)}
+.item-foot{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin-top:3px}
+.item-foot .tag{margin-bottom:0;font-size:10.5px;padding:2px 8px}
+.tag.must{background:var(--sage-tint);color:var(--sage-deep)}
+.tag.nice{background:var(--sand-tint);color:var(--sand-deep)}
+.tag.later{background:var(--blush-tint);color:var(--blush-deep)}
+.tag.skip{background:#EEEAE3;color:var(--ink-soft)}
+.qty{font-size:12.5px;font-weight:750;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.qty.sizes{display:inline-flex;gap:9px;flex-wrap:wrap}
+.qty.sizes small{font-size:10.5px;font-weight:650;letter-spacing:.04em;opacity:.8;margin-right:3px}
+.item-note{font-size:13.5px;color:var(--ink-soft);margin-top:3px;line-height:1.45}
+.item-note b{color:var(--ink)}
+.item.skip .item-text{color:var(--ink-soft)}
+.item.done .item-note,.item.done .item-foot{opacity:.7}
+.item.child{margin-left:30px;position:relative}
+.item.child::before{content:'';position:absolute;left:-16px;top:0;bottom:0;width:2px;border-radius:2px;background:var(--sage-tint)}
+.item.child+.item.child{border-top-color:transparent}
+details.info{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin:6px 8px 8px}
+details.info.top{margin:12px 0 0;background:var(--white)}
+details.info summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;font-weight:750;font-size:14.5px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+details.info summary::-webkit-details-marker{display:none}
+details.info summary i{font-style:normal;color:var(--sage-deep);font-size:18px;line-height:1;transition:transform .15s;flex:none}
+details.info[open] summary i{transform:rotate(90deg)}
+details.info .info-body{padding:0 14px 12px;font-size:14px;color:#554E42;line-height:1.5}
+.info-body p{margin:4px 0 8px}
+.info-body p:last-child{margin-bottom:0}
+.info-body ol,.info-body ul{margin:4px 0 8px 20px}
+.info-body li{margin:5px 0;padding-left:2px}
+.info-body b{color:var(--ink)}
+
 /* ---------- notes ---------- */
 .compose{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:12px}
 .compose textarea,.compose input{border-color:transparent;background:var(--paper)}

@@ -1,0 +1,1235 @@
+{
+  "source": "2026-09-25_Baby_Clothing_Nursery_Lists_v1.md",
+  "addedAt": "2026-09-25",
+  "priorities": [
+    "Must",
+    "Nice",
+    "Later",
+    "Skip"
+  ],
+  "lists": [
+    {
+      "id": "clothing",
+      "title": "Baby Clothing & Accessories",
+      "sub": "Clothing by size (NB / 0–3 / 3–6), sleep, feeding, soothing, bath, on the go",
+      "guide": null,
+      "info": [
+        {
+          "id": "buying-rules",
+          "title": "Buying rules (apply to both lists)",
+          "blocks": [
+            {
+              "type": "ol",
+              "items": [
+                "**Skin-contact fabric:** GOTS-certified organic cotton first; merino wool second; cotton muslin for blankets and swaddles. GOTS is the verification — \"organic\" on a tag alone isn't.",
+                "**Treat these with caution:** polyester fleece and microfiber against skin (sheds microfibers, traps heat), bamboo \"viscose/rayon\" (chemically regenerated; soft, but not the natural fiber the marketing implies).",
+                "**Sleepwear:** US rules require kids' sleepwear to be either flame-resistant or snug-fitting. Choose **snug-fit cotton** (tag reads \"wear snug-fitting, not flame resistant\") — that's the untreated route.",
+                "**Fragrance-free everything** — detergent, wipes, balms. No essential oils on baby in the early months.",
+                "**Heat is the design constraint.** Baby is 0–3 months in May–Aug and 3–6 months in Aug–Nov. Short sleeves carry the load; a few long-sleeve pieces cover AC.",
+                "**Size up bottoms for cloth diapers.** Cloth adds bulk in the seat. Bodysuits and pants run tight a size early; bodysuit extenders are a cheap fix.",
+                "**Buy thin on Newborn size.** Average birth weight is ~7.5 lb; NB fits roughly 5–8 lb and many babies outgrow it in 2–4 weeks or skip it. Bulk up on 0–3. Hold most 3–6 purchases until after the shower and the first growth check — gifts pile up in exactly these sizes.",
+                "**Quantities assume laundry every 2–3 days** (cloth diapers set that rhythm) and 2–4 outfit changes a day for spit-up and blowouts."
+              ]
+            },
+            {
+              "type": "p",
+              "text": "Priority key: **Must** = have before birth · **Nice** = useful, not required · **Later** = buy when the stage arrives · **Skip** = commonly sold, not needed"
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "1a",
+          "title": "1A. Clothing (quantities by size)",
+          "sizes": [
+            "NB",
+            "0–3",
+            "3–6"
+          ],
+          "note": "**Totals to own at birth:** ~20 NB pieces, ~33 0–3 pieces. Add 3–6 in August."
+        },
+        {
+          "id": "1b",
+          "title": "1B. Sleep wear (safe sleep)"
+        },
+        {
+          "id": "1c",
+          "title": "1C. Feeding"
+        },
+        {
+          "id": "1d",
+          "title": "1D. Soothing"
+        },
+        {
+          "id": "1e",
+          "title": "1E. Bath, grooming & health"
+        },
+        {
+          "id": "1f",
+          "title": "1F. On the go"
+        }
+      ],
+      "items": [
+        {
+          "id": "clothing-1a-1",
+          "order": 0,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Short-sleeve bodysuits",
+          "sizes": [
+            "4",
+            "8",
+            "7"
+          ],
+          "priority": "Must",
+          "notes": "Primary layer for a summer baby. Organic cotton."
+        },
+        {
+          "id": "clothing-1a-2",
+          "order": 1,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Long-sleeve bodysuits",
+          "sizes": [
+            "2",
+            "3",
+            "3"
+          ],
+          "priority": "Must",
+          "notes": "For AC and fall evenings."
+        },
+        {
+          "id": "clothing-1a-3",
+          "order": 2,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Side-snap kimono shirts",
+          "sizes": [
+            "3",
+            "0",
+            "0"
+          ],
+          "priority": "Must",
+          "notes": "No pulling over the head, nothing rubbing the cord stump (falls off in 1–3 weeks)."
+        },
+        {
+          "id": "clothing-1a-4",
+          "order": 3,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Zip sleepers / footies",
+          "sizes": [
+            "3",
+            "5",
+            "5"
+          ],
+          "priority": "Must",
+          "notes": "Two-way zipper, not snaps (3 a.m. changes). Snug-fit cotton."
+        },
+        {
+          "id": "clothing-1a-5",
+          "order": 4,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Pants / leggings",
+          "sizes": [
+            "2",
+            "4",
+            "4"
+          ],
+          "priority": "Must",
+          "notes": "Size up one for cloth diapers."
+        },
+        {
+          "id": "clothing-1a-6",
+          "order": 5,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Rompers (short)",
+          "sizes": [
+            "0",
+            "3",
+            "3"
+          ],
+          "priority": "Nice",
+          "notes": "Easy one-piece for heat. Check seat room for cloth."
+        },
+        {
+          "id": "clothing-1a-7",
+          "order": 6,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Elastic-bottom gowns",
+          "sizes": [
+            "0",
+            "3",
+            "0"
+          ],
+          "priority": "Nice",
+          "notes": "Fastest night diaper changes."
+        },
+        {
+          "id": "clothing-1a-8",
+          "order": 7,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Socks",
+          "sizes": [
+            "4",
+            "4",
+            "4"
+          ],
+          "priority": "Must",
+          "notes": "Organic cotton or merino. They fall off — that's why 12 total."
+        },
+        {
+          "id": "clothing-1a-9",
+          "order": 8,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Soft cotton caps",
+          "sizes": [
+            "2",
+            "0",
+            "0"
+          ],
+          "priority": "Must",
+          "notes": "Birth center often gives one. Indoors only; skip once home and warm."
+        },
+        {
+          "id": "clothing-1a-10",
+          "order": 9,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Wide-brim UPF sun hat",
+          "sizes": [
+            "0",
+            "1",
+            "2"
+          ],
+          "priority": "Must",
+          "notes": "The Phoenix essential. Chin strap."
+        },
+        {
+          "id": "clothing-1a-11",
+          "order": 10,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Scratch mittens",
+          "sizes": [
+            "3 pr",
+            "0",
+            "0"
+          ],
+          "priority": "Nice",
+          "notes": "Or sleepers with fold-over cuffs."
+        },
+        {
+          "id": "clothing-1a-12",
+          "order": 11,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Light cardigan (merino or cotton)",
+          "sizes": [
+            "0",
+            "1",
+            "1"
+          ],
+          "priority": "Nice",
+          "notes": "AC and November."
+        },
+        {
+          "id": "clothing-1a-13",
+          "order": 12,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Coming-home outfit",
+          "sizes": [
+            "1",
+            "1",
+            "0"
+          ],
+          "priority": "Must",
+          "notes": "Pack both sizes — you won't know which fits."
+        },
+        {
+          "id": "clothing-1a-14",
+          "order": 13,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Baby shoes",
+          "sizes": [
+            "0",
+            "0",
+            "0"
+          ],
+          "priority": "Skip",
+          "notes": "Not needed until walking."
+        },
+        {
+          "id": "clothing-1a-15",
+          "order": 14,
+          "group": "1A. Clothing (quantities by size)",
+          "section": "1a",
+          "text": "Bodysuit extenders",
+          "sizes": [
+            "—",
+            "4",
+            "—"
+          ],
+          "priority": "Nice",
+          "notes": "Buys cloth-diaper room without sizing up the whole wardrobe."
+        },
+        {
+          "id": "clothing-1b-1",
+          "order": 15,
+          "group": "1B. Sleep wear (safe sleep)",
+          "section": "1b",
+          "text": "Swaddles (zip or velcro sack)",
+          "qty": "3",
+          "priority": "Must",
+          "notes": "Easier than blanket swaddles. **Stop at first signs of rolling** (often ~8 weeks) — AAP."
+        },
+        {
+          "id": "clothing-1b-2",
+          "order": 16,
+          "group": "1B. Sleep wear (safe sleep)",
+          "section": "1b",
+          "text": "Muslin swaddle blankets",
+          "qty": "4",
+          "priority": "Nice",
+          "notes": "Double as nursing cover, burp cloth, shade."
+        },
+        {
+          "id": "clothing-1b-3",
+          "order": 17,
+          "group": "1B. Sleep wear (safe sleep)",
+          "section": "1b",
+          "text": "Sleep sacks, 0.5 TOG",
+          "qty": "3",
+          "priority": "Must",
+          "notes": "Post-swaddle. 0.5 TOG matches a warm-house summer; add a 1.0 TOG only if the bedroom runs below ~70°F."
+        },
+        {
+          "id": "clothing-1b-4",
+          "order": 18,
+          "group": "1B. Sleep wear (safe sleep)",
+          "section": "1b",
+          "text": "Loose blankets / crib bumpers",
+          "qty": "0",
+          "priority": "Skip",
+          "notes": "Nothing loose in the sleep space (AAP)."
+        },
+        {
+          "id": "clothing-1c-1",
+          "order": 19,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Burp cloths",
+          "qty": "10",
+          "priority": "Must",
+          "notes": "Cotton prefolds from the cloth stash work perfectly."
+        },
+        {
+          "id": "clothing-1c-2",
+          "order": 20,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Small bibs",
+          "qty": "5",
+          "priority": "Later",
+          "notes": "Drool ramps up at 3–6 months."
+        },
+        {
+          "id": "clothing-1c-3",
+          "order": 21,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Glass or stainless bottles, 4 oz",
+          "qty": "4",
+          "priority": "Must",
+          "notes": "Heated plastic (even BPA-free polypropylene) sheds microplastics; glass/steel avoids it. Plan first bottle ~3–4 weeks so Q can feed and a return to work stays possible."
+        },
+        {
+          "id": "clothing-1c-4",
+          "order": 22,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Slow-flow silicone nipples",
+          "qty": "4",
+          "priority": "Must",
+          "notes": "Level 1 / slow flow. Paced feeding protects breastfeeding."
+        },
+        {
+          "id": "clothing-1c-5",
+          "order": 23,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Next-size nipples",
+          "qty": "2",
+          "priority": "Later",
+          "notes": "Around 3 months if baby is working hard."
+        },
+        {
+          "id": "clothing-1c-6",
+          "order": 24,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Bottle brush (silicone or plant fiber) + drying rack",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1c-7",
+          "order": 25,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Breast pump",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "**Covered by insurance under the ACA** — order through Banner|Aetna in the 3rd trimester. Don't buy retail."
+        },
+        {
+          "id": "clothing-1c-8",
+          "order": 26,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Milk storage (glass jars or silicone bags)",
+          "qty": "8",
+          "priority": "Nice",
+          "notes": "Plastic freezer bags work if needed; don't heat in them."
+        },
+        {
+          "id": "clothing-1c-9",
+          "order": 27,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Washable nursing pads (Staci)",
+          "qty": "6 pr",
+          "priority": "Must",
+          "notes": "Organic cotton or wool."
+        },
+        {
+          "id": "clothing-1c-10",
+          "order": 28,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Nipple balm (Staci)",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Lanolin or plant-based."
+        },
+        {
+          "id": "clothing-1c-11",
+          "order": 29,
+          "group": "1C. Feeding",
+          "section": "1c",
+          "text": "Nursing pillow",
+          "qty": "1",
+          "priority": "Nice"
+        },
+        {
+          "id": "clothing-1d-1",
+          "order": 30,
+          "group": "1D. Soothing",
+          "section": "1d",
+          "text": "Pacifiers, one-piece",
+          "qty": "3",
+          "priority": "Must",
+          "notes": "Natural rubber or 100% medical-grade silicone. One-piece = no seams to trap bacteria. Offering one at sleep lowers SIDS risk; if breastfeeding, wait until it's established (~3–4 weeks)."
+        },
+        {
+          "id": "clothing-1d-2",
+          "order": 31,
+          "group": "1D. Soothing",
+          "section": "1d",
+          "text": "Pacifier clip",
+          "qty": "2",
+          "priority": "Nice",
+          "notes": "Awake only — never in the sleep space."
+        },
+        {
+          "id": "clothing-1d-3",
+          "order": 32,
+          "group": "1D. Soothing",
+          "section": "1d",
+          "text": "White noise machine",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Across the room, quieter than a shower."
+        },
+        {
+          "id": "clothing-1e-1",
+          "order": 33,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Hooded towels (organic cotton)",
+          "qty": "2",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1e-2",
+          "order": 34,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Soft washcloths",
+          "qty": "8",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1e-3",
+          "order": 35,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Infant tub or sink insert",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Sponge baths until the cord falls off. Bath 2–3×/week is plenty."
+        },
+        {
+          "id": "clothing-1e-4",
+          "order": 36,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Gentle cleanser, fragrance-free",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Water alone for the first weeks."
+        },
+        {
+          "id": "clothing-1e-5",
+          "order": 37,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Rectal digital thermometer",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Standard of accuracy under 3 months. Fever ≥100.4°F under 3 months = call the pediatrician immediately."
+        },
+        {
+          "id": "clothing-1e-6",
+          "order": 38,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Nasal aspirator + saline drops",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1e-7",
+          "order": 39,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Baby nail file / clippers",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Emery boards are safest early."
+        },
+        {
+          "id": "clothing-1e-8",
+          "order": 40,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Soft brush",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Helps with cradle cap."
+        },
+        {
+          "id": "clothing-1e-9",
+          "order": 41,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Stroller & car window shades",
+          "qty": "2",
+          "priority": "Must",
+          "notes": "**Never drape a blanket over the stroller** — it traps heat fast."
+        },
+        {
+          "id": "clothing-1e-10",
+          "order": 42,
+          "group": "1E. Bath, grooming & health",
+          "section": "1e",
+          "text": "Mineral sunscreen (zinc)",
+          "qty": "1",
+          "priority": "Later",
+          "notes": "AAP: shade and clothing first under 6 months; small amounts on exposed spots only if unavoidable."
+        },
+        {
+          "id": "clothing-1f-1",
+          "order": 43,
+          "group": "1F. On the go",
+          "section": "1f",
+          "text": "Diaper bag",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1f-2",
+          "order": 44,
+          "group": "1F. On the go",
+          "section": "1f",
+          "text": "Small wet bags",
+          "qty": "2",
+          "priority": "Must",
+          "notes": "Soiled cloth + dirty clothes."
+        },
+        {
+          "id": "clothing-1f-3",
+          "order": 45,
+          "group": "1F. On the go",
+          "section": "1f",
+          "text": "Portable changing pad",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "clothing-1f-4",
+          "order": 46,
+          "group": "1F. On the go",
+          "section": "1f",
+          "text": "Natural disposable wipes (travel pack)",
+          "qty": "2",
+          "priority": "Must",
+          "notes": "Water-based, fragrance-free — backup to cloth wipes."
+        },
+        {
+          "id": "clothing-1f-5",
+          "order": 47,
+          "group": "1F. On the go",
+          "section": "1f",
+          "text": "Spare outfit in bag",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Restock after every blowout."
+        }
+      ]
+    },
+    {
+      "id": "nursery-essentials",
+      "title": "Nursery Essentials",
+      "sub": "Organized by station · nights run from your bedroom, not the nursery",
+      "guide": null,
+      "info": [
+        {
+          "id": "nursery-essentials-the-key-call",
+          "title": "The key call",
+          "blocks": [
+            {
+              "type": "p",
+              "text": "The AAP recommends baby sleep in **your room**, on a separate surface, ideally for the first 6 months. So nights run from your bedroom, not the office/nursery. \"Keep essentials close by\" means building stations where the work happens — a bedside night station plus the main changing station — so nobody walks down the hall at 3 a.m."
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "2a",
+          "title": "2A. Bedside night station (your bedroom)"
+        },
+        {
+          "id": "2b",
+          "title": "2B. Changing station (office/nursery)"
+        },
+        {
+          "id": "2c",
+          "title": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "intro": "Newborns change 10–12×/day. With washing every 2 days:",
+          "infoAfter": [
+            {
+              "id": "nursery-essentials-2c-material-honesty",
+              "title": "Material honesty",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Most covers are PUL (polyester laminated with polyurethane). It doesn't touch skin — the cotton does — but wool covers are the only fully natural option."
+                }
+              ]
+            },
+            {
+              "id": "nursery-essentials-2c-prep-timing",
+              "title": "Prep timing",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Natural fibers must be washed 3–5+ times hot to reach full absorbency. Prep the whole stash by **week 36 (~mid-April 2027)**."
+                }
+              ]
+            },
+            {
+              "id": "nursery-essentials-2c-rough-cost",
+              "title": "Rough cost",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "~$500–800 all-in for this system, versus roughly $2,000–3,000 for disposables through potty training. Estimate only."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2d",
+          "title": "2D. Skin care & lotion",
+          "infoBefore": [
+            {
+              "id": "nursery-essentials-2d-mechanism-first",
+              "title": "Mechanism first",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "Newborn skin rarely needs lotion. The peeling in the first 2 weeks is normal shedding, not dryness. Two large trials of daily emollients from birth (BEEP, PreventADALL) found no eczema prevention, and BEEP saw slightly more skin infections. So: **spot-treat dry patches only.** Olive oil specifically weakens the skin barrier in infant studies — avoid it. Sunflower seed oil has the better barrier profile (evidence modest)."
+                }
+              ]
+            }
+          ],
+          "infoAfter": [
+            {
+              "id": "nursery-essentials-2d-homemade-balm-why-a-balm-not-a-l",
+              "title": "Homemade balm — why a balm, not a lotion",
+              "blocks": [
+                {
+                  "type": "p",
+                  "text": "anything with water in it grows bacteria and mold without a preservative. A water-free balm doesn't."
+                },
+                {
+                  "type": "ul",
+                  "items": [
+                    "2 parts shea butter (unrefined) · 2 parts sunflower seed oil · 1 part beeswax pastilles, by weight",
+                    "Melt in a double boiler, pour into sterilized glass jars, cool, lid.",
+                    "Small batches; use within ~3 months. No essential oils. Patch-test on a small spot first.",
+                    "Grass-fed tallow balm is a common alternative — evidence is anecdotal, same patch-test rule.",
+                    "Balms and oils cause cloth-diaper repelling — use a paper liner when applied to the diaper area."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2e",
+          "title": "2E. Feeding corner"
+        },
+        {
+          "id": "2f",
+          "title": "2F. Health caddy (one bin, one known spot)"
+        },
+        {
+          "id": "2g",
+          "title": "2G. Room environment (Phoenix-specific)"
+        },
+        {
+          "id": "decisions",
+          "title": "Decisions to make"
+        }
+      ],
+      "items": [
+        {
+          "id": "nursery-essentials-2a-1",
+          "order": 0,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Bassinet (firm, flat mattress)",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Check against Purchases list."
+        },
+        {
+          "id": "nursery-essentials-2a-2",
+          "order": 1,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Fitted bassinet sheets (organic cotton)",
+          "qty": "3",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2a-3",
+          "order": 2,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Wool puddle pad / mattress protector",
+          "qty": "2",
+          "priority": "Nice",
+          "notes": "Wool is a natural moisture barrier; avoids vinyl. Must fit flat and tight."
+        },
+        {
+          "id": "nursery-essentials-2a-4",
+          "order": 3,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Dim amber/red night light",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Warm-spectrum, dimmable. Blue-white light suppresses melatonin — for both of you."
+        },
+        {
+          "id": "nursery-essentials-2a-5",
+          "order": 4,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "White noise machine",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Same unit or a second one."
+        },
+        {
+          "id": "nursery-essentials-2a-6",
+          "order": 5,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Night caddy",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Holds the items below."
+        },
+        {
+          "id": "nursery-essentials-2a-7",
+          "order": 6,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Spare sleep sack + swaddle",
+          "child": true,
+          "qty": "1 ea",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2a-8",
+          "order": 7,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Burp cloths",
+          "child": true,
+          "qty": "2",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2a-9",
+          "order": 8,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Pacifier",
+          "child": true,
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2a-10",
+          "order": 9,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Mini diaper kit: 6 diapers + cloth wipes + wet bag",
+          "child": true,
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Night changes happen here."
+        },
+        {
+          "id": "nursery-essentials-2a-11",
+          "order": 10,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Portable changing pad",
+          "child": true,
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2a-12",
+          "order": 11,
+          "group": "2A. Bedside night station (your bedroom)",
+          "section": "2a",
+          "text": "Staci: water bottle, snacks, nursing pads, nipple balm, charger",
+          "child": true,
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2b-1",
+          "order": 12,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Dresser-top contoured changing pad, secured",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Non-toxic foam or organic cotton/wool fill. Strap it down."
+        },
+        {
+          "id": "nursery-essentials-2b-2",
+          "order": 13,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Changing pad covers",
+          "qty": "3",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2b-3",
+          "order": 14,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Cloth wipes (organic cotton flannel)",
+          "qty": "36",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2b-4",
+          "order": 15,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Wipe spray bottle (warm water only)",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Plain water is the evidence-backed choice for newborn skin."
+        },
+        {
+          "id": "nursery-essentials-2b-5",
+          "order": 16,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Natural disposable wipes",
+          "qty": "1 pk",
+          "priority": "Nice",
+          "notes": "Blowout backup."
+        },
+        {
+          "id": "nursery-essentials-2b-6",
+          "order": 17,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Dry diaper pail with lid",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2b-7",
+          "order": 18,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Pail liners (washable)",
+          "qty": "2",
+          "priority": "Must",
+          "notes": "One in the pail, one in the wash."
+        },
+        {
+          "id": "nursery-essentials-2b-8",
+          "order": 19,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Hanging wet bag",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "For quick drops mid-change."
+        },
+        {
+          "id": "nursery-essentials-2b-9",
+          "order": 20,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Cloth-safe diaper cream (zinc)",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Use with a liner. Petroleum-heavy creams coat fibers and cause leaks."
+        },
+        {
+          "id": "nursery-essentials-2b-10",
+          "order": 21,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Paper diaper liners (biodegradable)",
+          "qty": "1 roll",
+          "priority": "Must",
+          "notes": "Use whenever cream or balm is on."
+        },
+        {
+          "id": "nursery-essentials-2b-11",
+          "order": 22,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Top drawer: bodysuits, sleep sacks, socks",
+          "qty": "—",
+          "priority": "Must",
+          "notes": "Everything for a full change within one arm's reach. **One hand on baby, always.**"
+        },
+        {
+          "id": "nursery-essentials-2b-12",
+          "order": 23,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Hand soap / sanitizer",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2b-13",
+          "order": 24,
+          "group": "2B. Changing station (office/nursery)",
+          "section": "2b",
+          "text": "Anchor dresser to wall",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Tip-over is a real risk once baby pulls up."
+        },
+        {
+          "id": "nursery-essentials-2c-1",
+          "order": 25,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Newborn prefolds (organic cotton)",
+          "qty": "24",
+          "priority": "Must",
+          "notes": "Fit ~6–12 lb."
+        },
+        {
+          "id": "nursery-essentials-2c-2",
+          "order": 26,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Infant/regular prefolds",
+          "qty": "24",
+          "priority": "Later",
+          "notes": "Needed ~2–3 months."
+        },
+        {
+          "id": "nursery-essentials-2c-3",
+          "order": 27,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Newborn-size covers",
+          "qty": "6",
+          "priority": "Must",
+          "notes": "Covers get wiped and reused 2–3× unless soiled."
+        },
+        {
+          "id": "nursery-essentials-2c-4",
+          "order": 28,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "One-size covers",
+          "qty": "8",
+          "priority": "Must",
+          "notes": "Despite labels, most fit well from ~10–12 lb."
+        },
+        {
+          "id": "nursery-essentials-2c-5",
+          "order": 29,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Fasteners (e.g., Snappi)",
+          "qty": "3",
+          "priority": "Nice",
+          "notes": "Or fold into cover without."
+        },
+        {
+          "id": "nursery-essentials-2c-6",
+          "order": 30,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Hemp doublers",
+          "qty": "6",
+          "priority": "Must",
+          "notes": "Hemp is the most absorbent natural fiber — for nights."
+        },
+        {
+          "id": "nursery-essentials-2c-7",
+          "order": 31,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Wool cover + lanolin",
+          "qty": "2 + 1",
+          "priority": "Nice",
+          "notes": "Breathable overnight option; the fully natural cover."
+        },
+        {
+          "id": "nursery-essentials-2c-8",
+          "order": 32,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Cloth-safe detergent, fragrance-free",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "No fabric softener (coats fibers, kills absorbency)."
+        },
+        {
+          "id": "nursery-essentials-2c-9",
+          "order": 33,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Water softener additive",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "**Phoenix-metro water is very hard** — minerals build up in cloth and cause stink and leaks."
+        },
+        {
+          "id": "nursery-essentials-2c-10",
+          "order": 34,
+          "group": "2C. Cloth diaper system (quantities for full-time cloth)",
+          "section": "2c",
+          "text": "Diaper sprayer",
+          "qty": "1",
+          "priority": "Later",
+          "notes": "Not needed until solids (~6 months). Breastfed poop is water-soluble and goes straight into the washer."
+        },
+        {
+          "id": "nursery-essentials-2d-1",
+          "order": 35,
+          "group": "2D. Skin care & lotion",
+          "section": "2d",
+          "text": "Homemade balm (recipe below) **or** a fragrance-free natural balm",
+          "qty": "1 jar",
+          "priority": "Nice",
+          "notes": "Balm, not lotion."
+        },
+        {
+          "id": "nursery-essentials-2d-2",
+          "order": 36,
+          "group": "2D. Skin care & lotion",
+          "section": "2d",
+          "text": "Sunflower seed oil (cold-pressed)",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Massage and spot dryness."
+        },
+        {
+          "id": "nursery-essentials-2e-1",
+          "order": 37,
+          "group": "2E. Feeding corner",
+          "section": "2e",
+          "text": "Glider or comfortable chair",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Wherever feeds will actually happen."
+        },
+        {
+          "id": "nursery-essentials-2e-2",
+          "order": 38,
+          "group": "2E. Feeding corner",
+          "section": "2e",
+          "text": "Side table",
+          "qty": "1",
+          "priority": "Nice"
+        },
+        {
+          "id": "nursery-essentials-2e-3",
+          "order": 39,
+          "group": "2E. Feeding corner",
+          "section": "2e",
+          "text": "Dimmable warm lamp",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2e-4",
+          "order": 40,
+          "group": "2E. Feeding corner",
+          "section": "2e",
+          "text": "Basket: burp cloths, nursing pillow, water",
+          "qty": "1",
+          "priority": "Must"
+        },
+        {
+          "id": "nursery-essentials-2f-1",
+          "order": 41,
+          "group": "2F. Health caddy (one bin, one known spot)",
+          "section": "2f",
+          "text": "Rectal thermometer, aspirator, saline, nail file",
+          "qty": "—",
+          "priority": "Must",
+          "notes": "From List 1E."
+        },
+        {
+          "id": "nursery-essentials-2f-2",
+          "order": 42,
+          "group": "2F. Health caddy (one bin, one known spot)",
+          "section": "2f",
+          "text": "Pediatrician + Wombkeepers nurse line card",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Posted, and saved in both phones."
+        },
+        {
+          "id": "nursery-essentials-2f-3",
+          "order": 43,
+          "group": "2F. Health caddy (one bin, one known spot)",
+          "section": "2f",
+          "text": "Infant acetaminophen",
+          "qty": "1",
+          "priority": "Later",
+          "notes": "**Pediatrician call only** — not under 12 weeks without their direction; dosing is by weight."
+        },
+        {
+          "id": "nursery-essentials-2g-1",
+          "order": 44,
+          "group": "2G. Room environment (Phoenix-specific)",
+          "section": "2g",
+          "text": "Blackout curtains",
+          "qty": "2 sets",
+          "priority": "Must",
+          "notes": "Bedroom + office/nursery for naps."
+        },
+        {
+          "id": "nursery-essentials-2g-2",
+          "order": 45,
+          "group": "2G. Room environment (Phoenix-specific)",
+          "section": "2g",
+          "text": "Room thermometer / hygrometer",
+          "qty": "1",
+          "priority": "Must",
+          "notes": "Overheating is a SIDS risk factor. Dress baby for the room; hot ears/sweaty neck = too warm."
+        },
+        {
+          "id": "nursery-essentials-2g-3",
+          "order": 46,
+          "group": "2G. Room environment (Phoenix-specific)",
+          "section": "2g",
+          "text": "HEPA air purifier",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Monsoon/haboob dust season (Jun–Sep) lands at months 1–4."
+        },
+        {
+          "id": "nursery-essentials-2g-4",
+          "order": 47,
+          "group": "2G. Room environment (Phoenix-specific)",
+          "section": "2g",
+          "text": "Cool-mist humidifier",
+          "qty": "1",
+          "priority": "Nice",
+          "notes": "Desert air runs 10–20% humidity. Cool mist only (no burn risk); clean daily."
+        },
+        {
+          "id": "nursery-essentials-2g-5",
+          "order": 48,
+          "group": "2G. Room environment (Phoenix-specific)",
+          "section": "2g",
+          "text": "Outlet covers, cord management",
+          "qty": "—",
+          "priority": "Later",
+          "notes": "Before crawling (~6 months)."
+        },
+        {
+          "id": "nursery-essentials-decisions-1",
+          "order": 49,
+          "group": "Decisions to make",
+          "section": "decisions",
+          "text": "**Cloth from day one, or a 1–2 week disposable bridge?** Meconium (the first tar-like stools) and the cord stump push many cloth families to unscented, chlorine-free disposables for the first couple of weeks. Ask Wombkeepers what they use at the Renewal Center."
+        },
+        {
+          "id": "nursery-essentials-decisions-2",
+          "order": 50,
+          "group": "Decisions to make",
+          "section": "decisions",
+          "text": "**Prefolds + covers (economical, simplest) vs. all-in-ones (fastest, pricier, harder to dry).** List above assumes prefolds + covers."
+        },
+        {
+          "id": "nursery-essentials-decisions-3",
+          "order": 51,
+          "group": "Decisions to make",
+          "section": "decisions",
+          "text": "**Registry vs. buy:** clothing and cloth diapers are ideal Illinois-shower registry items (Mar 13)."
+        }
+      ]
+    }
+  ]
+}

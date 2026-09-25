@@ -11,7 +11,11 @@ Five tabs: **Today** (live week counter, countdown, next three events, baby-deve
 note) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
 real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (Go Bag, Purchases, Legal,
-Nursery Build, First 30 Days, Classes) · **Notes & Questions** (one tab, two
+Nursery Build, First 30 Days, Classes, plus the two sectioned lists — **Baby
+Clothing & Accessories** and **Nursery Essentials** — with collapsible
+sections, Must / Nice / Later / Skip tags and filter chips, quantities (per
+size for clothing), notes, and read-only info cards for the buying rules,
+skin-care and cloth-diaper notes) · **Notes & Questions** (one tab, two
 segments: **Questions** — to ask → asked → answered, built for the waiting room,
 and the default — and **Notes**) · **Resources** (**OB First Call**: the
 Wombkeepers first-call phone guide as a live checklist — facts, Steps 1–4 with
@@ -47,10 +51,15 @@ Tests (week math against LMP / due date):
 npm test
 ```
 
-Regenerate the seed data from the v1 HTML, or the icons:
+Regenerate the seed data from the v1 HTML, the sectioned lists from their
+markdown, or the icons:
 
 ```bash
 npm run seed
+```
+
+```bash
+npm run lists
 ```
 
 ```bash
@@ -70,7 +79,8 @@ npm run icons
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
 | `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1; each event also carries `est` — its estimate as week/day of pregnancy, or a fixed calendar date |
 | `data/resources.json` · `tests/resources.test.js` | Resources tab content (Listen episodes, verbatim from `Pregnancy_Podcast_Guide_v2.pdf`) + shape tests. Add new resources here. |
-| `tools/extract-seed.mjs` · `tools/make-icons.mjs` | Seed extractor · dependency-free icon generator |
+| `data/lists.json` · `tests/lists.test.js` · `tools/extract-lists.mjs` | The sectioned lists (Clothing & Accessories, Nursery Essentials), extracted verbatim from `2026-09-25_Baby_Clothing_Nursery_Lists_v1.md` by `npm run lists`; the test re-reads the markdown and checks every row. Items carry `priority`, `qty` or per-size `sizes`, `notes`, and `child` (night-caddy contents); sections carry `intro`, `note`, `infoBefore` / `infoAfter` cards. |
+| `tools/extract-seed.mjs` · `tools/make-icons.mjs` | v1 seed extractor · dependency-free icon generator |
 | `sw.js` · `manifest.webmanifest` · `icons/` | PWA bits |
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
@@ -247,6 +257,12 @@ export contains every check, note, question and event state. The seed content
   cached after first load. Writes made offline go to IndexedDB immediately and
   push when the network is back (Firestore's own offline queue handles the
   in-flight ones).
+* **Lists are content, ticks are state.** Every list and its seed items come
+  from `data/seed.json` + `data/lists.json` at boot; only a tick, an edit or a
+  custom item becomes an `items/<id>` doc. Adding a list to the data files is
+  therefore additive — nothing on either phone is reset. Sectioned-list ids
+  are section-scoped (`clothing-1a-3`), so inserting into one section doesn't
+  shift the others; `Skip` items don't count toward a list's progress.
 * **Seed edits.** Change text in v1 → `npm run seed` → commit. Item ids are
   positional (`gobag-3`), so inserting an item mid-list shifts ids after it
   (checks on those would move); append instead. Event ids embed the v1 date,

@@ -7,6 +7,11 @@
 // date/time), items (checklist items), notes, questions, obcall (first-call
 // checklist), resources (listened episodes), settings (the household's due
 // date). Deletes are soft (`deleted: true`) so they replicate.
+//
+// Checklist *content* (the lists and their seed items) is not stored: it comes
+// from data/seed.json plus data/lists.json and is merged in at boot. Only
+// state (a tick, an edit, a custom item) becomes an `items/<id>` doc, so
+// adding a list to the data files never touches what's already checked.
 import * as db from './db.js';
 import { DUE } from './config.js';
 import { setDue, estimateWindow, trimester, isISO } from './dates.js';
@@ -16,15 +21,18 @@ const IDENTITY_KEY = 'bh.identity';
 export const store = {
   docs: new Map(),
   seed: null,
+  lists: null,          // data/lists.json — the sectioned lists (Clothing, Nursery Essentials); merged into seed.lists
   resources: null,      // data/resources.json — the Resources tab's content
   identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
   remote: null,         // (doc) => Promise — set by sync.js when active
   listeners: new Set(),
 
   async init() {
-    [this.seed, this.resources] = await Promise.all(
-      ['./data/seed.json', './data/resources.json'].map((u) => fetch(u).then((r) => r.json())),
+    [this.seed, this.lists, this.resources] = await Promise.all(
+      ['./data/seed.json', './data/lists.json', './data/resources.json'].map((u) => fetch(u).then((r) => r.json())),
     );
+    // v1 lists first, then the sectioned lists — ids are disjoint (tests/lists.test.js pins that)
+    this.seed.lists = [...this.seed.lists, ...this.lists.lists];
     for (const d of await db.getAll()) this.docs.set(d.id, d);
     try { this.identity = JSON.parse(localStorage.getItem(IDENTITY_KEY)); } catch { this.identity = null; }
     setDue(this.due);
@@ -133,30 +141,33 @@ export const store = {
     const list = this.seed.lists.find((l) => l.id === listId);
     if (!list) return [];
     const out = [];
+    // A state doc's own `id` is 'items/<key>'; the item keeps its plain key as
+    // `id` (that's what the checkbox writes back to), so the doc's id must not
+    // win the spread — before 1.4.0 it did, and un-checking wrote a stray
+    // 'items/items/<key>' doc while the tick stayed put.
     for (const it of list.items) {
       const d = this.get('items', it.id);
       if (d?.deleted) continue;
-      out.push({ ...it, listId, ...(d || {}), seed: true });
+      out.push({ ...it, listId, ...(d || {}), id: it.id, seed: true });
     }
     // seed items keep their v1 order; custom ones follow, oldest first
     const custom = this.list('items').filter((d) => d.custom && d.listId === listId)
       .sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-    for (const d of custom) out.push({ ...d, seed: false });
+    for (const d of custom) out.push({ ...d, id: d.key, seed: false });
     return out;
   },
   listFor(guideId) { return this.seed.lists.find((l) => l.guide === guideId) || null; },
-  progress(listId) {
-    const items = this.items(listId);
+  /** { done, total, pct } over any set of checkable things. */
+  tally(items) {
     const done = items.filter((i) => i.done).length;
     return { done, total: items.length, pct: items.length ? Math.round((done / items.length) * 100) : 0 };
   },
+  /** List progress. "Skip" items are don't-buy guidance, so they don't count toward the total. */
+  progress(listId) { return this.tally(this.items(listId).filter((i) => i.priority !== 'Skip')); },
 
   /** Listened state for one episode/resource: { done, checkedBy, checkedAt }. */
   listened(id) { return this.get('resources', id) || {}; },
-  listenProgress(episodes) {
-    const done = episodes.filter((e) => this.listened(e.id).done).length;
-    return { done, total: episodes.length, pct: episodes.length ? Math.round((done / episodes.length) * 100) : 0 };
-  },
+  listenProgress(episodes) { return this.tally(episodes.map((e) => this.listened(e.id))); },
 
   notes() { return this.list('notes').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); },
   questions() { return this.list('questions').sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)); },

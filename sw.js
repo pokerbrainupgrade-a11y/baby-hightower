@@ -2,7 +2,7 @@
 // shell, network-first for firebase-config.js, stale-while-revalidate for the
 // Firebase SDK. Bump VERSION (and APP_VERSION in js/config.js) on every deploy —
 // the app shows an "Update ready" toast and reloads on tap.
-const VERSION = '1.3.0';
+const VERSION = '1.4.0';
 const SHELL = `bh-shell-${VERSION}`;
 const RUNTIME = 'bh-runtime';
 
@@ -14,7 +14,7 @@ const ASSETS = [
   './', './manifest.webmanifest',
   './css/app.css',
   './js/app.js', './js/views.js', './js/store.js', './js/sync.js', './js/db.js', './js/dates.js', './js/config.js', './js/obcall.js',
-  './data/seed.json', './data/resources.json',
+  './data/seed.json', './data/lists.json', './data/resources.json',
   './fonts/fraunces.woff2',
   './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png',
 ];

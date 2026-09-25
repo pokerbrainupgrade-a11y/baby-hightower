@@ -12,7 +12,11 @@ import { OB_CALL } from './obcall.js';
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const go = (hash) => { location.hash = hash; };
 const stamp = (who, ms) => (who ? `${esc(who)} · ${formatStamp(ms)}` : '');
-export const uiState = { answering: new Set(), editing: null };
+// filter: listId → 'All' | 'Must' | 'Nice' | 'Later' | 'Skip' (sectioned lists)
+// closed: '<listId>/<sectionId>' keys of collapsed sections · open: info cards the user expanded
+export const uiState = { answering: new Set(), editing: null, filter: new Map(), closed: new Set(), open: new Set() };
+/** Escape, then render the one bit of inline markup the list content uses: **bold**. */
+const rich = (text) => esc(text).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 
 // ---------- shared pieces ----------
 /** v1 wording for an event's estimate window ('SEP 29 – OCT 19 · WEEKS 8–10'). */
@@ -46,6 +50,7 @@ function progressBar(p) {
 /** Checklist block (used on the Lists page and inside event/guide detail). */
 function checklistHTML(listId, { compact = false } = {}) {
   const list = store.seed.lists.find((l) => l.id === listId);
+  if (list.sections) return sectionedHTML(list);
   const items = store.items(listId);
   const p = store.progress(listId);
   const groups = [];
@@ -62,14 +67,82 @@ function checklistHTML(listId, { compact = false } = {}) {
     ${groups.map((g) => `
       ${single && g.name !== 'Added' ? '' : `<div class="grp">${esc(g.name)}</div>`}
       <ul class="items">${g.items.map((it) => itemHTML(it)).join('')}</ul>`).join('')}
-    <form class="addrow" data-add-item="${esc(listId)}">
-      <input type="text" name="text" placeholder="Add an item…" autocomplete="off" enterkeyhint="done">
-      <button class="btn sm primary" type="submit">Add</button>
-    </form>
+    ${addRow(listId)}
   </div>`;
 }
 
-function itemHTML(it) {
+const addRow = (listId) => `<form class="addrow" data-add-item="${esc(listId)}">
+      <input type="text" name="text" placeholder="Add an item…" autocomplete="off" enterkeyhint="done">
+      <button class="btn sm primary" type="submit">Add</button>
+    </form>`;
+
+// ---- sectioned lists (data/lists.json): collapsible sections, priority filter, info cards ----
+const FILTERS = ['All', 'Must', 'Nice', 'Later', 'Skip'];
+const filterOf = (listId) => uiState.filter.get(listId) || 'All';
+/** "All" is everything except Skip — the don't-buy guidance stays findable under its own chip. */
+const passes = (it, f) => (f === 'All' ? it.priority !== 'Skip' : it.priority === f);
+
+function sectionedHTML(list) {
+  const f = filterOf(list.id);
+  const all = store.items(list.id);
+  const shown = all.filter((it) => passes(it, f));
+  const p = store.tally(shown);
+  const counts = Object.fromEntries(FILTERS.map((x) => [x, all.filter((it) => passes(it, x)).length]));
+  const custom = shown.filter((it) => !it.seed);
+  return `<div class="checklist sectioned" data-list="${esc(list.id)}">
+    <div class="cl-head"><b>${f === 'All' ? 'Items' : `${esc(f)} items`}</b><span>${p.done}/${p.total}</span></div>
+    ${progressBar(p)}
+    <div class="filters" role="group" aria-label="Show">${FILTERS.map((x) => `<button type="button" class="opt${x === f ? ' on' : ''}" data-filter="${x}" aria-pressed="${x === f}">${x}<em>${counts[x]}</em></button>`).join('')}</div>
+    ${list.sections.map((sec) => sectionHTML(list, sec, shown)).join('')}
+    ${custom.length ? sectionHTML(list, { id: 'added', title: 'Added' }, custom) : ''}
+    ${f === 'All' ? addRow(list.id) : `<p class="filter-note">Showing ${esc(f)} only — switch to All to add an item.</p>`}
+  </div>`;
+}
+
+function sectionHTML(list, sec, shown) {
+  const items = shown.filter((it) => (sec.id === 'added' ? !it.seed : it.section === sec.id));
+  if (!items.length) return '';
+  const p = store.tally(items.filter((it) => it.priority !== 'Skip'));
+  const key = `${list.id}/${sec.id}`;
+  const open = !uiState.closed.has(key);
+  return `<details class="sec-grp"${open ? ' open' : ''}>
+    <summary data-toggle-sec="${esc(key)}"><span class="grp">${esc(sec.title)}</span><span class="cnt">${p.total ? `${p.done}/${p.total}` : ''}</span></summary>
+    ${sec.intro ? `<p class="sec-intro">${rich(sec.intro)}</p>` : ''}
+    ${(sec.infoBefore || []).map((c) => infoCard(c)).join('')}
+    <ul class="items">${items.map((it) => itemHTML(it, sec)).join('')}</ul>
+    ${sec.note ? `<p class="sec-note">${rich(sec.note)}</p>` : ''}
+    ${(sec.infoAfter || []).map((c) => infoCard(c)).join('')}
+  </details>`;
+}
+
+/** Read-only, collapsible text: buying rules, the priority key, mechanism notes, the balm recipe. */
+function infoCard(c, cls = '') {
+  const open = uiState.open.has(c.id);
+  const body = c.blocks.map((b) => {
+    if (b.type === 'p') return `<p>${rich(b.text)}</p>`;
+    const tag = b.type === 'ol' ? 'ol' : 'ul';
+    return `<${tag}>${b.items.map((t) => `<li>${rich(t)}</li>`).join('')}</${tag}>`;
+  }).join('');
+  return `<details class="info ${cls}"${open ? ' open' : ''}>
+    <summary data-toggle-info="${esc(c.id)}"><span>${rich(c.title)}</span><i aria-hidden="true">›</i></summary>
+    <div class="info-body">${body}</div>
+  </details>`;
+}
+
+const PRI_CLASS = { Must: 'must', Nice: 'nice', Later: 'later', Skip: 'skip' };
+/** Priority tag + quantity (single, or per-size for 1A) on one compact line. */
+function itemFoot(it, sec) {
+  const bits = [];
+  if (it.priority) bits.push(`<span class="tag ${PRI_CLASS[it.priority] || ''}">${esc(it.priority)}</span>`);
+  if (it.sizes && sec?.sizes) {
+    bits.push(`<span class="qty sizes">${sec.sizes.map((label, i) => `<span><small>${esc(label)}</small>${esc(it.sizes[i] ?? '—')}</span>`).join('')}</span>`);
+  } else if (it.qty && it.qty !== '—') {
+    bits.push(`<span class="qty">×${esc(it.qty)}</span>`);
+  }
+  return bits.length ? `<div class="item-foot">${bits.join('')}</div>` : '';
+}
+
+function itemHTML(it, sec) {
   if (uiState.editing === `item:${it.id}`) {
     return `<li class="item editing"><div class="editor">
       <input type="text" data-hold value="${esc(it.text)}" data-edit-text="${esc(it.id)}">
@@ -80,9 +153,15 @@ function itemHTML(it) {
       </div></div></li>`;
   }
   const meta = it.done ? `Checked by ${stamp(it.checkedBy, it.checkedAt)}` : (it.custom ? `Added by ${stamp(it.createdBy, it.createdAt)}` : '');
-  return `<li class="item${it.done ? ' done' : ''}">
+  const cls = ['item', it.done ? 'done' : '', it.child ? 'child' : '', it.priority === 'Skip' ? 'skip' : ''].filter(Boolean).join(' ');
+  return `<li class="${cls}">
     <label class="chk"><input type="checkbox" data-item="${esc(it.id)}" ${it.done ? 'checked' : ''}><span class="box"></span></label>
-    <div class="item-body"><div class="item-text">${esc(it.text)}</div>${meta ? `<div class="item-meta">${meta}</div>` : ''}</div>
+    <div class="item-body">
+      <div class="item-text">${rich(it.text)}</div>
+      ${itemFoot(it, sec)}
+      ${it.notes ? `<div class="item-note">${rich(it.notes)}</div>` : ''}
+      ${meta ? `<div class="item-meta">${meta}</div>` : ''}
+    </div>
     <button class="more" data-edit-item="${esc(it.id)}" aria-label="Edit item">⋯</button>
   </li>`;
 }
@@ -118,6 +197,16 @@ function bindChecklist(frame, view) {
     form.reset();
   });
   frame.addEventListener('click', (e) => {
+    const chip = e.target.closest('[data-filter]');
+    if (chip) { uiState.filter.set(chip.closest('[data-list]').dataset.list, chip.dataset.filter); view.update(); return; }
+    // <details> toggles itself after this click lands; remember the new state so a re-render keeps it
+    const sum = e.target.closest('summary[data-toggle-sec],summary[data-toggle-info]');
+    if (sum) {
+      const willOpen = !sum.parentElement.open;
+      if (sum.dataset.toggleSec !== undefined) uiState.closed[willOpen ? 'delete' : 'add'](sum.dataset.toggleSec);
+      else uiState.open[willOpen ? 'add' : 'delete'](sum.dataset.toggleInfo);
+      return;
+    }
     const t = e.target.closest('[data-edit-item],[data-save-item],[data-cancel-edit],[data-delete-item]');
     if (!t) return;
     if (t.dataset.editItem !== undefined) { uiState.editing = `item:${t.dataset.editItem}`; view.update(); frame.querySelector('[data-edit-text]')?.focus(); }
@@ -284,6 +373,7 @@ const checklists = {
         <button class="back" data-go="checklists">← Lists</button>
         <h2 class="title">${esc(list.title)}</h2>
         <p class="ev-note">${esc(list.sub)}</p>
+        ${(list.info || []).map((c) => infoCard(c, 'top')).join('')}
         ${checklistHTML(listId)}
         ${g ? `<button class="linkrow" data-go="timeline/guide/${esc(g.id)}"><span>Read the guide: ${esc(g.title)}<small>${esc(g.tag)}</small></span><span class="arrow">→</span></button>` : ''}
       </div>`;

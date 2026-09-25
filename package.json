@@ -8,6 +8,7 @@
     "start": "npx --yes serve -l 5173 .",
     "test": "node --test",
     "seed": "node tools/extract-seed.mjs",
+    "lists": "node tools/extract-lists.mjs",
     "icons": "node tools/make-icons.mjs"
   }
 }
