@@ -124,10 +124,15 @@ export function windowLabel(from, to = from, { pre = '', week = true, time = '',
   return s;
 }
 
-/** The headline numbers for the Today tab. */
+/**
+ * The headline numbers for the Today tab — the one place "which week is it"
+ * is decided. The pill, the mini counter, the growth card and the OB-call
+ * facts all read `g` (or `weekLabel`) from here; nothing else counts weeks.
+ */
 export function summary(iso = todayISO()) {
   const g = gestation(iso);
   const left = daysUntilDue(iso);
+  const atTerm = left <= 0;
   return {
     iso, g, left,
     due: anchor.due,
@@ -135,5 +140,25 @@ export function summary(iso = todayISO()) {
     weeksLeft: Math.floor(Math.max(left, 0) / 7),
     pastDue: left < 0,
     dueToday: left === 0,
+    weekLabel: atTerm ? '40+' : String(g.weeks),   // the number the pill shows
   };
+}
+
+// ---------- growth notes ----------
+/**
+ * Which development note is current at gestational week `week`.
+ * The notes are sparse (six of them, weeks 6 → 37), so a note stays current
+ * from its own week until the week before the next one begins; the result
+ * says that range so the card can label it honestly instead of implying the
+ * note was written for this exact week. `notes` is [{ week, ... }] in week
+ * order. Returns null before the first note.
+ */
+export function noteFor(week, notes) {
+  let hit = null;
+  for (let i = 0; i < notes.length; i++) {
+    if (notes[i].week > week) break;
+    hit = { note: notes[i], from: notes[i].week, to: notes[i + 1] ? notes[i + 1].week - 1 : 40 };
+  }
+  if (!hit) return null;
+  return { ...hit, week, label: hit.from === hit.to ? `Week ${hit.from}` : `Weeks ${hit.from}–${hit.to}` };
 }

@@ -134,6 +134,13 @@ export const store = {
   /** Back to the estimate. */
   clearEventDate(id) { return this.write('events', id, { date: null, time: null, dateBy: null, dateAt: null }); },
   event(id) { return this.events().find((e) => e.id === id); },
+  /** The "Baby is growing" notes as { week, title }, in week order (dev events are week-anchored). */
+  devNotes() {
+    return this.seed.trimesters.flatMap((t) => t.events)
+      .filter((e) => e.category === 'dev' && e.est.kind === 'week')
+      .map((e) => ({ id: e.id, week: e.est.week, title: e.title }))
+      .sort((a, b) => a.week - b.week);
+  },
   guide(id) { return this.seed.guide.find((g) => g.id === id); },
 
   /** Checklist items for a list: seed items (with overrides) + custom ones, minus deleted. */

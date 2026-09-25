@@ -77,3 +77,62 @@ test('day arithmetic has no DST drift', () => {
   assert.equal(n, 281);
   assert.equal(formatDate('2026-09-16'), 'Wed, Sep 16');
 });
+
+// ---------- the growth card ----------
+// Bug (1.4.0): the Today card picked the latest dev note dated on or before
+// today, and the notes are sparse (weeks 6, 9, 15, 24, 33, 37), so from 7w0d
+// to 8w6d it read "This week: about 6 weeks" under a 7w pill. The card now
+// takes its week from summary() like the pill, and labels the note's range.
+import { noteFor } from '../js/dates.js';
+import { readFileSync } from 'node:fs';
+const SEED = JSON.parse(readFileSync(new URL('../data/seed.json', import.meta.url), 'utf8'));
+const NOTES = SEED.trimesters.flatMap((t) => t.events).filter((e) => e.category === 'dev').map((e) => ({ week: e.est.week, title: e.title })).sort((a, b) => a.week - b.week);
+const card = (iso) => { const s = summary(iso); return { pill: formatGestation(s.g), weekLabel: s.weekLabel, ...noteFor(s.g.weeks, NOTES) }; };
+
+test('the six notes and the ranges each one is current for', () => {
+  assert.deepEqual(NOTES.map((n) => n.week), [6, 9, 15, 24, 33, 37]);
+  assert.deepEqual([6, 9, 15, 24, 33, 37].map((w) => noteFor(w, NOTES).label), ['Weeks 6–8', 'Weeks 9–14', 'Weeks 15–23', 'Weeks 24–32', 'Weeks 33–36', 'Weeks 37–40']);
+  assert.equal(noteFor(5, NOTES), null);          // nothing before the first note — the card stays blank rather than guessing
+  assert.equal(noteFor(41, NOTES).from, 37);      // past due still shows the last note
+});
+
+test('Sep 25, 2026 (Phoenix): pill 7w 4d and the card covers week 7', () => {
+  const c = card('2026-09-25');
+  assert.equal(c.pill, '7w 4d');
+  assert.equal(c.weekLabel, '7');
+  assert.ok(c.from <= 7 && 7 <= c.to, c.label);
+  assert.equal(c.label, 'Weeks 6–8');
+  assert.match(c.note.title, /^This week: about 6 weeks/);   // the v1 text, unchanged — the range label is what keeps it honest
+});
+
+test('the week boundary rolls the card: Sep 27 → 7w 6d, Sep 28 → 8w 0d', () => {
+  assert.deepEqual([card('2026-09-27').pill, card('2026-09-27').weekLabel, card('2026-09-27').week], ['7w 6d', '7', 7]);
+  assert.deepEqual([card('2026-09-28').pill, card('2026-09-28').weekLabel, card('2026-09-28').week], ['8w 0d', '8', 8]);
+  // and the note itself rolls at the next note's week: 8w 6d still note 6, 9w 0d is note 9
+  assert.equal(card('2026-10-04').from, 6);
+  assert.equal(card('2026-10-04').pill, '8w 6d');
+  assert.equal(card('2026-10-05').from, 9);
+  assert.equal(card('2026-10-05').pill, '9w 0d');
+  assert.match(card('2026-10-05').note.title, /^Week 9–10/);
+});
+
+test('anchors: Aug 3, 2026 → 0w 0d; May 11, 2027 → 40w 1d (281 days from LMP, the v1 convention)', () => {
+  assert.equal(ga('2026-08-03'), '0w 0d');
+  assert.equal(noteFor(gestation('2026-08-03').weeks, NOTES), null);
+  // Naegele (LMP + 280) is May 10; the care team's May 11 is therefore 40w1d, and every
+  // "WEEK N" label in the app is Nw1d. 40w0d would need LMP Aug 4 — not this app's anchor.
+  assert.equal(ga('2027-05-11'), '40w 1d');
+  assert.equal(ga('2027-05-10'), '40w 0d');
+  assert.equal(summary('2027-05-11').weekLabel, '40+');
+});
+
+test('a Phoenix late evening does not roll the card to the next day early', () => {
+  // 11:30 PM Sep 27 in Phoenix (UTC-7) is 06:30 UTC Sep 28 — still 7w 6d, not 8w 0d
+  const late = new Date('2026-09-28T06:30:00Z');
+  assert.equal(todayISO(late), '2026-09-27');
+  assert.equal(card(todayISO(late)).pill, '7w 6d');
+  assert.equal(card(todayISO(late)).week, 7);
+  // midnight Phoenix = 07:00 UTC: now it's 8w 0d
+  assert.equal(todayISO(new Date('2026-09-28T07:00:00Z')), '2026-09-28');
+  assert.equal(card(todayISO(new Date('2026-09-28T07:00:00Z'))).week, 8);
+});

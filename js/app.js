@@ -88,7 +88,7 @@ $('#view').addEventListener('focusout', () => {
 
 function updateMini() {
   const s = summary();
-  $('#weekMini').textContent = s.pastDue || s.dueToday ? '40+ wks' : `${s.g.weeks}w ${s.g.day}d`;
+  $('#weekMini').textContent = s.weekLabel === '40+' ? '40+ wks' : `${s.g.weeks}w ${s.g.day}d`;
 }
 
 // ---------- identity ----------

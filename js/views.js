@@ -5,7 +5,7 @@
 // render() builds the static frame once and binds listeners on it; update()
 // re-renders only the live containers, so the frame's inputs keep focus.
 import { store } from './store.js';
-import { summary, todayISO, formatGestation, formatStamp, formatDate, formatTime, windowLabel, dateAt, currentLMP } from './dates.js';
+import { summary, todayISO, formatGestation, formatStamp, formatDate, formatTime, windowLabel, dateAt, currentLMP, noteFor } from './dates.js';
 import { APP_VERSION, DUE, USERS } from './config.js';
 import { OB_CALL } from './obcall.js';
 
@@ -237,11 +237,12 @@ const today = {
     const m = store.seed.meta;
     const evs = store.events();
     // events() is already in date order; windows (from/to) follow confirmed dates + the live due date
-    const dev = evs.filter((e) => e.category === 'dev' && e.from <= s.iso).pop() || evs.find((e) => e.category === 'dev');
+    // The growth note is picked by the same week the pill shows (summary().g), never by date.
+    const growth = noteFor(s.g.weeks, store.devNotes());
     const next = evs.filter((e) => e.category !== 'dev' && e.to >= s.iso && !e.state.done).slice(0, 3);
     const overdue = evs.filter((e) => e.category !== 'dev' && e.to < s.iso && !e.state.done);
     const open = store.questions().filter((q) => q.status !== 'answered').length;
-    const pill = s.pastDue || s.dueToday
+    const pill = s.weekLabel === '40+'
       ? `<b>40+</b><span>weeks — any moment now</span>`
       : `<b>${s.g.weeks}w ${s.g.day}d</b><span>pregnant today</span>`;
     const count = s.pastDue ? `Due date was ${formatDate(s.due)} · baby's call now` : s.dueToday ? `Today is the due date 🌟` : `${s.left} days to ${formatDate(s.due, { weekday: false })} · ${s.weeksLeft} weeks to go`;
@@ -256,7 +257,7 @@ const today = {
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
       </div>
-      ${dev ? `<div class="sec"><div class="now-card"><div class="k">Baby is growing</div><p>${esc(dev.title)}</p></div></div>` : ''}
+      ${growth ? `<div class="sec"><div class="now-card"><div class="k">Baby is growing · week ${esc(s.weekLabel)}</div><p>${esc(growth.note.title)}</p><small class="range">Note for ${esc(growth.label.toLowerCase())}${growth.to === 40 ? '+' : ''}</small></div></div>` : ''}
       <div class="sec"><div class="sec-head"><h2 class="serif">Up next</h2><small>${next.length ? 'tap for the plan' : ''}</small></div>
         ${next.length ? `<div class="spine">${next.map((e) => eventCard(e, s.iso)).join('')}</div>` : `<div class="empty"><b>Nothing left on the timeline</b>Everything's either done or behind you.</div>`}
       </div>
