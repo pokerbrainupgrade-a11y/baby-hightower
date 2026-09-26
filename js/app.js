@@ -5,7 +5,7 @@ import { views, dateEditor } from './views.js';
 import { summary } from './dates.js';
 
 const $ = (s, r = document) => r.querySelector(s);
-const TABS = ['today', 'timeline', 'checklists', 'notes', 'resources'];
+const TABS = ['today', 'timeline', 'checklists', 'visits', 'notes', 'resources'];
 // Routes from before 1.2.0, when OB Questions and OB Call were their own tabs.
 // Anything still pointing at them (bookmarks, the remembered tab, an old
 // linkrow) lands on the right segment / sub-page of the tab that absorbed them.

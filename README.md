@@ -7,24 +7,31 @@ Vanilla JS, no build step, one static folder. Everything is stored on the phone
 (IndexedDB) and works fully offline; if a `firebase-config.js` is present the
 two phones sync in real time through Firestore.
 
-Five tabs: **Today** (live week counter, countdown, next three events, baby-development
-note) · **Timeline** (the v1 trimester timeline; every event opens its guide,
+Six tabs: **Today** (live week counter, countdown, next three events, baby-development
+note, the next visit, and — once the dating ultrasound has a confirmed due date — the
+due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
 real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (Go Bag, Purchases, Legal,
 Nursery Build, First 30 Days, Classes, plus the two sectioned lists — **Baby
 Clothing & Accessories** and **Nursery Essentials** — with collapsible
 sections, Must / Nice / Later / Skip tags and filter chips, quantities (per
 size for clothing), notes, and read-only info cards for the buying rules,
-skin-care and cloth-diaper notes) · **Notes & Questions** (one tab, two
-segments: **Questions** — to ask → asked → answered, built for the waiting room,
-and the default — and **Notes**) · **Resources** (**OB First Call**: the
+skin-care and cloth-diaper notes) · **Visits** (the visit log: one-tap add,
+Upcoming pinned on top, each visit with its date + stamped week, type, provider,
+who you saw, vitals as free text, summary, next steps, and the open questions to
+tick off and answer right there; plus the **Results & labs** section — six seeded
+records, a status with history, dates, result text, and the dating ultrasound's
+confirmed due date) · **Notes & Questions** (one tab, two segments:
+**Questions** — Open / Asked / Answered / No longer relevant, with an Open ·
+Answered · All filter; answered ones fold up with the answer and the visit they
+came from — and **Notes**) · **Resources** (**OB First Call**: the
 Wombkeepers first-call phone guide as a live checklist — facts, Steps 1–4 with
 the scripted lines, fill-in fields, nice-to-haves and the ER box; and
 **Listen**: podcast episodes grouped by host, each opening in the browser, with
 a shared "listened" tick per episode).
 
-Routes: `#notes` / `#notes/questions` / `#notes/notes` · `#resources` /
-`#resources/obcall`. The pre-1.2 `#questions` and `#obcall` still work — the
+Routes: `#visits` / `#visits/v/<key>` / `#visits/r/<key>` · `#notes` /
+`#notes/questions` / `#notes/notes` · `#resources` / `#resources/obcall`. The pre-1.2 `#questions` and `#obcall` still work — the
 router redirects them.
 
 ---
@@ -75,7 +82,8 @@ npm run icons
 | `js/dates.js` · `tests/dates.test.js` · `tests/estimates.test.js` | Week/countdown math, the live due-date anchor, estimate windows + v1-style labels (pure functions) + tests |
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
-| `js/views.js` · `js/app.js` | The five tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow |
+| `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
+| `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
 | `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1; each event also carries `est` — its estimate as week/day of pregnancy, or a fixed calendar date |
 | `data/resources.json` · `tests/resources.test.js` | Resources tab content (Listen episodes, verbatim from `Pregnancy_Podcast_Guide_v2.pdf`) + shape tests. Add new resources here. |
@@ -85,12 +93,22 @@ npm run icons
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across seven collections — `events` (per-event
+updatedAt, updatedBy, ...fields }` across nine collections — `events` (per-event
 done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
 entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
 (listened ticks, keyed by episode id), `settings` (one doc, `due`, the
-household's due date — absent means the config default).
+household's due date — absent means the config default; `setBy` / `setAt` /
+`source` say who last moved it and from where), `visits` (one doc per visit:
+`date`, `time`, `type`, `gest` — the week + day stamped from the app's week
+math when the date was saved, plus the due date it was counted against —
+`provider`, `seenBy`, `attendees`, `vitals` {weight, bloodPressure,
+fundalHeight, fetalHeartRate — free text}, `summary`, `nextSteps`, `status`
+Upcoming / Completed), `results` (state for the six seeded records in
+`js/visits.js` plus custom ones: `status` with a `history` of {status, at, by},
+`scheduledDate`, `resultDate`, `result`, `notes`, `linkedVisitId`; the dating
+ultrasound also carries `confirmedDueDate`). Questions gained `askedAtVisitId`
+and the `dropped` status; anything written before 1.5.0 reads as Open.
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.
 
@@ -243,6 +261,13 @@ export contains every check, note, question and event state. The seed content
   so both phones agree; changing it moves the LMP with it (due stays 40w1d) and
   every week-based estimate, the trimester ranges, the week counter and the
   countdown follow. `DUE`/`LMP` in `js/config.js` are only the defaults now.
+  The dating ultrasound record (Visits → Results & labs) has an optional
+  **confirmed due date**; setting it puts a banner on Today ("confirmed as" /
+  "revised from May 11, 2027 to …") with one button, **Update app due date**.
+  That asks first, records who and when on `settings/due`, and can be undone
+  from the same banner (back to May 11). Live week math re-derives; the week
+  already stamped on each visit (`gest`) is never rewritten — it says which due
+  date it was counted against.
 * **Estimated vs confirmed dates.** Every timeline event shows either its
   estimate (`~`, muted — recalculated from the due date, or fixed for
   calendar-bound things like Thanksgiving and the two trips) or a confirmed

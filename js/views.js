@@ -8,15 +8,10 @@ import { store } from './store.js';
 import { summary, todayISO, formatGestation, formatStamp, formatDate, formatTime, windowLabel, dateAt, currentLMP, noteFor } from './dates.js';
 import { APP_VERSION, DUE, USERS } from './config.js';
 import { OB_CALL } from './obcall.js';
-
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const go = (hash) => { location.hash = hash; };
-const stamp = (who, ms) => (who ? `${esc(who)} · ${formatStamp(ms)}` : '');
-// filter: listId → 'All' | 'Must' | 'Nice' | 'Later' | 'Skip' (sectioned lists)
-// closed: '<listId>/<sectionId>' keys of collapsed sections · open: info cards the user expanded
-export const uiState = { answering: new Set(), editing: null, filter: new Map(), closed: new Set(), open: new Set() };
-/** Escape, then render the one bit of inline markup the list content uses: **bold**. */
-const rich = (text) => esc(text).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+import { esc, rich, stamp, progressBar, uiState } from './ui.js';
+import { visits } from './visitsview.js';
+import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
+export { uiState };
 
 // ---------- shared pieces ----------
 /** v1 wording for an event's estimate window ('SEP 29 – OCT 19 · WEEKS 8–10'). */
@@ -41,10 +36,6 @@ function eventCard(e, today) {
       ${e.note ? `<div class="ev-note">${esc(e.note)}</div>` : ''}
       ${e.linkLabel ? `<span class="ev-link">${esc(e.linkLabel)}</span>` : ''}
     </button></div>`;
-}
-
-function progressBar(p) {
-  return `<div class="bar${p.total && p.done === p.total ? ' full' : ''}"><i style="width:${p.pct}%"></i></div>`;
 }
 
 /** Checklist block (used on the Lists page and inside event/guide detail). */
@@ -226,10 +217,26 @@ function bindChecklist(frame, view) {
 }
 
 // ---------- TODAY ----------
+const fmtLong = (iso) => formatDate(iso, { weekday: false, year: true });
 const today = {
   render(root) {
     root.innerHTML = `<section class="today" id="todayFrame"></section>`;
     this.frame = root.firstElementChild;
+    // The due-date banner's one action (and its way back). Both confirm first
+    // and both are ordinary settings/due writes stamped with who and when.
+    this.frame.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-due-apply],[data-due-revert]');
+      if (!t) return;
+      const b = store.dueBanner();
+      if (!b) return;
+      if (t.hasAttribute('data-due-apply')) {
+        if (!confirm(`Update the app's due date to ${fmtLong(b.confirmed)}?\n\nThe week counter, countdown and every estimate will follow. Dates you've confirmed and the weeks already stamped on past visits stay as they are.`)) return;
+        store.applyConfirmedDue().then(() => window.toast?.(`Due date set to ${fmtLong(b.confirmed)} — estimates updated`));
+      } else {
+        if (!confirm(`Go back to ${fmtLong(DUE)} as the app's due date?`)) return;
+        store.revertDue().then(() => window.toast?.(`Due date back to ${fmtLong(DUE)}`));
+      }
+    });
     this.update();
   },
   update() {
@@ -241,7 +248,10 @@ const today = {
     const growth = noteFor(s.g.weeks, store.devNotes());
     const next = evs.filter((e) => e.category !== 'dev' && e.to >= s.iso && !e.state.done).slice(0, 3);
     const overdue = evs.filter((e) => e.category !== 'dev' && e.to < s.iso && !e.state.done);
-    const open = store.questions().filter((q) => q.status !== 'answered').length;
+    const open = store.openQuestions().length;
+    const banner = store.dueBanner();
+    const dueDoc = store.dueDoc;
+    const nextVisit = sortVisits(store.visits()).upcoming[0];
     const pill = s.weekLabel === '40+'
       ? `<b>40+</b><span>weeks — any moment now</span>`
       : `<b>${s.g.weeks}w ${s.g.day}d</b><span>pregnant today</span>`;
@@ -257,10 +267,18 @@ const today = {
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
       </div>
+      ${banner ? `<div class="sec"><div class="due-banner ${banner.kind}">
+        <div class="k">Dating ultrasound</div>
+        <p>${esc(banner.title)}</p>
+        ${banner.action
+          ? `<small>The app is still counting from ${fmtLong(store.due)}.</small><div class="row"><button class="btn sm primary" data-due-apply>Update app due date</button></div>`
+          : `<small>App due date is ${fmtLong(store.due)}${dueDoc?.setBy ? ` · updated by ${stamp(dueDoc.setBy, dueDoc.setAt)}` : ''}.</small>${banner.revert ? `<div class="row"><button class="btn sm" data-due-revert>Back to ${fmtLong(DUE)}</button></div>` : ''}`}
+      </div></div>` : ''}
       ${growth ? `<div class="sec"><div class="now-card"><div class="k">Baby is growing · week ${esc(s.weekLabel)}</div><p>${esc(growth.note.title)}</p><small class="range">Note for ${esc(growth.label.toLowerCase())}${growth.to === 40 ? '+' : ''}</small></div></div>` : ''}
       <div class="sec"><div class="sec-head"><h2 class="serif">Up next</h2><small>${next.length ? 'tap for the plan' : ''}</small></div>
         ${next.length ? `<div class="spine">${next.map((e) => eventCard(e, s.iso)).join('')}</div>` : `<div class="empty"><b>Nothing left on the timeline</b>Everything's either done or behind you.</div>`}
       </div>
+      ${nextVisit ? `<button class="linkrow" data-go="visits/v/${esc(nextVisit.key)}"><span>Next visit: ${nextVisit.date ? formatDate(nextVisit.date) : 'date to set'} · ${esc(visitType(nextVisit))}<small>${nextVisit.time ? `${formatTime(nextVisit.time)} · ` : ''}${esc(nextVisit.provider || '')}</small></span><span class="arrow">→</span></button>` : ''}
       <button class="linkrow" data-go="notes/questions"><span>${open ? `${open} question${open === 1 ? '' : 's'} queued for the next visit` : 'No questions queued for the next visit'}<small>Anyone can add one, anytime</small></span><span class="arrow">→</span></button>
       ${overdue.length ? `<button class="linkrow" data-go="timeline"><span>${overdue.length} past event${overdue.length === 1 ? '' : 's'} not marked complete<small>Open the timeline to tick them off</small></span><span class="arrow">→</span></button>` : ''}`;
   },
@@ -453,6 +471,10 @@ const notes = {
 };
 
 // ---------- OB QUESTIONS ----------
+// Statuses (stored): to_ask = Open · asked · answered · dropped = No longer
+// relevant. A question written before 1.5.0 has to_ask and reads as Open;
+// nothing is rewritten. askedAtVisitId ties a question to a visit (set from
+// the visit page, or when an answer is saved there).
 const questions = {
   render(root) {
     root.innerHTML = `<section id="qFrame">
@@ -460,9 +482,8 @@ const questions = {
         <input type="text" name="text" placeholder="Ask at the next visit…" autocomplete="off" enterkeyhint="done">
         <button class="btn primary" type="submit">Add</button>
       </form>
-      <div class="sec-head"><h2 class="serif">Next visit</h2><span class="count" id="qCount"></span></div>
-      <div id="qNext"></div>
-      <details class="archive" id="qArchive"><summary>Answered <small id="qDoneCount"></small></summary><div id="qDone"></div></details>
+      <div class="filters q-filters" role="group" aria-label="Show" id="qFilters"></div>
+      <div id="qList"></div>
     </section>`;
     this.frame = root.firstElementChild;
     const form = this.frame.querySelector('#qForm');
@@ -473,10 +494,16 @@ const questions = {
       if (!text) return;
       store.write('questions', 'q-' + store.uid(), { text, status: 'to_ask', author: store.user, answer: '' });
       inp.value = '';
+      if ((uiState.filter.get('questions') || 'Open') === 'Answered') { uiState.filter.set('questions', 'Open'); this.update(); }
     });
     // iOS "done" key: make sure Enter always submits, even in standalone mode
     form.text.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); form.requestSubmit(); } });
     this.frame.addEventListener('click', (e) => {
+      const chip = e.target.closest('[data-q-filter]');
+      if (chip) { uiState.filter.set('questions', chip.dataset.qFilter); this.update(); return; }
+      // an answered card is a <details>; remember whether it's open so a re-render keeps it
+      const sum = e.target.closest('summary[data-q-fold]');
+      if (sum) { uiState.open[sum.parentElement.open ? 'delete' : 'add'](`q:${sum.dataset.qFold}`); return; }
       const t = e.target.closest('[data-q]');
       if (!t) return;
       const key = t.dataset.q, act = t.dataset.act;
@@ -492,41 +519,66 @@ const questions = {
         store.write('questions', key, { status: 'answered', answer, answeredBy: store.user, answeredAt: Date.now(), askedBy: q.askedBy || store.user, askedAt: q.askedAt || Date.now() });
       }
       else if (act === 'hide') { uiState.answering.delete(key); this.update(); }
-      else if (act === 'unask') store.write('questions', key, { status: 'to_ask' });
+      else if (act === 'unask') store.write('questions', key, { status: 'to_ask', askedAtVisitId: null });
       else if (act === 'reopen') store.write('questions', key, { status: 'to_ask' });
+      else if (act === 'drop') store.write('questions', key, { status: 'dropped', droppedBy: store.user, droppedAt: Date.now() });
       else if (act === 'delete') { if (confirm('Delete this question?')) store.remove('questions', key); }
     });
     this.update();
   },
   update() {
+    const f = uiState.filter.get('questions') || 'Open';
     const all = store.questions();
-    const next = all.filter((q) => q.status !== 'answered');
-    const done = all.filter((q) => q.status === 'answered').sort((a, b) => (b.answeredAt || 0) - (a.answeredAt || 0));
-    this.frame.querySelector('#qCount').textContent = next.length || '';
-    this.frame.querySelector('#qDoneCount').textContent = done.length ? `(${done.length})` : '(none yet)';
-    this.frame.querySelector('#qNext').innerHTML = next.length ? next.map((q) => this.card(q)).join('')
+    const counts = Object.fromEntries(Q_FILTERS.map((x) => [x, all.filter((q) => qPasses(q, x)).length]));
+    const rank = { to_ask: 0, asked: 0, answered: 1, dropped: 2 };
+    const list = all.filter((q) => qPasses(q, f)).sort((a, b) => {
+      const ra = rank[qStatus(a)], rb = rank[qStatus(b)];
+      if (ra !== rb) return ra - rb;
+      return ra === 1 ? (b.answeredAt || 0) - (a.answeredAt || 0) : (a.createdAt || 0) - (b.createdAt || 0);
+    });
+    this.frame.querySelector('#qFilters').innerHTML = Q_FILTERS.map((x) => `<button type="button" class="opt${x === f ? ' on' : ''}" data-q-filter="${x}" aria-pressed="${x === f}">${x}<em>${counts[x]}</em></button>`).join('');
+    const empty = f === 'Answered'
+      ? `<div class="empty"><b>Nothing answered yet</b>Answers land here, with the visit they came from.</div>`
       : `<div class="empty"><b>Nothing queued</b>Type a question above — it lands here for whoever's at the visit.</div>`;
-    this.frame.querySelector('#qDone').innerHTML = done.map((q) => this.card(q)).join('');
+    this.frame.querySelector('#qList').innerHTML = list.length ? list.map((q) => this.card(q)).join('') : empty;
+  },
+  /** 'at the Tue, Oct 6 visit' — or nothing if the question wasn't tied to one. */
+  visitRef(q) {
+    if (!q.askedAtVisitId) return '';
+    const v = store.visit(q.askedAtVisitId);
+    return v ? `<button class="q-visit" data-go="visits/v/${esc(v.key)}">at the ${v.date ? formatDate(v.date) : 'undated'} visit →</button>` : 'at a visit since removed';
   },
   card(q) {
-    const key = q.key;
-    const answering = q.status === 'asked' || uiState.answering.has(key);
+    const key = q.key, st = qStatus(q);
+    const answering = st === 'asked' || uiState.answering.has(key);
+    if (st === 'answered') {
+      const open = uiState.open.has(`q:${key}`);
+      return `<details class="q answered q-fold"${open ? ' open' : ''}>
+        <summary data-q-fold="${key}"><div class="q-text">${esc(q.text)}</div><div class="q-meta">Answered by ${stamp(q.answeredBy, q.answeredAt)}${q.askedAtVisitId ? ' · ' + this.visitRef(q) : ''}</div></summary>
+        <div class="ans"><span class="k">Answer</span>${esc(q.answer)}</div>
+        <div class="q-meta">Added by ${stamp(q.author || q.createdBy, q.createdAt)}${q.askedBy ? ` · asked by ${stamp(q.askedBy, q.askedAt)}` : ''}</div>
+        <div class="q-actions"><button class="btn sm" data-q="${key}" data-act="reopen">Ask again</button><button class="btn sm danger ghost" data-q="${key}" data-act="delete">Delete</button></div>
+      </details>`;
+    }
+    if (st === 'dropped') {
+      return `<article class="q dropped">
+        <div class="q-top"><div class="q-text">${esc(q.text)}</div></div>
+        <div class="q-meta">No longer relevant · ${stamp(q.droppedBy || q.updatedBy, q.droppedAt || q.updatedAt)}</div>
+        <div class="q-actions"><button class="btn sm" data-q="${key}" data-act="reopen">Reopen</button><button class="btn sm danger ghost" data-q="${key}" data-act="delete">Delete</button></div>
+      </article>`;
+    }
     const meta = [`Added by ${stamp(q.author || q.createdBy, q.createdAt)}`];
-    if (q.status === 'asked') meta.push(`<b>Asked</b> by ${stamp(q.askedBy, q.askedAt)}`);
-    if (q.status === 'answered') meta.push(`Answered by ${stamp(q.answeredBy, q.answeredAt)}`);
-    let actions = '';
-    if (q.status === 'answered') {
-      actions = `<div class="ans"><span class="k">Answer</span>${esc(q.answer)}</div>
-        <div class="q-actions"><button class="btn sm" data-q="${key}" data-act="reopen">Ask again</button><button class="btn sm danger ghost" data-q="${key}" data-act="delete">Delete</button></div>`;
-    } else if (answering) {
+    if (st === 'asked') meta.push(`<b>Asked</b> by ${stamp(q.askedBy, q.askedAt)}${q.askedAtVisitId ? ' ' + this.visitRef(q) : ''}`);
+    let actions;
+    if (answering) {
       actions = `<div class="q-answer"><textarea data-hold data-q-ans="${key}" placeholder="What did they say?">${esc(q.answer || '')}</textarea></div>
         <div class="q-actions"><button class="btn primary" data-q="${key}" data-act="save">Save answer</button>
-        ${q.status === 'asked' ? `<button class="btn" data-q="${key}" data-act="unask">Not asked yet</button>` : `<button class="btn" data-q="${key}" data-act="hide">Cancel</button>`}</div>`;
+        ${st === 'asked' ? `<button class="btn" data-q="${key}" data-act="unask">Not asked yet</button>` : `<button class="btn" data-q="${key}" data-act="hide">Cancel</button>`}</div>`;
     } else {
-      actions = `<div class="q-actions"><button class="btn" data-q="${key}" data-act="asked">✓ Asked</button><button class="btn primary" data-q="${key}" data-act="answer">Answer</button></div>`;
+      actions = `<div class="q-actions"><button class="btn" data-q="${key}" data-act="asked">✓ Asked</button><button class="btn primary" data-q="${key}" data-act="answer">Answer</button><button class="btn ghost" data-q="${key}" data-act="drop">No longer relevant</button></div>`;
     }
-    return `<article class="q ${esc(q.status)}">
-      <div class="q-top"><div class="q-text">${esc(q.text)}</div>${q.status !== 'answered' ? `<button class="more" data-q="${key}" data-act="delete" aria-label="Delete">⋯</button>` : ''}</div>
+    return `<article class="q ${esc(st)}">
+      <div class="q-top"><div class="q-text">${esc(q.text)}</div><button class="more" data-q="${key}" data-act="delete" aria-label="Delete">⋯</button></div>
       <div class="q-meta">${meta.join(' · ')}</div>
       ${actions}</article>`;
   },
@@ -563,7 +615,7 @@ const notesq = {
     this.update();
   },
   update() {
-    const open = store.questions().filter((q) => q.status !== 'answered').length;
+    const open = store.openQuestions().length;
     const n = this.frame.querySelector('#segQCount');
     n.textContent = open || '';
     n.hidden = !open;
@@ -872,7 +924,7 @@ const settings = {
       </form>
       <div class="field"><span>Backup</span>
         <div class="stack"><button class="btn" data-act="export">Export everything as JSON</button></div>
-        <small>Every check, note, question, listened episode and event state — the seed content is in the app itself.</small>
+        <small>Every check, note, question, visit, result, listened episode and event state — the seed content is in the app itself.</small>
       </div>
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">
@@ -901,7 +953,7 @@ export async function exportJSON() {
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 }
 
-export const views = { today, timeline, checklists, notes: notesq, resources, settings };
+export const views = { today, timeline, checklists, visits, notes: notesq, resources, settings };
 
 // ---------- DATE EDITOR ----------
 // The bottom sheet behind every tappable date (#dateSheet in index.html).

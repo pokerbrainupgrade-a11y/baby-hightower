@@ -6,7 +6,9 @@
 // Collections: events (per-timeline-event state: done, notes, confirmed
 // date/time), items (checklist items), notes, questions, obcall (first-call
 // checklist), resources (listened episodes), settings (the household's due
-// date). Deletes are soft (`deleted: true`) so they replicate.
+// date), visits (the visit log), results (results & labs — seeded records are
+// content, only what's filled in becomes a doc). Deletes are soft
+// (`deleted: true`) so they replicate.
 //
 // Checklist *content* (the lists and their seed items) is not stored: it comes
 // from data/seed.json plus data/lists.json and is merged in at boot. Only
@@ -14,7 +16,8 @@
 // adding a list to the data files never touches what's already checked.
 import * as db from './db.js';
 import { DUE } from './config.js';
-import { setDue, estimateWindow, trimester, isISO } from './dates.js';
+import { setDue, estimateWindow, trimester, isISO, todayISO } from './dates.js';
+import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -178,6 +181,84 @@ export const store = {
 
   notes() { return this.list('notes').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); },
   questions() { return this.list('questions').sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)); },
+  /** Questions still waiting on a visit: Open or Asked (no status at all — pre-1.5.0 — counts as Open). */
+  openQuestions() { return this.questions().filter(isOpenQ); },
+  /** Questions attached to a visit (asked or answered there). */
+  questionsForVisit(visitKey) { return this.questions().filter((q) => q.askedAtVisitId === visitKey); },
+
+  // ---------- visits ----------
+  visits() { return this.list('visits'); },
+  visit(key) { const d = this.get('visits', key); return d && !d.deleted ? d : null; },
+  /**
+   * One tap: a visit for today, Prenatal, at the default provider. The
+   * gestational age is stamped from the app's week math at save time and
+   * stays on the record even if the due date later moves.
+   */
+  addVisit({ date = todayISO(), type = 'Prenatal', time = null } = {}) {
+    const key = 'v-' + this.uid();
+    return this.write('visits', key, {
+      date, time, type, gest: gestFor(date), provider: DEFAULT_PROVIDER, seenBy: '', attendees: '',
+      status: statusForDate(date, todayISO()),
+      vitals: { weight: '', bloodPressure: '', fundalHeight: '', fetalHeartRate: '' },
+      summary: '', nextSteps: '',
+    }).then(() => key);
+  },
+  /** Merge a patch into a visit. A new date re-stamps the gestational age (that's the only time it changes). */
+  saveVisit(key, patch) {
+    const clean = {};
+    for (const [k, v] of Object.entries(patch)) clean[k] = v === undefined ? null : v;
+    if ('date' in clean) clean.gest = gestFor(clean.date);
+    if ('vitals' in clean) clean.vitals = { ...(this.visit(key)?.vitals || {}), ...clean.vitals };
+    return this.write('visits', key, clean);
+  },
+
+  // ---------- results & labs ----------
+  /** The six seeded records (content) + anything filled in on them (state) + custom ones, minus deleted. */
+  results() {
+    const out = [];
+    for (const r of SEED_RESULTS) {
+      const d = this.get('results', r.id);
+      if (d?.deleted) continue;
+      out.push({ ...r, ...(d || {}), id: r.id, key: r.id, name: r.name, seed: true });
+    }
+    const custom = this.list('results').filter((d) => d.custom).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    for (const d of custom) out.push({ ...d, id: d.key, seed: false });
+    return out;
+  },
+  result(key) { return this.results().find((r) => r.key === key) || null; },
+  resultsForVisit(visitKey) { return this.results().filter((r) => r.linkedVisitId === visitKey); },
+  addResult({ name, category }) {
+    const key = 'r-' + this.uid();
+    return this.write('results', key, { custom: true, name, category, status: 'Not yet ordered', history: [] }).then(() => key);
+  },
+  saveResult(key, patch) {
+    const clean = {};
+    for (const [k, v] of Object.entries(patch)) clean[k] = v === undefined ? null : v;
+    return this.write('results', key, clean);
+  },
+  /** Move a record to a status and add the line to its history (who, when). */
+  setResultStatus(key, status) {
+    const rec = this.result(key);
+    if (!rec || resultStatus(rec) === status) return Promise.resolve(null);
+    const patch = statusPatch(rec, status, this.user);
+    return patch ? this.write('results', key, patch) : Promise.resolve(null);
+  },
+
+  // ---------- the due-date hook (dating ultrasound → app due date) ----------
+  /** The Today banner, or null. Reads the dating ultrasound's confirmedDueDate against the live due date. */
+  dueBanner() { return dueBanner(this.result(DATING_ULTRASOUND_ID)?.confirmedDueDate, this.due); },
+  /**
+   * Make the confirmed due date the app's due date. Stamps who/when/where it
+   * came from on settings/due. Live week math re-anchors on the emit; nothing
+   * already stored on a visit (its `gest`) is touched.
+   */
+  applyConfirmedDue() {
+    const b = this.dueBanner();
+    if (!b || b.applied) return Promise.resolve(null);
+    return this.write('settings', 'due', { due: b.confirmed, source: 'dating-ultrasound', sourceKey: DATING_ULTRASOUND_ID, setBy: this.user, setAt: Date.now() });
+  },
+  /** Back to the config default (2027-05-11), stamped the same way. */
+  revertDue() { return this.write('settings', 'due', { due: null, source: 'revert', sourceKey: null, setBy: this.user, setAt: Date.now() }); },
 
   exportJSON() {
     return JSON.stringify({
