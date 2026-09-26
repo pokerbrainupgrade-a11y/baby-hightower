@@ -2,6 +2,7 @@
 import { store } from './store.js';
 import { startSync } from './sync.js';
 import { views, dateEditor } from './views.js';
+import { symptomSheet } from './symptomsview.js';
 import { summary } from './dates.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -16,13 +17,13 @@ let pendingUpdate = false;
 
 // ---------- toast ----------
 let toastTimer;
-window.toast = function toast(msg, { action, onAction, sticky } = {}) {
+window.toast = function toast(msg, { action, onAction, sticky, duration = 3200 } = {}) {
   const el = $('#toast');
   el.innerHTML = `<span>${msg}</span>${action ? `<button type="button">${action}</button>` : ''}`;
   if (action) el.querySelector('button').onclick = () => { el.hidden = true; onAction?.(); };
   el.hidden = false;
   clearTimeout(toastTimer);
-  if (!sticky) toastTimer = setTimeout(() => { el.hidden = true; }, 3200);
+  if (!sticky) toastTimer = setTimeout(() => { el.hidden = true; }, duration);
 };
 
 // ---------- sync status ----------
@@ -141,6 +142,7 @@ async function registerSW() {
   }
   $('#app').hidden = false;
   dateEditor.bind();
+  symptomSheet.bind();
   updateMini();
   route();
   if (!store.identity?.user || !store.identity?.code) showIdentity();

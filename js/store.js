@@ -8,8 +8,9 @@
 // checklist), resources (listened episodes), settings (the household's due
 // date), visits (the visit log), results (results & labs — seeded records are
 // content, only what's filled in becomes a doc), decisions (the Open Decisions
-// Log mirror — seeded the same way; never deleted). Deletes are soft
-// (`deleted: true`) so they replicate.
+// Log mirror — seeded the same way; never deleted), symptoms (one doc per
+// logged symptom), days (one doc per calendar day: sleep, mood, appetite).
+// Deletes are soft (`deleted: true`) so they replicate.
 //
 // Checklist *content* (the lists and their seed items) is not stored: it comes
 // from data/seed.json plus data/lists.json and is merged in at boot. Only
@@ -20,6 +21,7 @@ import { DUE } from './config.js';
 import { setDue, estimateWindow, trimester, isISO, todayISO } from './dates.js';
 import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
 import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch } from './decisions.js';
+import { stampFor, severityOf, rankTags, lastCompletedVisit, sinceVisit, daysSince } from './symptoms.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -28,13 +30,14 @@ export const store = {
   seed: null,
   lists: null,          // data/lists.json — the sectioned lists (Clothing, Nursery Essentials); merged into seed.lists
   resources: null,      // data/resources.json — the Resources tab's content
+  symptoms: null,       // data/symptoms.json — the symptom tag set + moods (editable content, no copy attached)
   identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
   remote: null,         // (doc) => Promise — set by sync.js when active
   listeners: new Set(),
 
   async init() {
-    [this.seed, this.lists, this.resources] = await Promise.all(
-      ['./data/seed.json', './data/lists.json', './data/resources.json'].map((u) => fetch(u).then((r) => r.json())),
+    [this.seed, this.lists, this.resources, this.symptoms] = await Promise.all(
+      ['./data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json'].map((u) => fetch(u).then((r) => r.json())),
     );
     // v1 lists first, then the sectioned lists — ids are disjoint (tests/lists.test.js pins that)
     this.seed.lists = [...this.seed.lists, ...this.lists.lists];
@@ -278,6 +281,46 @@ export const store = {
     if (!d || !DEC_STATUS.includes(status) || decStatus(d) === status) return Promise.resolve(null);
     if (status === 'Closed') return this.closeDecision(key, d.decision);
     return this.write('decisions', key, { status, closedAt: null, closedBy: null });
+  },
+
+  // ---------- symptom log ----------
+  get symptomTags() { return this.symptoms?.tags || []; },
+  /** Every logged symptom, newest first. */
+  symptomList() { return this.list('symptoms').sort((a, b) => (b.at || 0) - (a.at || 0)); },
+  symptom(key) { const d = this.get('symptoms', key); return d && !d.deleted ? d : null; },
+  /**
+   * Log one. The day and gestational week are stamped now (Phoenix) from the
+   * app's week math and stay put if the due date later moves.
+   */
+  logSymptom({ type, severity = 2, note = '', now = Date.now() }) {
+    const t = String(type || '').trim();
+    if (!t) return Promise.resolve(null);
+    const key = 's-' + this.uid();
+    return this.write('symptoms', key, { type: t, severity: severityOf(severity), note: String(note || '').trim(), ...stampFor(now) }).then(() => key);
+  },
+  updateSymptom(key, { type, severity, note }) {
+    const patch = {};
+    if (type !== undefined) { const t = String(type || '').trim(); if (t) patch.type = t; }
+    if (severity !== undefined) patch.severity = severityOf(severity);
+    if (note !== undefined) patch.note = String(note || '').trim();
+    return this.write('symptoms', key, patch);
+  },
+  /** The six tags for the quick row, by this user's own recent use. */
+  quickTags(n) { return rankTags(this.symptomTags, this.list('symptoms'), this.user, { n }); },
+  /** The day-level entry for 'YYYY-MM-DD' (sleepHours, mood, appetite), or {}. */
+  dayEntry(day) { return this.get('days', day) || {}; },
+  saveDay(day, patch) {
+    const clean = {};
+    for (const [k, v] of Object.entries(patch)) clean[k] = v === undefined ? null : v;
+    if ('sleepHours' in clean) { const h = parseFloat(clean.sleepHours); clean.sleepHours = Number.isFinite(h) && h >= 0 && h <= 24 ? h : null; }
+    if ('mood' in clean && !(this.symptoms?.moods || []).includes(clean.mood)) clean.mood = null;
+    return this.write('days', day, clean);
+  },
+  lastCompletedVisit() { return lastCompletedVisit(this.visits()); },
+  /** The waiting-room view: everything logged after the latest Completed visit, plus that window's day entries. */
+  sinceLastVisit() {
+    const r = sinceVisit(this.list('symptoms'), this.lastCompletedVisit());
+    return { ...r, days: daysSince(this.list('days'), r.visit), tags: this.symptomTags };
   },
 
   // ---------- the due-date hook (dating ultrasound → app due date) ----------

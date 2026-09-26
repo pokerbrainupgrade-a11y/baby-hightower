@@ -87,6 +87,22 @@
   </form>
 </div>
 
+<!-- symptom sheet: long-press on a quick-log tag, "More", or editing an entry -->
+<div id="symptomSheet" class="modal" hidden>
+  <form class="modal-card sym-sheet" id="symptomForm" autocomplete="off">
+    <div class="ds-kicker" id="symKicker">Log a symptom</div>
+    <div class="sym-tags" id="symTags"></div>
+    <label class="field sym-other" id="symOtherWrap" hidden><span>What is it?</span><input type="text" name="other" placeholder="a word or two" enterkeyhint="done"></label>
+    <div class="field"><span>How rough</span><div class="sev-row" id="symSev"></div></div>
+    <label class="field"><span>Note <em>(optional)</em></span><input type="text" name="note" placeholder="short — a few words" enterkeyhint="done"></label>
+    <div class="stack">
+      <button type="submit" class="btn primary big" id="symSave">Log it</button>
+      <button type="button" class="btn danger ghost" data-sym="delete" hidden>Delete this entry</button>
+      <button type="button" class="btn ghost" data-sym="cancel">Cancel</button>
+    </div>
+  </form>
+</div>
+
 <div id="toast" class="toast" hidden></div>
 <noscript>Baby Hightower needs JavaScript.</noscript>
 <script type="module" src="js/app.js"></script>

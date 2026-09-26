@@ -8,8 +8,9 @@ Vanilla JS, no build step, one static folder. Everything is stored on the phone
 two phones sync in real time through Firestore.
 
 Six tabs: **Today** (live week counter, countdown, next three events, baby-development
-note, the next visit, and — once the dating ultrasound has a confirmed due date — the
-due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
+note, the quick-log row of the **Symptom log** — six tags, tap logs Moderate with an
+Undo, hold for Mild / Moderate / Rough and a note — the next visit, and, once the dating
+ultrasound has a confirmed due date, the due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
 real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (the **Open decisions** log first — a manual mirror of the master plan doc's
 decision layer: eleven seeded decisions with owner, deadline or target week, status,
@@ -24,7 +25,9 @@ Upcoming pinned on top, each visit with its date + stamped week, type, provider,
 who you saw, vitals as free text, summary, next steps, and the open questions to
 tick off and answer right there; plus the **Results & labs** section — six seeded
 records, a status with history, dates, result text, and the dating ultrasound's
-confirmed due date) · **Notes & Questions** (one tab, two segments:
+confirmed due date; and the **Symptom log** — by day, with each day's sleep / mood /
+appetite — and **Since last visit**, everything after the latest Completed visit grouped
+by tag with counts and a Copy-as-text button for the waiting room) · **Notes & Questions** (one tab, two segments:
 **Questions** — Open / Asked / Answered / No longer relevant, with an Open ·
 Answered · All filter; answered ones fold up with the answer and the visit they
 came from — and **Notes**) · **Resources** (**OB First Call**: the
@@ -33,7 +36,8 @@ the scripted lines, fill-in fields, nice-to-haves and the ER box; and
 **Listen**: podcast episodes grouped by host, each opening in the browser, with
 a shared "listened" tick per episode).
 
-Routes: `#checklists/decisions` · `#visits` / `#visits/v/<key>` / `#visits/r/<key>` · `#notes` /
+Routes: `#checklists/decisions` · `#visits` / `#visits/v/<key>` / `#visits/r/<key>` /
+`#visits/symptoms` / `#visits/since` · `#notes` /
 `#notes/questions` / `#notes/notes` · `#resources` / `#resources/obcall`. The pre-1.2 `#questions` and `#obcall` still work — the
 router redirects them.
 
@@ -86,6 +90,7 @@ npm run icons
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
+| `js/symptoms.js` · `js/symptomsview.js` · `data/symptoms.json` · `tests/symptoms.test.js` | Symptom log: the Phoenix day + week stamp, the quick row's ordering, "since last visit" off the latest Completed visit, grouping and the copy text · the quick row, sheet, log and since pages · the tag set + moods (strings only) · tests |
 | `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
@@ -97,7 +102,7 @@ npm run icons
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across ten collections — `events` (per-event
+updatedAt, updatedBy, ...fields }` across twelve collections — `events` (per-event
 done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
 entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
@@ -115,7 +120,10 @@ ultrasound also carries `confirmedDueDate`), `decisions` (state for the eleven
 seeded decisions in `js/decisions.js` plus custom ones: `owner` Q / Staci /
 Both, `decideBy` date, `decideByWeek` integer, `status` Open / Researching /
 Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
-`closedBy` — never deleted). Questions gained `askedAtVisitId`
+`closedBy` — never deleted), `symptoms` (one doc per logged symptom: `type`,
+`severity` 1–3, `note`, `day` in Phoenix, `at`, and `gest` — the week stamped at
+save, never rewritten), `days` (keyed by date: `sleepHours`, `mood`, `appetite`).
+Questions gained `askedAtVisitId`
 and the `dropped` status; anything written before 1.5.0 reads as Open.
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.

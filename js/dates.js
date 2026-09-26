@@ -88,6 +88,12 @@ export function formatTime(hhmm) {
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
 }
 
+/** epoch ms -> '3:42 PM' in Phoenix time */
+export function formatClock(ms, tz = TZ) {
+  if (!ms) return '';
+  return new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
+}
+
 /** epoch ms -> 'Sep 16, 3:42 PM' in Phoenix time */
 export function formatStamp(ms, tz = TZ) {
   if (!ms) return '';

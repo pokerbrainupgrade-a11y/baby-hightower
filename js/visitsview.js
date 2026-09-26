@@ -10,12 +10,19 @@ import { store } from './store.js';
 import { esc, stamp, uiState } from './ui.js';
 import { formatDate, formatTime, todayISO } from './dates.js';
 import { VISIT_TYPES, VISIT_STATUS, VITALS, RESULT_CATEGORIES, RESULT_STATUS, DATING_ULTRASOUND_ID, visitType, visitStatus, gestLabel, sortVisits, qStatus, resultStatus, resultCategory } from './visits.js';
+import { symptomLog, sinceView } from './symptomsview.js';
 
 const fmtLong = (iso) => formatDate(iso, { weekday: false, year: true });
 
 export const visits = {
   render(root, params) {
     this.params = params;
+    // #visits/symptoms → the log · #visits/since → since the last completed visit
+    if (params[0] === 'symptoms' || params[0] === 'since') {
+      root.innerHTML = `<div class="page"><button class="back" data-go="visits">← Visits</button><div id="symHost"></div></div>`;
+      (params[0] === 'since' ? sinceView : symptomLog).render(root.querySelector('#symHost'));
+      return;
+    }
     root.innerHTML = `<section class="visits" id="vFrame"></section>`;
     this.frame = root.firstElementChild;
     this.timers = new Map();
@@ -112,6 +119,8 @@ export const visits = {
   // ---- pages ----
   update() {
     const [kind, key] = this.params;
+    if (kind === 'symptoms') return symptomLog.update();
+    if (kind === 'since') return sinceView.update();
     if (kind === 'v') return this.visitPage(key);
     if (kind === 'r') return this.resultPage(key);
     return this.listPage();
@@ -121,9 +130,14 @@ export const visits = {
     const { upcoming, past } = sortVisits(store.visits());
     const results = store.results();
     const addOpen = uiState.open.has('r-add');
+    const since = store.sinceLastVisit(), symCount = store.symptomList().length;
     this.frame.innerHTML = `
       <div class="sec-head"><h2 class="serif">Visits</h2><small>${past.length ? `${past.length} logged` : 'the log, on both phones'}</small></div>
       <button class="btn primary big" data-act="v-new">+ Add a visit</button>
+      <div class="two sym-links">
+        <button class="linkrow" data-go="visits/since"><span>Since last visit<small>${since.visit ? `${since.entries.length} logged since ${formatDate(since.visit.date)}` : 'the symptom record for the waiting room'}</small></span><span class="arrow">→</span></button>
+        <button class="linkrow" data-go="visits/symptoms"><span>Symptom log<small>${symCount ? `${symCount} logged` : 'by day, from Today'}</small></span><span class="arrow">→</span></button>
+      </div>
       ${upcoming.length ? `<div class="grp vgrp">Upcoming</div>${upcoming.map((v) => this.visitCard(v, today)).join('')}` : ''}
       ${past.length ? `<div class="grp vgrp">Past</div>${past.map((v) => this.visitCard(v, today)).join('')}` : upcoming.length ? '' : `<div class="empty"><b>No visits yet</b>One tap adds one — a date and a type is enough to start.</div>`}
       <div class="sec-head" style="margin-top:26px"><h2 class="serif">Results &amp; labs</h2><small>ordered · scheduled · back</small></div>

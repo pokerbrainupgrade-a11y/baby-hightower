@@ -11,6 +11,7 @@ import { OB_CALL } from './obcall.js';
 import { esc, rich, stamp, progressBar, uiState } from './ui.js';
 import { visits } from './visitsview.js';
 import { decisions } from './decisionsview.js';
+import { quickRow, bindQuickRow } from './symptomsview.js';
 import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
 export { uiState };
@@ -224,6 +225,7 @@ const today = {
   render(root) {
     root.innerHTML = `<section class="today" id="todayFrame"></section>`;
     this.frame = root.firstElementChild;
+    bindQuickRow(this.frame);
     // The due-date banner's one action (and its way back). Both confirm first
     // and both are ordinary settings/due writes stamped with who and when.
     this.frame.addEventListener('click', (e) => {
@@ -269,6 +271,7 @@ const today = {
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
       </div>
+      ${quickRow()}
       ${banner ? `<div class="sec"><div class="due-banner ${banner.kind}">
         <div class="k">Dating ultrasound</div>
         <p>${esc(banner.title)}</p>
@@ -941,7 +944,7 @@ const settings = {
       </form>
       <div class="field"><span>Backup</span>
         <div class="stack"><button class="btn" data-act="export">Export everything as JSON</button></div>
-        <small>Every check, note, question, visit, result, decision, listened episode and event state — the seed content is in the app itself.</small>
+        <small>Every check, note, question, visit, result, decision, symptom, listened episode and event state — the seed content is in the app itself.</small>
       </div>
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">
