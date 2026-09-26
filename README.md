@@ -12,7 +12,12 @@ note, the quick-log row of the **Symptom log** — six tags, tap logs Moderate w
 Undo, hold for Mild / Moderate / Rough and a note — the next visit, and, once the dating
 ultrasound has a confirmed due date, the due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
-real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (the **Open decisions** log first — a manual mirror of the master plan doc's
+real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (the **Budget** first — spent / committed / remaining against an
+editable ceiling (default $4,000), a bar in the palette, breakdowns by coverage and by
+list, and an "unpriced only" filter with inline estimates; every item on the Purchases,
+Nursery Build, Clothing, Nursery Essentials and Go Bag lists can carry an estimate,
+actual cost, bought-on date, bought-by, coverage, vendor and link from its ⋯ editor —
+then the **Open decisions** log — a manual mirror of the master plan doc's
 decision layer: eleven seeded decisions with owner, deadline or target week, status,
 context, blocker, what closing unblocks, and the decision itself; closing needs the
 answer written down, and closed ones stay folded at the bottom for good — then Go Bag, Purchases, Legal,
@@ -36,7 +41,7 @@ the scripted lines, fill-in fields, nice-to-haves and the ER box; and
 **Listen**: podcast episodes grouped by host, each opening in the browser, with
 a shared "listened" tick per episode).
 
-Routes: `#checklists/decisions` · `#visits` / `#visits/v/<key>` / `#visits/r/<key>` /
+Routes: `#checklists/budget` · `#checklists/decisions` · `#visits` / `#visits/v/<key>` / `#visits/r/<key>` /
 `#visits/symptoms` / `#visits/since` · `#notes` /
 `#notes/questions` / `#notes/notes` · `#resources` / `#resources/obcall`. The pre-1.2 `#questions` and `#obcall` still work — the
 router redirects them.
@@ -91,6 +96,7 @@ npm run icons
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
 | `js/symptoms.js` · `js/symptomsview.js` · `data/symptoms.json` · `tests/symptoms.test.js` | Symptom log: the Phoenix day + week stamp, the quick row's ordering, "since last visit" off the latest Completed visit, grouping and the copy text · the quick row, sheet, log and since pages · the tag set + moods (strings only) · tests |
+| `js/budget.js` · `js/budgetview.js` · `tests/budget.test.js` | Spend tracker: the three numbers, bar tones, breakdowns, the unpriced filter, money parsing, the breast-pump seed overlay · the page + the cost editor / money tags on items · tests against a hand-checked example |
 | `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
@@ -106,9 +112,10 @@ updatedAt, updatedBy, ...fields }` across twelve collections — `events` (per-e
 done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
 entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
-(listened ticks, keyed by episode id), `settings` (one doc, `due`, the
+(listened ticks, keyed by episode id), `settings` (`due`, the
 household's due date — absent means the config default; `setBy` / `setAt` /
-`source` say who last moved it and from where), `visits` (one doc per visit:
+`source` say who last moved it and from where; and `budget`, the ceiling with
+`setBy` / `setAt`), `visits` (one doc per visit:
 `date`, `time`, `type`, `gest` — the week + day stamped from the app's week
 math when the date was saved, plus the due date it was counted against —
 `provider`, `seenBy`, `attendees`, `vitals` {weight, bloodPressure,
@@ -124,7 +131,11 @@ Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
 `severity` 1–3, `note`, `day` in Phoenix, `at`, and `gest` — the week stamped at
 save, never rewritten), `days` (keyed by date: `sleepHours`, `mood`, `appetite`).
 Questions gained `askedAtVisitId`
-and the `dropped` status; anything written before 1.5.0 reads as Open.
+and the `dropped` status; anything written before 1.5.0 reads as Open. Items on
+the five budget lists may carry `estimatedCost`, `actualCost`, `purchasedAt`,
+`purchasedBy`, `coverage`, `vendor`, `link` (1.8.0); an item without them is
+exactly what it was. The breast pump's Insurance / $0 estimate is a seed overlay
+in `js/budget.js`, not a doc. "HSA" is a label we put on an item, never a ruling.
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.
 

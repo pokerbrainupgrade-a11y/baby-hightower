@@ -133,7 +133,7 @@ button.card:active{background:var(--paper)}
 .field{display:block;margin:14px 0}
 .field>span{display:block;font-size:12px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
 .field small,.hint{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:5px}
-input[type=text],input[type=search],input[type=date],input[type=time],textarea{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none}
+input[type=text],input[type=search],input[type=date],input[type=time],input[type=url],textarea{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none}
 /* native iOS pickers: keep them full-width and tall enough to hit, text left-aligned like every other field */
 input[type=date],input[type=time]{min-height:48px;display:block;text-align:left}
 input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:left;min-height:1.4em}
@@ -495,3 +495,32 @@ details.daynote{margin:0 0 14px}
 details.daynote .info-body .field{margin:8px 0}
 .since-hint{margin:-4px 0 12px;line-height:1.45}
 .since .two{margin-bottom:10px}
+
+/* ---------- spend tracker ---------- */
+.bar.ok i{background:var(--sage)}
+.bar.warm i{background:var(--sand-deep)}
+.bar.over i{background:var(--blush-deep)}
+.budget-index .bar,.budget-head .bar{height:10px}
+.budget-head{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 16px 10px;margin-bottom:6px}
+.budget-head .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.budget-head .nums .k{display:block;font-size:11.5px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}
+.budget-head .nums b{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:650;color:var(--sage-deep);font-variant-numeric:tabular-nums}
+.budget-head .nums b.neg{color:var(--blush-deep)}
+.ceiling-line{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;font-size:13.5px;color:var(--ink-soft)}
+.budget-head .hint{margin-top:6px}
+.budget .kv .row .l small{color:var(--ink-soft);font-size:12px}
+.budget .kv .row b{font-size:13px;font-variant-numeric:tabular-nums}
+.cost{font-size:12.5px;font-weight:750;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cost.paid{color:var(--sage-deep)}
+.cost.vendor{font-weight:600}
+.cost.link{color:var(--sage-deep);text-decoration:none}
+.tag.cov{background:var(--sand-tint);color:var(--sand-deep)}
+.cost-editor{border-top:1px solid var(--line);padding-top:4px}
+.cost-editor .field{margin:8px 0}
+.cost-editor .opts .opt{min-height:38px;padding:4px 12px;font-size:14px}
+.cost-row{align-items:center}
+.cost-row.done .item-text{text-decoration:none;color:var(--ink)}
+.cost-inputs{display:flex;gap:6px;flex:none}
+.cost-inputs label{display:block;width:72px}
+.cost-inputs small{display:block;font-size:10.5px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px}
+.cost-inputs input{padding:7px 8px;font-size:15px;min-height:38px;border-radius:9px;font-variant-numeric:tabular-nums}

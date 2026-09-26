@@ -12,6 +12,8 @@ import { esc, rich, stamp, progressBar, uiState } from './ui.js';
 import { visits } from './visitsview.js';
 import { decisions } from './decisionsview.js';
 import { quickRow, bindQuickRow } from './symptomsview.js';
+import { budget, costEditor, costFoot, readCostEditor } from './budgetview.js';
+import { BUDGET_LISTS, summarize, fmtMoney } from './budget.js';
 import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
 export { uiState };
@@ -133,6 +135,7 @@ function itemFoot(it, sec) {
   } else if (it.qty && it.qty !== '—') {
     bits.push(`<span class="qty">×${esc(it.qty)}</span>`);
   }
+  bits.push(...costFoot(it));
   return bits.length ? `<div class="item-foot">${bits.join('')}</div>` : '';
 }
 
@@ -140,6 +143,7 @@ function itemHTML(it, sec) {
   if (uiState.editing === `item:${it.id}`) {
     return `<li class="item editing"><div class="editor">
       <input type="text" data-hold value="${esc(it.text)}" data-edit-text="${esc(it.id)}">
+      ${BUDGET_LISTS.includes(it.listId) ? costEditor(it) : ''}
       <div class="row">
         <button class="btn sm primary" data-save-item="${esc(it.id)}">Save</button>
         <button class="btn sm" data-cancel-edit>Cancel</button>
@@ -193,6 +197,8 @@ function bindChecklist(frame, view) {
   frame.addEventListener('click', (e) => {
     const chip = e.target.closest('[data-filter]');
     if (chip) { uiState.filter.set(chip.closest('[data-list]').dataset.list, chip.dataset.filter); view.update(); return; }
+    const co = e.target.closest('[data-cost-opt]');
+    if (co) { for (const b of co.parentElement.querySelectorAll('[data-cost-opt]')) b.classList.toggle('on', b === co && !co.classList.contains('on')); return; }
     // <details> toggles itself after this click lands; remember the new state so a re-render keeps it
     const sum = e.target.closest('summary[data-toggle-sec],summary[data-toggle-info]');
     if (sum) {
@@ -209,8 +215,11 @@ function bindChecklist(frame, view) {
       const id = t.dataset.saveItem;
       const text = frame.querySelector(`[data-edit-text="${CSS.escape(id)}"]`).value.trim();
       const listId = t.closest('[data-list]').dataset.list;
+      const cost = readCostEditor(t.closest('.editor'));
       uiState.editing = null;
-      if (text) store.write('items', id, { listId, text }); else view.update();
+      document.activeElement?.blur?.();   // a focused editor field would hold the re-render
+      if (!text) { view.update(); return; }
+      store.write('items', id, { listId, text }).then(() => { if (cost) store.saveItemCost(id, listId, cost); });
     } else if (t.dataset.deleteItem !== undefined) {
       if (!confirm('Delete this item?')) return;
       uiState.editing = null;
@@ -388,6 +397,12 @@ const checklists = {
       decisions.render(root.querySelector('#decHost'));
       return;
     }
+    // #checklists/budget → the spend tracker
+    if (params[0] === 'budget') {
+      root.innerHTML = `<div class="page"><button class="back" data-go="checklists">← Lists</button><div id="budgetHost"></div></div>`;
+      budget.render(root.querySelector('#budgetHost'));
+      return;
+    }
     root.innerHTML = `<section id="clFrame"></section>`;
     this.frame = root.firstElementChild;
     bindChecklist(this.frame, this);
@@ -396,6 +411,7 @@ const checklists = {
   update() {
     const [listId] = this.params;
     if (listId === 'decisions') return decisions.update();
+    if (listId === 'budget') return budget.update();
     if (listId) {
       const list = store.seed.lists.find((l) => l.id === listId);
       if (!list) { this.frame.innerHTML = `<div class="page"><button class="back" data-go="checklists">← Lists</button><div class="empty">No such list.</div></div>`; return; }
@@ -405,6 +421,7 @@ const checklists = {
         <h2 class="title">${esc(list.title)}</h2>
         <p class="ev-note">${esc(list.sub)}</p>
         ${(list.info || []).map((c) => infoCard(c, 'top')).join('')}
+        ${BUDGET_LISTS.includes(listId) ? `<button class="linkrow" data-go="checklists/budget"><span>Budget<small>${(() => { const b = summarize(store.budgetItems().filter((it) => it.listId === listId)); return `${fmtMoney(b.spent)} spent · ${fmtMoney(b.committed)} committed on this list`; })()}</small></span><span class="arrow">→</span></button>` : ''}
         ${checklistHTML(listId)}
         ${g ? `<button class="linkrow" data-go="timeline/guide/${esc(g.id)}"><span>Read the guide: ${esc(g.title)}<small>${esc(g.tag)}</small></span><span class="arrow">→</span></button>` : ''}
       </div>`;
@@ -413,8 +430,14 @@ const checklists = {
     const decs = store.decisions();
     const closed = decs.filter((d) => decStatus(d) === 'Closed').length;
     const dp = { done: closed, total: decs.length, pct: decs.length ? Math.round((closed / decs.length) * 100) : 0 };
+    const b = summarize(store.budgetItems(), store.ceiling);
     this.frame.innerHTML = `
       <div class="sec-head"><h2 class="serif">Checklists</h2><small>who checked what, on both phones</small></div>
+      <button class="list-card budget-index" data-go="checklists/budget">
+        <div class="t"><b>Budget</b><span>${fmtMoney(b.committed)} of ${fmtMoney(b.ceiling)}</span></div>
+        <div class="s">${fmtMoney(b.spent)} spent · ${fmtMoney(b.remaining)} remaining${b.unpriced ? ` · ${b.unpriced} unpriced` : ''}</div>
+        <div class="bar ${b.tone}"><i style="width:${Math.min(b.pct, 100)}%"></i></div>
+      </button>
       <button class="list-card dec-index" data-go="checklists/decisions">
         <div class="t"><b>Open decisions</b><span>${closed}/${decs.length} closed</span></div>
         <div class="s">${decs.length - closed} still open · mirrors the master plan doc</div>
@@ -905,6 +928,10 @@ const settings = {
     });
     this.frame.addEventListener('submit', (e) => {
       e.preventDefault();
+      if (e.target.id === 'ceilingForm') {
+        store.setCeiling(e.target.ceiling.value).then(() => window.toast?.(`Ceiling set to ${fmtMoney(store.ceiling)}`));
+        return;
+      }
       if (e.target.id === 'dueForm') {
         const due = e.target.due.value;
         if (!due) return;
@@ -937,6 +964,10 @@ const settings = {
         <div class="addrow" style="padding:0"><input type="date" name="due" data-hold value="${esc(store.due)}" required><button class="btn sm primary" type="submit">Save</button></div>
         <small>${dueDoc?.due ? `Set by ${stamp(dueDoc.updatedBy, dueDoc.updatedAt)}. ` : `The default (${formatDate(DUE, { year: true })}). `}Every "week N" estimate on the timeline moves with it; dates you've confirmed stay put. Weeks count from LMP ${formatDate(currentLMP(), { year: true })}.</small>
         ${store.due !== DUE ? `<div class="stack" style="margin-top:8px"><button type="button" class="btn sm" data-act="due-reset">Reset to ${formatDate(DUE, { weekday: false, year: true })}</button></div>` : ''}
+      </form>
+      <form class="field" id="ceilingForm"><span>Budget ceiling</span>
+        <div class="addrow" style="padding:0"><input type="text" inputmode="decimal" name="ceiling" data-hold value="${esc(String(store.ceiling))}" required><button class="btn sm primary" type="submit">Save</button></div>
+        <small>${store.ceilingDoc?.ceiling ? `Set by ${stamp(store.ceilingDoc.setBy, store.ceilingDoc.setAt)}. ` : 'The default. '}What Lists → Budget reads against.</small>
       </form>
       <form class="field" id="codeForm"><span>Household code</span>
         <div class="addrow" style="padding:0"><input type="text" name="code" value="${esc(id.code || '')}" autocapitalize="none" autocorrect="off" spellcheck="false" minlength="4" required><button class="btn sm primary" type="submit">Save</button></div>

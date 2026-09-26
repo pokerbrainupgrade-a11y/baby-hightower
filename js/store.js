@@ -22,6 +22,7 @@ import { setDue, estimateWindow, trimester, isISO, todayISO } from './dates.js';
 import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
 import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch } from './decisions.js';
 import { stampFor, severityOf, rankTags, lastCompletedVisit, sinceVisit, daysSince } from './symptoms.js';
+import { BUDGET_LISTS, DEFAULT_CEILING, SEED_COSTS, PURCHASERS, COVERAGE, DEFAULT_COVERAGE, parseMoney } from './budget.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -163,7 +164,8 @@ export const store = {
     for (const it of list.items) {
       const d = this.get('items', it.id);
       if (d?.deleted) continue;
-      out.push({ ...it, listId, ...(d || {}), id: it.id, seed: true });
+      // SEED_COSTS: cost fields seeded on a few existing items (the breast pump); any real entry wins
+      out.push({ ...it, ...(SEED_COSTS[it.id] || {}), listId, ...(d || {}), id: it.id, seed: true });
     }
     // seed items keep their v1 order; custom ones follow, oldest first
     const custom = this.list('items').filter((d) => d.custom && d.listId === listId)
@@ -281,6 +283,40 @@ export const store = {
     if (!d || !DEC_STATUS.includes(status) || decStatus(d) === status) return Promise.resolve(null);
     if (status === 'Closed') return this.closeDecision(key, d.decision);
     return this.write('decisions', key, { status, closedAt: null, closedBy: null });
+  },
+
+  // ---------- spend tracker ----------
+  /** Every live item of the five budget lists, each tagged with its list id + title. */
+  budgetItems() {
+    const out = [];
+    for (const id of BUDGET_LISTS) {
+      const list = this.seed.lists.find((l) => l.id === id);
+      if (!list) continue;
+      for (const it of this.items(id)) out.push({ ...it, listTitle: list.title });
+    }
+    return out;
+  },
+  /** The household's ceiling: settings/budget if set (and sane), else the default. */
+  get ceiling() {
+    const c = this.get('settings', 'budget')?.ceiling;
+    return typeof c === 'number' && c > 0 ? c : DEFAULT_CEILING;
+  },
+  get ceilingDoc() { return this.get('settings', 'budget') || null; },
+  setCeiling(v) {
+    const n = parseMoney(v);
+    return this.write('settings', 'budget', { ceiling: n && n > 0 ? n : null, setBy: this.user, setAt: Date.now() });
+  },
+  /** Save an item's money fields, cleaned: amounts → numbers or null, dates checked, choices validated, no undefined. */
+  saveItemCost(id, listId, patch) {
+    const clean = { listId };
+    if ('estimatedCost' in patch) clean.estimatedCost = parseMoney(patch.estimatedCost);
+    if ('actualCost' in patch) clean.actualCost = parseMoney(patch.actualCost);
+    if ('purchasedAt' in patch) clean.purchasedAt = isISO(patch.purchasedAt) ? patch.purchasedAt : null;
+    if ('purchasedBy' in patch) clean.purchasedBy = PURCHASERS.includes(patch.purchasedBy) ? patch.purchasedBy : null;
+    if ('coverage' in patch) clean.coverage = COVERAGE.includes(patch.coverage) ? patch.coverage : DEFAULT_COVERAGE;
+    if ('vendor' in patch) clean.vendor = String(patch.vendor || '').trim() || null;
+    if ('link' in patch) { const l = String(patch.link || '').trim(); clean.link = /^https?:\/\/\S+$/i.test(l) ? l : null; }
+    return this.write('items', id, clean);
   },
 
   // ---------- symptom log ----------
