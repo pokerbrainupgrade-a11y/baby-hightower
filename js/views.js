@@ -10,6 +10,8 @@ import { APP_VERSION, DUE, USERS } from './config.js';
 import { OB_CALL } from './obcall.js';
 import { esc, rich, stamp, progressBar, uiState } from './ui.js';
 import { visits } from './visitsview.js';
+import { decisions } from './decisionsview.js';
+import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
 export { uiState };
 
@@ -377,6 +379,12 @@ const summaryAt = (iso) => summary(iso).g;
 const checklists = {
   render(root, params) {
     this.params = params;
+    // #checklists/decisions → the Open Decisions Log, its own page under a back button
+    if (params[0] === 'decisions') {
+      root.innerHTML = `<div class="page"><button class="back" data-go="checklists">← Lists</button><div id="decHost"></div></div>`;
+      decisions.render(root.querySelector('#decHost'));
+      return;
+    }
     root.innerHTML = `<section id="clFrame"></section>`;
     this.frame = root.firstElementChild;
     bindChecklist(this.frame, this);
@@ -384,6 +392,7 @@ const checklists = {
   },
   update() {
     const [listId] = this.params;
+    if (listId === 'decisions') return decisions.update();
     if (listId) {
       const list = store.seed.lists.find((l) => l.id === listId);
       if (!list) { this.frame.innerHTML = `<div class="page"><button class="back" data-go="checklists">← Lists</button><div class="empty">No such list.</div></div>`; return; }
@@ -398,8 +407,16 @@ const checklists = {
       </div>`;
       return;
     }
+    const decs = store.decisions();
+    const closed = decs.filter((d) => decStatus(d) === 'Closed').length;
+    const dp = { done: closed, total: decs.length, pct: decs.length ? Math.round((closed / decs.length) * 100) : 0 };
     this.frame.innerHTML = `
       <div class="sec-head"><h2 class="serif">Checklists</h2><small>who checked what, on both phones</small></div>
+      <button class="list-card dec-index" data-go="checklists/decisions">
+        <div class="t"><b>Open decisions</b><span>${closed}/${decs.length} closed</span></div>
+        <div class="s">${decs.length - closed} still open · mirrors the master plan doc</div>
+        ${progressBar(dp)}
+      </button>
       ${store.seed.lists.map((l) => { const p = store.progress(l.id); return `
         <button class="list-card" data-go="checklists/${esc(l.id)}">
           <div class="t"><b>${esc(l.title)}</b><span>${p.done}/${p.total}</span></div>
@@ -924,7 +941,7 @@ const settings = {
       </form>
       <div class="field"><span>Backup</span>
         <div class="stack"><button class="btn" data-act="export">Export everything as JSON</button></div>
-        <small>Every check, note, question, visit, result, listened episode and event state — the seed content is in the app itself.</small>
+        <small>Every check, note, question, visit, result, decision, listened episode and event state — the seed content is in the app itself.</small>
       </div>
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">

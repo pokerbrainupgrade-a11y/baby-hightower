@@ -11,7 +11,10 @@ Six tabs: **Today** (live week counter, countdown, next three events, baby-devel
 note, the next visit, and — once the dating ultrasound has a confirmed due date — the
 due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
-real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (Go Bag, Purchases, Legal,
+real date + time once you have it, or clear it to fall back to the estimate) · **Lists** (the **Open decisions** log first — a manual mirror of the master plan doc's
+decision layer: eleven seeded decisions with owner, deadline or target week, status,
+context, blocker, what closing unblocks, and the decision itself; closing needs the
+answer written down, and closed ones stay folded at the bottom for good — then Go Bag, Purchases, Legal,
 Nursery Build, First 30 Days, Classes, plus the two sectioned lists — **Baby
 Clothing & Accessories** and **Nursery Essentials** — with collapsible
 sections, Must / Nice / Later / Skip tags and filter chips, quantities (per
@@ -30,7 +33,7 @@ the scripted lines, fill-in fields, nice-to-haves and the ER box; and
 **Listen**: podcast episodes grouped by host, each opening in the browser, with
 a shared "listened" tick per episode).
 
-Routes: `#visits` / `#visits/v/<key>` / `#visits/r/<key>` · `#notes` /
+Routes: `#checklists/decisions` · `#visits` / `#visits/v/<key>` / `#visits/r/<key>` · `#notes` /
 `#notes/questions` / `#notes/notes` · `#resources` / `#resources/obcall`. The pre-1.2 `#questions` and `#obcall` still work — the
 router redirects them.
 
@@ -83,6 +86,7 @@ npm run icons
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
+| `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
 | `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1; each event also carries `est` — its estimate as week/day of pregnancy, or a fixed calendar date |
@@ -93,7 +97,7 @@ npm run icons
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across nine collections — `events` (per-event
+updatedAt, updatedBy, ...fields }` across ten collections — `events` (per-event
 done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
 entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
@@ -107,7 +111,11 @@ fundalHeight, fetalHeartRate — free text}, `summary`, `nextSteps`, `status`
 Upcoming / Completed), `results` (state for the six seeded records in
 `js/visits.js` plus custom ones: `status` with a `history` of {status, at, by},
 `scheduledDate`, `resultDate`, `result`, `notes`, `linkedVisitId`; the dating
-ultrasound also carries `confirmedDueDate`). Questions gained `askedAtVisitId`
+ultrasound also carries `confirmedDueDate`), `decisions` (state for the eleven
+seeded decisions in `js/decisions.js` plus custom ones: `owner` Q / Staci /
+Both, `decideBy` date, `decideByWeek` integer, `status` Open / Researching /
+Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
+`closedBy` — never deleted). Questions gained `askedAtVisitId`
 and the `dropped` status; anything written before 1.5.0 reads as Open.
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.

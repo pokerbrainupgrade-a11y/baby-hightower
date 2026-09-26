@@ -7,7 +7,8 @@
 // date/time), items (checklist items), notes, questions, obcall (first-call
 // checklist), resources (listened episodes), settings (the household's due
 // date), visits (the visit log), results (results & labs — seeded records are
-// content, only what's filled in becomes a doc). Deletes are soft
+// content, only what's filled in becomes a doc), decisions (the Open Decisions
+// Log mirror — seeded the same way; never deleted). Deletes are soft
 // (`deleted: true`) so they replicate.
 //
 // Checklist *content* (the lists and their seed items) is not stored: it comes
@@ -18,6 +19,7 @@ import * as db from './db.js';
 import { DUE } from './config.js';
 import { setDue, estimateWindow, trimester, isISO, todayISO } from './dates.js';
 import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
+import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch } from './decisions.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -242,6 +244,40 @@ export const store = {
     if (!rec || resultStatus(rec) === status) return Promise.resolve(null);
     const patch = statusPatch(rec, status, this.user);
     return patch ? this.write('results', key, patch) : Promise.resolve(null);
+  },
+
+  // ---------- open decisions log ----------
+  /** The eleven seeded decisions (content) + what's been typed on them (state) + custom ones. Nothing is ever removed. */
+  decisions() {
+    const out = [];
+    for (const d of SEED_DECISIONS) out.push({ ...d, ...(this.get('decisions', d.id) || {}), id: d.id, key: d.id, title: d.title, seed: true });
+    const custom = this.list('decisions').filter((d) => d.custom).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    for (const d of custom) out.push({ ...d, id: d.key, seed: false });
+    return out;
+  },
+  decision(key) { return this.decisions().find((d) => d.key === key) || null; },
+  addDecision({ title, owner }) {
+    const key = 'd-' + this.uid();
+    return this.write('decisions', key, { custom: true, title, owner, status: 'Open' }).then(() => key);
+  },
+  /** Merge a patch; the target week is stored as an integer or null, and nothing is ever undefined. */
+  saveDecision(key, patch) {
+    const clean = {};
+    for (const [k, v] of Object.entries(patch)) clean[k] = v === undefined ? null : v;
+    if ('decideByWeek' in clean) { const w = parseInt(clean.decideByWeek, 10); clean.decideByWeek = Number.isInteger(w) && w >= 0 && w <= 45 ? w : null; }
+    return this.write('decisions', key, clean);
+  },
+  /** Close with a recorded decision — refused (null) when the text is blank. */
+  closeDecision(key, text) {
+    const patch = closePatch(text, this.user);
+    return patch ? this.write('decisions', key, patch) : Promise.resolve(null);
+  },
+  /** Move to a status. Closing this way needs a decision already on the record; leaving Closed clears the close stamp. */
+  setDecisionStatus(key, status) {
+    const d = this.decision(key);
+    if (!d || !DEC_STATUS.includes(status) || decStatus(d) === status) return Promise.resolve(null);
+    if (status === 'Closed') return this.closeDecision(key, d.decision);
+    return this.write('decisions', key, { status, closedAt: null, closedBy: null });
   },
 
   // ---------- the due-date hook (dating ultrasound → app due date) ----------

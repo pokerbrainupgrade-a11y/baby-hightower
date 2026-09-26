@@ -436,3 +436,28 @@ details.q-fold summary::-webkit-details-marker{display:none}
 details.q-fold summary .q-text::after{content:'›';display:inline-block;margin-left:6px;color:var(--sage-deep);transition:transform .15s}
 details.q-fold[open] summary .q-text::after{transform:rotate(90deg)}
 @media (max-width:360px){.tabbar button{font-size:10px}}
+
+/* ---------- open decisions log ---------- */
+.mirror-line{font-size:13.5px;color:var(--ink-soft);margin:-4px 0 12px;line-height:1.45}
+details.dec{background:var(--white);border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:16px;margin-bottom:10px}
+details.dec.st-researching{border-left-color:var(--sand-deep)}
+details.dec.st-blocked{border-left-color:var(--blush-deep)}
+details.dec.st-closed{border-left-color:var(--line);background:var(--paper)}
+details.dec summary{list-style:none;cursor:pointer;padding:13px 14px;-webkit-tap-highlight-color:transparent}
+details.dec summary::-webkit-details-marker{display:none}
+details.dec summary:active{background:var(--paper);border-radius:16px}
+.dec-title{font-size:16.5px;font-weight:700;line-height:1.35}
+details.dec.st-closed .dec-title{color:var(--ink-soft)}
+.dec-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:6px}
+.dec-meta .chip{padding:3px 10px;font-size:11.5px}
+.dec-when{font-size:12.5px;font-weight:700;color:var(--sage-deep)}
+.dec-when.late{color:var(--blush-deep)}
+.status-chip.st-open{background:var(--sage-tint);color:var(--sage-deep)}
+.status-chip.st-researching{background:var(--sand-tint);color:var(--sand-deep)}
+.status-chip.st-blocked{background:var(--blush-tint);color:var(--blush-deep)}
+.status-chip.st-closed{background:#EEEAE3;color:var(--ink-soft)}
+.dec-body{padding:0 14px 14px;border-top:1px solid var(--line)}
+.dec-body .field{margin:12px 0}
+.dec-resolve{margin:-4px 0 6px}
+details.archive .dec{margin-top:10px}
+input[type=number]{width:100%;font:inherit;font-size:16px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);-webkit-appearance:none;appearance:none;min-height:48px}
