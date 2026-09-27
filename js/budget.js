@@ -44,29 +44,43 @@ export const isUnpriced = (it) => !isPriced(it) && it?.priority !== 'Skip';
 /** Bar colour by share of the ceiling: sage under 75%, sand to 100%, blush-deep over. */
 export const barTone = (pct) => (pct < 75 ? 'ok' : pct <= 100 ? 'warm' : 'over');
 
-/** spent / committed for any set of items. */
+/** Gift and Registry cost us nothing: they never enter spent or committed, and are reported on their own. */
+export const NOT_COUNTED = ['Gift', 'Registry'];
+export const isCounted = (it) => !NOT_COUNTED.includes(coverageOf(it));
+
+/**
+ * spent / committed for any set of items — Gift and Registry items excluded —
+ * plus `gifts` (actual value received that way) and `giftsExpected`
+ * (estimates on gift / registry items not yet received). Informational only.
+ */
 export function totals(items) {
-  let spent = 0, committed = 0;
+  let spent = 0, committed = 0, gifts = 0, giftsExpected = 0;
   for (const it of items) {
+    if (!isCounted(it)) {
+      if (isPurchased(it)) gifts += it.actualCost;
+      else if (countsToward(it) && isMoney(it.estimatedCost)) giftsExpected += it.estimatedCost;
+      continue;
+    }
     if (isPurchased(it)) { spent += it.actualCost; continue; }
     if (countsToward(it) && isMoney(it.estimatedCost)) committed += it.estimatedCost;
   }
-  return { spent: r2(spent), committed: r2(spent + committed) };
+  return { spent: r2(spent), committed: r2(spent + committed), gifts: r2(gifts), giftsExpected: r2(giftsExpected) };
 }
 const r2 = (n) => Math.round(n * 100) / 100;
 
 /**
  * The budget view's numbers. `items` are the live items of the budget lists
  * (each with listId + listTitle); `ceiling` the household's setting.
- *   spent      sum of actualCost
- *   committed  spent + estimatedCost on unpurchased Must / Nice (and untagged) items
+ *   spent      sum of actualCost (Gift / Registry excluded)
+ *   committed  spent + estimatedCost on unpurchased Must / Nice (and untagged) items (Gift / Registry excluded)
  *   remaining  ceiling − committed
+ *   gifts      value received as gifts / registry — shown beside the numbers, never counted
  */
 export function summarize(items, ceiling = DEFAULT_CEILING) {
   const c = isMoney(ceiling) && ceiling > 0 ? ceiling : DEFAULT_CEILING;
   const t = totals(items);
   const pct = r2((t.committed / c) * 100);
-  const byCoverage = COVERAGE.map((cov) => ({ coverage: cov, label: coverageLabel(cov), ...totals(items.filter((it) => coverageOf(it) === cov)), n: items.filter((it) => coverageOf(it) === cov && isPriced(it)).length }));
+  const byCoverage = COVERAGE.map((cov) => ({ coverage: cov, label: coverageLabel(cov), counted: !NOT_COUNTED.includes(cov), ...totals(items.filter((it) => coverageOf(it) === cov)), n: items.filter((it) => coverageOf(it) === cov && isPriced(it)).length }));
   const byList = [];
   for (const it of items) {
     let g = byList.find((x) => x.listId === it.listId);
@@ -76,6 +90,7 @@ export function summarize(items, ceiling = DEFAULT_CEILING) {
   for (const g of byList) Object.assign(g, totals(g.items), { n: g.items.length, unpriced: g.items.filter(isUnpriced).length });
   return {
     ceiling: c, spent: t.spent, committed: t.committed, remaining: r2(c - t.committed), pct, tone: barTone(pct),
+    gifts: t.gifts, giftsExpected: t.giftsExpected,
     byCoverage, byList, unpriced: items.filter(isUnpriced).length,
   };
 }

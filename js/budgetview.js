@@ -92,13 +92,14 @@ export const budget = {
           <div><span class="k">Remaining</span><b class="${s.remaining < 0 ? 'neg' : ''}">${fmtMoney(s.remaining)}</b></div>
         </div>
         <div class="bar ${s.tone}"><i style="width:${Math.min(s.pct, 100)}%"></i></div>
+        ${s.gifts || s.giftsExpected ? `<div class="gifts-line">${s.gifts ? `${fmtMoney(s.gifts)} received as gifts / registry` : ''}${s.gifts && s.giftsExpected ? ' · ' : ''}${s.giftsExpected ? `${fmtMoney(s.giftsExpected)} expected as gifts / registry` : ''} — not counted</div>` : ''}
         ${editing ? `<form class="addrow" id="budgetCeiling" style="padding:8px 0 0"><input type="text" inputmode="decimal" name="ceiling" id="ceilingInput" data-hold value="${esc(String(s.ceiling))}" aria-label="Ceiling"><button class="btn sm primary" type="submit">Save</button><button class="btn sm" type="button" data-act="ceiling-edit">Cancel</button></form>`
           : `<div class="ceiling-line"><span>${Math.round(s.pct)}% of the ${fmtMoney(s.ceiling)} ceiling${doc?.ceiling ? ` · set by ${esc(doc.setBy || '?')}` : ''}</span><button type="button" class="btn sm ghost" data-act="ceiling-edit">Change ›</button></div>`}
-        <p class="hint">Committed = spent + estimates on unpurchased Must and Nice items. Later and Skip items don't count.</p>
+        <p class="hint">Committed = spent + estimates on unpurchased Must and Nice items. Later and Skip items don't count, and neither do gifts or registry items.</p>
       </div>
 
       <div class="grp vgrp">By coverage</div>
-      <div class="kv">${s.byCoverage.map((c) => `<div class="row"><span class="l">${esc(c.label)}${c.n ? ` <small>· ${c.n}</small>` : ''}</span><b>${fmtMoney(c.spent)} spent · ${fmtMoney(c.committed)} committed</b></div>`).join('')}</div>
+      <div class="kv">${s.byCoverage.map((c) => `<div class="row"><span class="l">${esc(c.label)}${c.n ? ` <small>· ${c.n}</small>` : ''}</span><b>${c.counted ? `${fmtMoney(c.spent)} spent · ${fmtMoney(c.committed)} committed` : `${fmtMoney(c.gifts)} received · ${fmtMoney(c.giftsExpected)} expected · not counted`}</b></div>`).join('')}</div>
 
       <div class="grp vgrp">By list</div>
       ${s.byList.map((g) => `<button class="list-card" data-go="checklists/${esc(g.listId)}">

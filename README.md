@@ -134,7 +134,9 @@ Questions gained `askedAtVisitId`
 and the `dropped` status; anything written before 1.5.0 reads as Open. Items on
 the five budget lists may carry `estimatedCost`, `actualCost`, `purchasedAt`,
 `purchasedBy`, `coverage`, `vendor`, `link` (1.8.0); an item without them is
-exactly what it was. The breast pump's Insurance / $0 estimate is a seed overlay
+exactly what it was. Gift and Registry items never enter spent or committed —
+their value shows beside the numbers as "received as gifts / registry", not
+counted. The breast pump's Insurance / $0 estimate is a seed overlay
 in `js/budget.js`, not a doc. "HSA" is a label we put on an item, never a ruling.
 Deletes are soft (`deleted: true`) so they replicate. Firestore holds the same
 docs at `households/<code>/<coll>/<key>`; the newer `updatedAt` wins.

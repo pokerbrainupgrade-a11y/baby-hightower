@@ -5,7 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { BUDGET_LISTS, DEFAULT_CEILING, COVERAGE, COVERAGE_LABEL, SEED_COSTS, parseMoney, fmtMoney, isPurchased, countsToward, isUnpriced, barTone, totals, summarize, coverageLabel } from '../js/budget.js';
+import { BUDGET_LISTS, DEFAULT_CEILING, COVERAGE, COVERAGE_LABEL, SEED_COSTS, NOT_COUNTED, isCounted, parseMoney, fmtMoney, isPurchased, countsToward, isUnpriced, barTone, totals, summarize, coverageLabel } from '../js/budget.js';
 import { store } from '../js/store.js';
 
 const SEED = JSON.parse(readFileSync(new URL('../data/seed.json', import.meta.url), 'utf8'));
@@ -28,10 +28,10 @@ store.write = async function (coll, key, patch) {
 //   B  est 900, unpurchased, Must        → committed +900
 //   C  est 50,  unpurchased, Later       → excluded
 //   D  est 30,  unpurchased, Skip        → excluded
-//   E  actual 40, no estimate, Gift      → spent +40
+//   E  actual 40, no estimate, Gift      → NOT counted: a gift costs us nothing ($40 shown as received)
 //   F  est 100, purchasedAt set, no actual → still committed at its estimate (a date alone isn't a purchase)
 //   G  no money at all, Nice             → nothing, and it is "unpriced"
-//   spent 225 · committed 1,225 · remaining 2,775 · 30.63% of 4,000
+//   spent 185 · committed 1,185 · remaining 2,815 · 29.63% of 4,000 · $40 received as gifts
 const EXAMPLE = [
   { id: 'A', listId: 'purchases', listTitle: 'Purchases', priority: 'Must', estimatedCost: 200, actualCost: 185, purchasedBy: 'Q' },
   { id: 'B', listId: 'nursery', listTitle: 'Nursery Build', priority: 'Must', estimatedCost: 900 },
@@ -44,13 +44,15 @@ const EXAMPLE = [
 
 test('the three header numbers, hand-checked', () => {
   const s = summarize(EXAMPLE, 4000);
-  assert.equal(s.spent, 225);
-  assert.equal(s.committed, 1225);
-  assert.equal(s.remaining, 2775);
-  assert.equal(s.pct, 30.63);
+  assert.equal(s.spent, 185);
+  assert.equal(s.committed, 1185);
+  assert.equal(s.remaining, 2815);
+  assert.equal(s.pct, 29.63);
+  assert.equal(s.gifts, 40);
+  assert.equal(s.giftsExpected, 0);
   assert.equal(s.tone, 'ok');
   assert.equal(s.unpriced, 1);   // G only — D is Skip, so it never asks for a price
-  assert.deepEqual(totals([]), { spent: 0, committed: 0 });
+  assert.deepEqual(totals([]), { spent: 0, committed: 0, gifts: 0, giftsExpected: 0 });
   // an untagged item (the v1 lists carry no priority) counts like Must / Nice
   assert.equal(countsToward({}), true);
   assert.equal(countsToward({ priority: 'Later' }), false);
@@ -67,27 +69,50 @@ test('bar tones: sage under 75%, sand 75–100%, blush-deep over — and nothing
   const over = summarize([{ listId: 'purchases', actualCost: 4500 }], 4000);
   assert.equal(over.remaining, -500);
   assert.equal(over.tone, 'over');
-  assert.equal(summarize(EXAMPLE, 1500).tone, 'warm');   // 1225 / 1500 = 81.7%
+  assert.equal(summarize(EXAMPLE, 1500).tone, 'warm');   // 1185 / 1500 = 79%
 });
 
 test('breakdowns by coverage and by list', () => {
   const s = summarize(EXAMPLE, 4000);
-  const cov = Object.fromEntries(s.byCoverage.map((c) => [c.coverage, [c.spent, c.committed, c.n]]));
+  const cov = Object.fromEntries(s.byCoverage.map((c) => [c.coverage, [c.spent, c.committed, c.gifts, c.n, c.counted]]));
   assert.deepEqual(cov, {
-    'Out of pocket': [185, 1085, 4],   // A (185) + B (900); C and D are priced but excluded from the total; G unpriced
-    Insurance: [0, 0, 0],
-    HSA: [0, 100, 1],                  // F
-    Gift: [40, 40, 1],                 // E
-    Registry: [0, 0, 0],
+    'Out of pocket': [185, 1085, 0, 4, true],   // A (185) + B (900); C and D are priced but excluded from the total; G unpriced
+    Insurance: [0, 0, 0, 0, true],
+    HSA: [0, 100, 0, 1, true],                  // F
+    Gift: [0, 0, 40, 1, false],                 // E — received, never counted
+    Registry: [0, 0, 0, 0, false],
   });
   assert.equal(s.byCoverage.find((c) => c.coverage === 'HSA').label, 'marked HSA by us');
   assert.equal(coverageLabel('HSA'), 'marked HSA by us');
   assert.equal(coverageLabel('nope'), 'Out of pocket');
   const lists = s.byList.map((g) => [g.listId, g.spent, g.committed, g.n, g.unpriced]);
-  assert.deepEqual(lists, [['purchases', 185, 185, 2, 1], ['nursery', 0, 900, 1, 0], ['clothing', 0, 0, 2, 0], ['gobag', 40, 40, 1, 0], ['nursery-essentials', 0, 100, 1, 0]]);
+  assert.deepEqual(lists, [['purchases', 185, 185, 2, 1], ['nursery', 0, 900, 1, 0], ['clothing', 0, 0, 2, 0], ['gobag', 0, 0, 1, 0], ['nursery-essentials', 0, 100, 1, 0]]);
   assert.deepEqual(BUDGET_LISTS, ['purchases', 'nursery', 'clothing', 'nursery-essentials', 'gobag']);
   assert.deepEqual(COVERAGE, ['Out of pocket', 'Insurance', 'HSA', 'Gift', 'Registry']);
   assert.equal(Object.values(COVERAGE_LABEL).some((l) => /eligible/i.test(l)), false);   // a label, never a ruling
+});
+
+test('Gift and Registry never enter spent or committed, whatever else is on the item', () => {
+  const gifty = [
+    { listId: 'gobag', coverage: 'Gift', actualCost: 40 },
+    { listId: 'gobag', coverage: 'Gift', estimatedCost: 300, priority: 'Must' },
+    { listId: 'nursery', coverage: 'Registry', actualCost: 250, purchasedBy: 'Gift' },
+    { listId: 'nursery', coverage: 'Registry', estimatedCost: 120 },
+    { listId: 'nursery', coverage: 'Registry', estimatedCost: 999, priority: 'Later' },   // Later: not even "expected"
+  ];
+  const s = summarize(gifty, 4000);
+  assert.equal(s.spent, 0);
+  assert.equal(s.committed, 0);
+  assert.equal(s.remaining, 4000);
+  assert.equal(s.pct, 0);
+  assert.equal(s.gifts, 290);            // 40 + 250 received
+  assert.equal(s.giftsExpected, 420);    // 300 + 120 still to come
+  // mixed in with real spend, the totals are exactly the real spend
+  const mixed = [...gifty, { listId: 'purchases', actualCost: 100 }, { listId: 'purchases', estimatedCost: 50 }];
+  assert.deepEqual([summarize(mixed).spent, summarize(mixed).committed, summarize(mixed).gifts], [100, 150, 290]);
+  assert.deepEqual(NOT_COUNTED, ['Gift', 'Registry']);
+  assert.equal(isCounted({ coverage: 'HSA' }), true);
+  assert.equal(isCounted({}), true);
 });
 
 test('money parsing and formatting', () => {
