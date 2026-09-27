@@ -348,7 +348,7 @@ today.weekCard = function weekCard(week) {
     ${items.length
       ? `<ul class="items wa-list">${shown.map((a) => row(a)).join('')}</ul>${items.length > SHOW ? `<button type="button" class="btn sm ghost" data-wa-all>${showAll ? 'Show fewer' : `Show all (${items.length})`}</button>` : ''}`
       : next
-        ? `<p class="wa-empty">Nothing on the plan for week ${week}.</p><ul class="items wa-list"><li class="wa-next"><span class="wa-week">Next up · week ${next.week}</span>${row(next)}</li></ul>`
+        ? `<p class="wa-empty">Nothing on the plan for week ${week}.</p><div class="wa-week wa-next">Next up · week ${next.week}</div><ul class="items wa-list">${row(next)}</ul>`
         : `<p class="wa-empty">Nothing on the plan for week ${week}, or after it.</p>`}
     <form class="addrow wa-add" data-wa-add="${week}"><input type="text" name="title" placeholder="Add something for this week…" autocomplete="off" enterkeyhint="done" data-hold><button class="btn sm primary" type="submit">Add</button></form>
     <details class="info wa-ahead"${uiState.open.has('wa-ahead') ? ' open' : ''}><summary data-fold="wa-ahead"><span>Next 4 weeks${ahead.length ? ` · ${ahead.reduce((n, g) => n + g.items.length, 0)}` : ''}</span><i aria-hidden="true">›</i></summary>
