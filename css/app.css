@@ -525,3 +525,23 @@ details.daynote .info-body .field{margin:8px 0}
 .cost-inputs label{display:block;width:72px}
 .cost-inputs small{display:block;font-size:10.5px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px}
 .cost-inputs input{padding:7px 8px;font-size:15px;min-height:38px;border-radius:9px;font-variant-numeric:tabular-nums}
+
+/* ---------- "this week" action card ---------- */
+.wa-card .range{margin-top:2px}
+.wa-list{margin:8px -6px 2px}
+.wa-list .item{padding:8px 4px 8px 6px}
+.item.wa .item-foot{margin-top:2px}
+.wa-detail{font-size:12.5px;color:var(--ink-soft)}
+.item.wa.done .item-text{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--sage)}
+.wa-go{font-size:18px;color:var(--sage-deep)}
+.wa-week{display:inline-block;font-size:11.5px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--sage-deep);margin-right:8px}
+.wa-empty{font-size:14.5px;color:var(--ink-soft);margin-top:6px}
+.wa-next{list-style:none}
+.wa-next>.wa-week{display:block;padding:8px 6px 0}
+.wa-add{padding:6px 0 0}
+.wa-add input{min-height:42px;padding:8px 12px;font-size:15px}
+.wa-card .btn.sm.ghost{padding-left:6px}
+details.wa-ahead{margin:10px 0 0;background:var(--paper)}
+.wa-grp{padding:8px 2px 2px}
+.wa-grp small{font-weight:500;letter-spacing:0;text-transform:none;font-size:12px}
+details.wa-ahead .wa-list{margin:0}

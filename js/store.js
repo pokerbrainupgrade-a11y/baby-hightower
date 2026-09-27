@@ -9,7 +9,8 @@
 // date), visits (the visit log), results (results & labs — seeded records are
 // content, only what's filled in becomes a doc), decisions (the Open Decisions
 // Log mirror — seeded the same way; never deleted), symptoms (one doc per
-// logged symptom), days (one doc per calendar day: sleep, mood, appetite).
+// logged symptom), days (one doc per calendar day: sleep, mood, appetite),
+// weekactions (done state on the "This week" seeds + items added by hand).
 // Deletes are soft (`deleted: true`) so they replicate.
 //
 // Checklist *content* (the lists and their seed items) is not stored: it comes
@@ -23,6 +24,7 @@ import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusFo
 import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch } from './decisions.js';
 import { stampFor, severityOf, rankTags, lastCompletedVisit, sinceVisit, daysSince } from './symptoms.js';
 import { BUDGET_LISTS, DEFAULT_CEILING, SEED_COSTS, PURCHASERS, COVERAGE, DEFAULT_COVERAGE, parseMoney } from './budget.js';
+import { CATEGORIES as WA_CATEGORIES, weekOf as waWeek } from './weekactions.js';
 
 const IDENTITY_KEY = 'bh.identity';
 
@@ -32,13 +34,14 @@ export const store = {
   lists: null,          // data/lists.json — the sectioned lists (Clothing, Nursery Essentials); merged into seed.lists
   resources: null,      // data/resources.json — the Resources tab's content
   symptoms: null,       // data/symptoms.json — the symptom tag set + moods (editable content, no copy attached)
+  weekActions: null,    // data/week-actions.json — the "This week" seeds (plan logistics); state lives in `weekactions` docs
   identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
   remote: null,         // (doc) => Promise — set by sync.js when active
   listeners: new Set(),
 
   async init() {
-    [this.seed, this.lists, this.resources, this.symptoms] = await Promise.all(
-      ['./data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json'].map((u) => fetch(u).then((r) => r.json())),
+    [this.seed, this.lists, this.resources, this.symptoms, this.weekActions] = await Promise.all(
+      ['./data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json', './data/week-actions.json'].map((u) => fetch(u).then((r) => r.json())),
     );
     // v1 lists first, then the sectioned lists — ids are disjoint (tests/lists.test.js pins that)
     this.seed.lists = [...this.seed.lists, ...this.lists.lists];
@@ -317,6 +320,27 @@ export const store = {
     if ('vendor' in patch) clean.vendor = String(patch.vendor || '').trim() || null;
     if ('link' in patch) { const l = String(patch.link || '').trim(); clean.link = /^https?:\/\/\S+$/i.test(l) ? l : null; }
     return this.write('items', id, clean);
+  },
+
+  // ---------- "this week" actions ----------
+  /** Seeds (content) with their done state merged in, plus custom items, minus deleted. */
+  weekActionList() {
+    const out = [];
+    for (const [order, a] of (this.weekActions?.actions || []).entries()) {
+      const d = this.get('weekactions', a.id);
+      if (d?.deleted) continue;
+      out.push({ ...a, order, ...(d || {}), id: a.id, key: a.id, week: a.week, title: a.title, seed: true });
+    }
+    for (const d of this.list('weekactions').filter((d) => d.custom)) out.push({ ...d, id: d.key, seed: false });
+    return out;
+  },
+  setActionDone(id, done) { return this.write('weekactions', id, { done: !!done, doneBy: done ? this.user : null, doneAt: done ? Date.now() : null }); },
+  addWeekAction({ week, title, category = 'Prep', detail = '' }) {
+    const t = String(title || '').trim();
+    const w = waWeek({ week: parseInt(week, 10) });
+    if (!t || w === null) return Promise.resolve(null);
+    const key = 'wa-' + this.uid();
+    return this.write('weekactions', key, { custom: true, week: w, title: t, detail: String(detail || '').trim(), category: WA_CATEGORIES.includes(category) ? category : 'Prep', done: false }).then(() => key);
   },
 
   // ---------- symptom log ----------

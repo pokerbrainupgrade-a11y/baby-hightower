@@ -14,6 +14,7 @@ import { decisions } from './decisionsview.js';
 import { quickRow, bindQuickRow } from './symptomsview.js';
 import { budget, costEditor, costFoot, readCostEditor } from './budgetview.js';
 import { BUDGET_LISTS, summarize, fmtMoney } from './budget.js';
+import { SHOW, actionsFor, nextAfter, upcoming, weekRange, linkHash, linkTarget, categoryOf } from './weekactions.js';
 import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
 export { uiState };
@@ -235,6 +236,31 @@ const today = {
     root.innerHTML = `<section class="today" id="todayFrame"></section>`;
     this.frame = root.firstElementChild;
     bindQuickRow(this.frame);
+    // "This week": ticks, show-all, add, and links into decisions / lists / visits
+    this.frame.addEventListener('change', (e) => {
+      const cb = e.target.closest('input[data-wa]');
+      if (cb) store.setActionDone(cb.dataset.wa, cb.checked);
+    });
+    this.frame.addEventListener('submit', (e) => {
+      const form = e.target.closest('form[data-wa-add]');
+      if (!form) return;
+      e.preventDefault();
+      const title = form.title.value.trim();
+      if (!title) return;
+      store.addWeekAction({ week: Number(form.dataset.waAdd), title }).then(() => { form.reset(); window.toast?.('Added to this week'); });
+    });
+    this.frame.addEventListener('click', (e) => {
+      const fold = e.target.closest('summary[data-fold]');
+      if (fold) { uiState.open[fold.parentElement.open ? 'delete' : 'add'](fold.dataset.fold); return; }
+      const all = e.target.closest('[data-wa-all]');
+      if (all) { uiState.open[uiState.open.has('wa-all') ? 'delete' : 'add']('wa-all'); this.update(); return; }
+      const link = e.target.closest('[data-wa-link]');
+      if (link) {
+        const { kind, id } = linkTarget(link.dataset.waLink);
+        if (kind === 'decision') uiState.open.add(`dec:${id}`);   // land with that decision open
+        location.hash = `#${linkHash(link.dataset.waLink)}`;
+      }
+    });
     // The due-date banner's one action (and its way back). Both confirm first
     // and both are ordinary settings/due writes stamped with who and when.
     this.frame.addEventListener('click', (e) => {
@@ -289,6 +315,7 @@ const today = {
           : `<small>App due date is ${fmtLong(store.due)}${dueDoc?.setBy ? ` · updated by ${stamp(dueDoc.setBy, dueDoc.setAt)}` : ''}.</small>${banner.revert ? `<div class="row"><button class="btn sm" data-due-revert>Back to ${fmtLong(DUE)}</button></div>` : ''}`}
       </div></div>` : ''}
       ${growth ? `<div class="sec"><div class="now-card"><div class="k">Baby is growing · week ${esc(s.weekLabel)}</div><p>${esc(growth.note.title)}</p><small class="range">Note for ${esc(growth.label.toLowerCase())}${growth.to === 40 ? '+' : ''}</small></div></div>` : ''}
+      ${this.weekCard(s.g.weeks)}
       <div class="sec"><div class="sec-head"><h2 class="serif">Up next</h2><small>${next.length ? 'tap for the plan' : ''}</small></div>
         ${next.length ? `<div class="spine">${next.map((e) => eventCard(e, s.iso)).join('')}</div>` : `<div class="empty"><b>Nothing left on the timeline</b>Everything's either done or behind you.</div>`}
       </div>
@@ -296,6 +323,38 @@ const today = {
       <button class="linkrow" data-go="notes/questions"><span>${open ? `${open} question${open === 1 ? '' : 's'} queued for the next visit` : 'No questions queued for the next visit'}<small>Anyone can add one, anytime</small></span><span class="arrow">→</span></button>
       ${overdue.length ? `<button class="linkrow" data-go="timeline"><span>${overdue.length} past event${overdue.length === 1 ? '' : 's'} not marked complete<small>Open the timeline to tick them off</small></span><span class="arrow">→</span></button>` : ''}`;
   },
+};
+
+/** The "This week" action card: the same week number as the pill (summary().g.weeks). */
+today.weekCard = function weekCard(week) {
+  const all = store.weekActionList();
+  const items = actionsFor(all, week);
+  const showAll = uiState.open.has('wa-all');
+  const shown = showAll ? items : items.slice(0, SHOW);
+  const next = items.length ? null : nextAfter(all, week);
+  const ahead = upcoming(all, week);
+  const range = weekRange(week);
+  const row = (a, withWeek = false) => `<li class="item wa${a.done ? ' done' : ''}">
+      <label class="chk"><input type="checkbox" data-wa="${esc(a.key)}" ${a.done ? 'checked' : ''}><span class="box"></span></label>
+      <div class="item-body">
+        <div class="item-text">${withWeek ? `<span class="wa-week">wk ${a.week}</span>` : ''}${esc(a.title)}</div>
+        <div class="item-foot"><span class="tag ${a.category === 'Decision' ? 'mon' : a.category === 'Appointment' || a.category === 'Class' ? 'fam' : 'med'}">${esc(categoryOf(a))}</span>${a.detail ? `<span class="wa-detail">${esc(a.detail)}</span>` : ''}${a.done ? `<span class="item-meta">Done by ${stamp(a.doneBy, a.doneAt)}</span>` : ''}</div>
+      </div>
+      ${a.linkTo && linkHash(a.linkTo) ? `<button class="more wa-go" data-wa-link="${esc(a.linkTo)}" aria-label="Open">→</button>` : ''}
+    </li>`;
+  return `<div class="sec"><div class="now-card wa-card">
+    <div class="k">This week · week ${week}</div>
+    <small class="range">${esc(range.label)}</small>
+    ${items.length
+      ? `<ul class="items wa-list">${shown.map((a) => row(a)).join('')}</ul>${items.length > SHOW ? `<button type="button" class="btn sm ghost" data-wa-all>${showAll ? 'Show fewer' : `Show all (${items.length})`}</button>` : ''}`
+      : next
+        ? `<p class="wa-empty">Nothing on the plan for week ${week}.</p><ul class="items wa-list"><li class="wa-next"><span class="wa-week">Next up · week ${next.week}</span>${row(next)}</li></ul>`
+        : `<p class="wa-empty">Nothing on the plan for week ${week}, or after it.</p>`}
+    <form class="addrow wa-add" data-wa-add="${week}"><input type="text" name="title" placeholder="Add something for this week…" autocomplete="off" enterkeyhint="done" data-hold><button class="btn sm primary" type="submit">Add</button></form>
+    <details class="info wa-ahead"${uiState.open.has('wa-ahead') ? ' open' : ''}><summary data-fold="wa-ahead"><span>Next 4 weeks${ahead.length ? ` · ${ahead.reduce((n, g) => n + g.items.length, 0)}` : ''}</span><i aria-hidden="true">›</i></summary>
+      <div class="info-body">${ahead.length ? ahead.map((g) => `<div class="grp wa-grp">Week ${g.week} <small>· ${esc(weekRange(g.week).label)}</small></div><ul class="items wa-list">${g.items.map((a) => row(a)).join('')}</ul>`).join('') : `<p class="hint">Nothing on the plan for weeks ${week + 1}–${week + 4}.</p>`}</div>
+    </details>
+  </div></div>`;
 };
 
 // ---------- TIMELINE ----------
@@ -975,7 +1034,7 @@ const settings = {
       </form>
       <div class="field"><span>Backup</span>
         <div class="stack"><button class="btn" data-act="export">Export everything as JSON</button></div>
-        <small>Every check, note, question, visit, result, decision, symptom, listened episode and event state — the seed content is in the app itself.</small>
+        <small>Every check, note, question, visit, result, decision, symptom, this-week tick, listened episode and event state — the seed content is in the app itself.</small>
       </div>
       <div class="field"><span>App</span>
         <div class="kv" style="margin-top:0">

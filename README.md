@@ -8,7 +8,10 @@ Vanilla JS, no build step, one static folder. Everything is stored on the phone
 two phones sync in real time through Firestore.
 
 Six tabs: **Today** (live week counter, countdown, next three events, baby-development
-note, the quick-log row of the **Symptom log** — six tags, tap logs Moderate with an
+note, the **This week** action card — the plan's logistics for the current week
+(from `data/week-actions.json`, checkable and synced, with "show all", an add row,
+and a "Next 4 weeks" expander; an empty week shows the next item instead), the
+quick-log row of the **Symptom log** — six tags, tap logs Moderate with an
 Undo, hold for Mild / Moderate / Rough and a note — the next visit, and, once the dating
 ultrasound has a confirmed due date, the due-date banner) · **Timeline** (the v1 trimester timeline; every event opens its guide,
 checklist, completion toggle and notes — and every date is tappable: set the
@@ -96,6 +99,7 @@ npm run icons
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
 | `js/symptoms.js` · `js/symptomsview.js` · `data/symptoms.json` · `tests/symptoms.test.js` | Symptom log: the Phoenix day + week stamp, the quick row's ordering, "since last visit" off the latest Completed visit, grouping and the copy text · the quick row, sheet, log and since pages · the tag set + moods (strings only) · tests |
+| `js/weekactions.js` · `data/week-actions.json` · `tests/weekactions.test.js` | "This week": week lookups, the empty-week fallback, the four-week lookahead, link targets · the fourteen seeds (plain logistics) · tests, incl. the pinned check that the pill and the growing card read the same week |
 | `js/budget.js` · `js/budgetview.js` · `tests/budget.test.js` | Spend tracker: the three numbers, bar tones, breakdowns, the unpriced filter, money parsing, the breast-pump seed overlay · the page + the cost editor / money tags on items · tests against a hand-checked example |
 | `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
@@ -108,7 +112,7 @@ npm run icons
 | `firestore.rules` · `firebase-config.example.js` | Sync setup templates |
 
 Data model: one IndexedDB store of documents shaped `{ id: "coll/key", coll, key,
-updatedAt, updatedBy, ...fields }` across twelve collections — `events` (per-event
+updatedAt, updatedBy, ...fields }` across thirteen collections — `events` (per-event
 done/notes, plus the confirmed `date`, `time`, `dateBy`, `dateAt` once one is
 entered), `items` (checklist checks, edits, custom items), `notes`, `questions`,
 `obcall` (first-call checks, fill-in fields and per-step notes), `resources`
@@ -129,7 +133,9 @@ Both, `decideBy` date, `decideByWeek` integer, `status` Open / Researching /
 Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
 `closedBy` — never deleted), `symptoms` (one doc per logged symptom: `type`,
 `severity` 1–3, `note`, `day` in Phoenix, `at`, and `gest` — the week stamped at
-save, never rewritten), `days` (keyed by date: `sleepHours`, `mood`, `appetite`).
+save, never rewritten), `days` (keyed by date: `sleepHours`, `mood`, `appetite`), `weekactions` (done /
+`doneBy` / `doneAt` on the "This week" seeds, plus `custom` items with `week`,
+`title`, `category`).
 Questions gained `askedAtVisitId`
 and the `dropped` status; anything written before 1.5.0 reads as Open. Items on
 the five budget lists may carry `estimatedCost`, `actualCost`, `purchasedAt`,
