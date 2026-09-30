@@ -1,4 +1,6 @@
 @font-face{font-family:'Fraunces';src:url('../fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-display:swap}
+/* body face, self-hosted (latin subset, variable 400–800, SIL OFL — fonts/OFL-Nunito.txt); anything outside latin falls back to the system rounded face */
+@font-face{font-family:'Nunito';src:url('../fonts/nunito.woff2') format('woff2');font-weight:400 800;font-display:swap}
 :root{
   /* colour roles. The theme (data-theme on <html>: current · boy · girl) sets light / light-bg / deep and
      accent2, plus what's derived from them; everything else is shared. "current" is these defaults.
@@ -17,7 +19,7 @@
   --scrim:rgba(68,62,54,.45); --shadow-seg:rgba(68,62,54,.12); --shadow-toast:rgba(0,0,0,.2); --shadow-modal:rgba(0,0,0,.25);
   /* type */
   --font-display:'Fraunces',Georgia,serif;
-  --font-body:ui-rounded,'SF Pro Rounded',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-body:'Nunito',ui-rounded,'SF Pro Rounded',system-ui,-apple-system,'Segoe UI',sans-serif;
   /* floating glass tab bar (R-1) */
   --tabbar:74px; --tabbar-inset:14px; --tabbar-lift:22px; --tabbar-clear:calc(var(--tabbar) + var(--tabbar-lift) + var(--sab));
   --glass-top:rgba(255,255,255,.72); --glass-bottom:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.85); --glass-hi:rgba(255,255,255,.9);
