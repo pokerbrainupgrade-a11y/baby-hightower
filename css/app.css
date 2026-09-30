@@ -554,3 +554,22 @@ details.wa-ahead .wa-list{margin:0}
 .pager-copy{align-self:flex-start;margin:-4px 0 6px -8px}
 .pager-card p.pager-small{font-size:13px;color:var(--ink-soft);line-height:1.45;margin-top:6px}
 .pager-card .k .nw{white-space:nowrap}
+
+/* ---------- Wombkeepers reference (#resources/wombkeepers) ---------- */
+.wk-head{margin-bottom:10px}
+.wk-head small{display:block;color:var(--ink-soft);font-size:13px;margin-top:2px}
+.wk details.info.wk-sec{margin:8px 0;background:var(--white)}
+.wk details.info.wk-band{margin:8px 0;background:var(--paper)}
+.wk-sub{font-size:12px;font-weight:750;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:12px 0 2px}
+.wk-sub-lg{font-size:13px;color:var(--sage-deep);margin-top:16px}
+.wk-row{padding:8px 0;border-top:1px solid var(--line)}
+.wk-row:first-child{border-top:0}
+.wk-row b{display:block}
+.wk-row small,.wk-contact small{display:block;color:var(--ink-soft);font-size:12.5px}
+.wk-contact{padding:10px 0;border-top:1px solid var(--line)}
+.wk-contact:first-child{border-top:0}
+.wk-contact b{display:block;font-size:15px}
+.wk-acts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.wk-acts .btn{text-decoration:none}
+.info-body p.wk-src{font-size:11.5px;color:var(--sand-deep);margin:2px 0 6px}
+.pager-card .linkrow{margin-top:12px}

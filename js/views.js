@@ -17,7 +17,7 @@ import { BUDGET_LISTS, summarize, fmtMoney } from './budget.js';
 import { SHOW, actionsFor, nextAfter, upcoming, weekRange, linkHash, linkTarget, categoryOf } from './weekactions.js';
 import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
-import { pagerCard, bindPager } from './wombkeepersview.js';
+import { pagerCard, bindPager, wombkeepersPage } from './wombkeepersview.js';
 export { uiState };
 
 // ---------- shared pieces ----------
@@ -910,6 +910,7 @@ const obcall = {
 // ---------- RESOURCES ----------
 // #resources → OB First Call entry + the Listen list (data/resources.json).
 // #resources/obcall → the OB Call page above, unchanged, under a back button.
+// #resources/wombkeepers → the Wombkeepers reference (js/wombkeepersview.js).
 // Listened state is the `resources` collection, one doc per episode id:
 //   { done, checkedBy, checkedAt }  — the same shape as a checklist tick.
 const tagKind = (t) => (/members/i.test(t) ? 'mon' : /best/i.test(t) ? 'fam' : 'med');
@@ -920,6 +921,11 @@ const resources = {
     if (params[0] === 'obcall') {
       root.innerHTML = `<div class="page"><button class="back" data-go="resources">← Resources</button><div id="obHost"></div></div>`;
       obcall.render(root.querySelector('#obHost'));
+      return;
+    }
+    if (params[0] === 'wombkeepers') {
+      root.innerHTML = `<div class="page"><button class="back" data-go="resources">← Resources</button><div id="wkHost"></div></div>`;
+      wombkeepersPage.render(root.querySelector('#wkHost'));
       return;
     }
     root.innerHTML = `<section id="resFrame"></section>`;
@@ -934,6 +940,7 @@ const resources = {
   },
   update() {
     if (this.params[0] === 'obcall') return obcall.update();
+    if (this.params[0] === 'wombkeepers') return wombkeepersPage.update();
     const L = store.resources.listen;
     const steps = OB_CALL.sections.filter((s) => !s.optional);
     const p = ob.progress(steps);
@@ -941,6 +948,11 @@ const resources = {
     const lp = store.listenProgress(all);
     this.frame.innerHTML = `
       <div class="sec-head"><h2 class="serif">Resources</h2><small>guides & listening, shared</small></div>
+      <div class="grp">Wombkeepers</div>
+      <button class="list-card" data-go="resources/wombkeepers">
+        <div class="t"><b>Wombkeepers reference</b><span>→</span></div>
+        <div class="s">From the practice's pregnancy guide — contacts, when to call, schedule, fees</div>
+      </button>
       <div class="grp">OB First Call</div>
       <button class="list-card" data-go="resources/obcall">
         <div class="t"><b>${esc(OB_CALL.title)}</b><span>${p.done}/${p.total}</span></div>
