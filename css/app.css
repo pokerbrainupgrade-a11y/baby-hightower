@@ -18,7 +18,10 @@
   /* type */
   --font-display:'Fraunces',Georgia,serif;
   --font-body:ui-rounded,'SF Pro Rounded',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --tabbar:58px;
+  /* floating glass tab bar (R-1) */
+  --tabbar:74px; --tabbar-inset:14px; --tabbar-lift:22px; --tabbar-clear:calc(var(--tabbar) + var(--tabbar-lift) + var(--sab));
+  --glass-top:rgba(255,255,255,.72); --glass-bottom:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.85); --glass-hi:rgba(255,255,255,.9);
+  --glass-shadow:rgba(68,62,54,.16); --glass-fallback:rgba(255,249,242,.94);
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
 
   /* font sizes — a value scale for now: 23 fixed sizes + the hero clamp (see the UI-0 rhythm task) */
@@ -27,7 +30,7 @@
   /* spacing — a value scale for now (padding, margin, gap, offsets); off-4px values are the UI-0 rhythm task */
   --sp-1:1px; --sp-2:2px; --sp-3:3px; --sp-4:4px; --sp-5:5px; --sp-6:6px; --sp-7:7px; --sp-8:8px; --sp-9:9px; --sp-10:10px; --sp-11:11px; --sp-12:12px; --sp-13:13px; --sp-14:14px; --sp-15:15px; --sp-16:16px; --sp-17:17px; --sp-18:18px; --sp-19:19px; --sp-20:20px; --sp-22:22px; --sp-24:24px; --sp-26:26px; --sp-28:28px; --sp-30:30px; --sp-32:32px; --sp-36:36px; --sp-60:60px; --sp-72:72px;
   /* radii */
-  --r-pill:999px;
+  --r-pill:999px; --r-tabbar:37px; --r-tab:31px;
   /* radii — a value scale for now */
   --r-2:2px; --r-6:6px; --r-8:8px; --r-9:9px; --r-10:10px; --r-11:11px; --r-12:12px; --r-14:14px; --r-16:16px; --r-18:18px; --r-22:22px;
   /* element sizes — a value scale for now (width / height / min / max) */
@@ -68,10 +71,12 @@ b{font-weight:700}
 .sync-dot[data-state="error"]{background:var(--warn)}
 @keyframes pulse{50%{opacity:.35}}
 .icon-btn{background:none;border:0;color:var(--ink-soft);padding:var(--sp-6);display:flex;border-radius:var(--r-10)}
-.view{flex:1;width:100%;max-width:var(--size-660);margin:0 auto;padding:var(--sp-16) var(--sp-16) calc(var(--tabbar) + var(--sab) + var(--sp-28))}
+.view{flex:1;width:100%;max-width:var(--size-660);margin:0 auto;padding:var(--sp-16) var(--sp-16) calc(var(--tabbar-clear) + var(--sp-28))}
 
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:var(--sp-5) var(--sp-4) calc(var(--sp-5) + var(--sab))}
-.tabbar button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:var(--sp-2);font-size:var(--fs-11);font-weight:700;color:var(--ink-soft);padding:var(--sp-4) 0 var(--sp-2);min-height:var(--size-48);border-radius:var(--r-12)}
+.tabbar{position:fixed;left:var(--tabbar-inset);right:var(--tabbar-inset);bottom:calc(var(--tabbar-lift) + var(--sab));max-width:var(--size-636);margin:0 auto;height:var(--tabbar);z-index:30;display:flex;gap:var(--sp-2);padding:var(--sp-5);border-radius:var(--r-tabbar);background:linear-gradient(180deg,var(--glass-top) 0%,var(--glass-bottom) 100%);backdrop-filter:blur(18px) saturate(1.6);-webkit-backdrop-filter:blur(18px) saturate(1.6);border:1px solid var(--glass-edge);box-shadow:0 10px 30px var(--glass-shadow),inset 0 1px 0 var(--glass-hi)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.tabbar{background:var(--glass-fallback)}}
+.tabbar button{flex:1 1 auto;min-width:var(--size-44);background:none;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-2);font-size:var(--fs-11);font-weight:700;color:var(--ink);padding:0;border-radius:var(--r-tab)}
+.tabbar button span{white-space:nowrap;letter-spacing:-.01em}
 .tabbar svg{width:var(--size-24);height:var(--size-24);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .tabbar button.on{color:var(--deep)}
 .tabbar button.on svg{filter:drop-shadow(0 0 6px var(--light-glow))}
@@ -350,7 +355,7 @@ details.archive summary small{font-family:inherit;font-size:var(--fs-13-5);color
 .who input{position:absolute;opacity:0;inset:0}
 .who span{display:block;text-align:center;padding:var(--sp-16) var(--sp-8);border:1.5px solid var(--line);border-radius:var(--r-14);font-weight:750;font-size:var(--fs-17);background:var(--surface)}
 .who input:checked+span{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabbar) + var(--sab) + var(--sp-12));z-index:60;background:var(--ink);color:var(--bg);padding:var(--sp-12) var(--sp-16);border-radius:var(--r-14);display:flex;gap:var(--sp-12);align-items:center;font-size:var(--fs-14-5);max-width:calc(100% - var(--size-32));box-shadow:0 8px 24px var(--shadow-toast)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabbar-clear) + var(--sp-12));z-index:60;background:var(--ink);color:var(--bg);padding:var(--sp-12) var(--sp-16);border-radius:var(--r-14);display:flex;gap:var(--sp-12);align-items:center;font-size:var(--fs-14-5);max-width:calc(100% - var(--size-32));box-shadow:0 8px 24px var(--shadow-toast)}
 .toast button{background:var(--light);color:var(--ink);border:0;border-radius:var(--r-9);padding:var(--sp-7) var(--sp-12);font-weight:750;white-space:nowrap}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.page{animation:none}}
 
@@ -408,7 +413,7 @@ i.say{font-family:var(--font-display);font-style:italic;font-size:var(--fs-16-5)
 .ob-foot{font-size:var(--fs-13-5);color:var(--ink-soft);margin:var(--sp-4) var(--sp-2) var(--sp-18);line-height:1.5}
 .ob-reset{width:100%}
 .ob-reset:disabled{opacity:.45;cursor:default}
-.er-pin{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabbar) + var(--sab) + var(--sp-8));z-index:25;width:calc(100% - var(--size-24));max-width:var(--size-636);display:flex;align-items:center;gap:var(--sp-10);background:var(--er);color:var(--on-er);border:0;border-radius:var(--r-14);padding:var(--sp-10) var(--sp-14);font-size:var(--fs-13-5);font-weight:700;line-height:1.3;text-align:left;box-shadow:0 6px 18px var(--er-shadow);transition:opacity .2s,transform .2s}
+.er-pin{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabbar-clear) + var(--sp-8));z-index:25;width:calc(100% - var(--size-24));max-width:var(--size-636);display:flex;align-items:center;gap:var(--sp-10);background:var(--er);color:var(--on-er);border:0;border-radius:var(--r-14);padding:var(--sp-10) var(--sp-14);font-size:var(--fs-13-5);font-weight:700;line-height:1.3;text-align:left;box-shadow:0 6px 18px var(--er-shadow);transition:opacity .2s,transform .2s}
 .er-pin span{flex:1}
 .er-pin i{font-style:normal;font-size:var(--fs-18);flex:none}
 .er-pin.hide{opacity:0;pointer-events:none;transform:translate(-50%,8px)}
@@ -474,7 +479,8 @@ details.q-fold summary{list-style:none;cursor:pointer;-webkit-tap-highlight-colo
 details.q-fold summary::-webkit-details-marker{display:none}
 details.q-fold summary .q-text::after{content:'›';display:inline-block;margin-left:var(--sp-6);color:var(--deep);transition:transform .15s}
 details.q-fold[open] summary .q-text::after{transform:rotate(90deg)}
-@media (max-width:360px){.tabbar button{font-size:var(--fs-10)}}
+/* six tabs in the inset glass bar: each tab is its label's width plus an equal share of the rest, and labels drop to 10px on phones */
+@media (max-width:419px){.tabbar button{font-size:var(--fs-10)}}
 
 /* ---------- open decisions log ---------- */
 .mirror-line{font-size:var(--fs-13-5);color:var(--ink-soft);margin:calc(var(--sp-4) * -1) 0 var(--sp-12);line-height:1.45}
