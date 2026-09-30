@@ -68,3 +68,15 @@ test('pinned contacts first, file order kept; attribution line', () => {
   assert.equal(s[0].label, 'Wombkeepers main office');
   assert.equal(attribution('p.14'), 'Wombkeepers Pregnancy Guide 2025–26, p.14');
 });
+
+test('pending F7–F10 seeds are copied from the guide as-is', () => {
+  const P = JSON.parse(readFileSync(new URL('../data/pending-wombkeepers-seeds.json', import.meta.url), 'utf8'));
+  const band = W.whenToCall.find((b) => b.fromWeek === 28);
+  assert.deepEqual(P.F8.items, band.items);
+  assert.equal(P.F8.pages, band.pages);
+  assert.ok(W.whenToCall.at(-1).items.includes(P.F9.text));
+  assert.match(P.F9.text, /^When your contractions are lasting/);
+  assert.deepEqual(P.F10.transferHospitals.map((h) => [h.name, h.nicu]), [['HonorHealth Scottsdale Shea', 'Level 3 NICU'], ['HonorHealth Sonoran Crossing', 'Level 2 NICU']]);
+  assert.equal(P.F10.pediatrician.text, W.pediatricians.note);
+  assert.match(P.F7.from, /wombkeepers\.json → contacts/);
+});

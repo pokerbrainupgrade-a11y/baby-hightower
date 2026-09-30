@@ -15,6 +15,19 @@
     { "id": "wa-31-shower", "week": 31, "title": "Illinois shower", "detail": "Trip Mar 11–15 · shower Sat Mar 13, 2027", "category": "Logistics" },
     { "id": "wa-34-gobag", "week": 34, "title": "Go bag packed", "detail": "", "category": "Prep", "linkTo": "list:gobag" },
     { "id": "wa-36-orientation", "week": 36, "title": "Birth center orientation", "detail": "", "category": "Class", "linkTo": "visit:Class" },
-    { "id": "wa-36-carseat", "week": 36, "title": "Car seat installed", "detail": "", "category": "Prep", "linkTo": "list:purchases" }
+    { "id": "wa-36-carseat", "week": 36, "title": "Car seat installed", "detail": "", "category": "Prep", "linkTo": "list:purchases" },
+    { "id": "wa-09-member-services", "week": 9, "title": "Call insurance member services: report pregnancy + pending hospitalization", "detail": "Wombkeepers guide p.21", "category": "Logistics" },
+    { "id": "wa-09-birth-ball", "week": 9, "title": "Buy a birth ball (65 cm typical; ask staff for sizing)", "detail": "Wombkeepers guide p.19", "category": "Purchase", "linkTo": "list:purchases" },
+    { "id": "wa-09-pwfa-forms", "week": 9, "title": "Leave/accommodation forms: in person, ≥2 weeks before needed", "detail": "Wombkeepers guide p.15", "category": "Logistics" },
+    { "id": "wa-11-nipt-window", "week": 11, "title": "Wombkeepers NIPT window opens (11–14 wks)", "detail": "For results before Wyoming, draw by Oct 27 · Wombkeepers guide p.6–7", "category": "Appointment", "linkTo": "visit:Lab draw" },
+    { "id": "wa-12-concierge-deposit", "week": 12, "title": "$1,000 concierge deposit due", "detail": "Wombkeepers guide p.2–3", "category": "Logistics" },
+    { "id": "wa-16-afp", "week": 16, "title": "AFP bloodwork", "detail": "Wombkeepers guide p.7", "category": "Appointment", "linkTo": "visit:Lab draw" },
+    { "id": "wa-18-book-anatomy", "week": 18, "title": "Book 20-week anatomy scan at an outside MFM/perinatology office", "detail": "Wombkeepers guide p.7–8", "category": "Appointment", "linkTo": "visit:Ultrasound" },
+    { "id": "wa-28-glucose", "week": 28, "title": "Glucose test + 28-week bloodwork", "detail": "Wombkeepers guide p.7", "category": "Appointment", "linkTo": "visit:Lab draw" },
+    { "id": "wa-29-travel-note", "week": 29, "title": "Request air-travel note for Illinois trip", "detail": "Wombkeepers guide p.19", "category": "Logistics" },
+    { "id": "wa-30-biweekly", "week": 30, "title": "Visits go twice monthly", "detail": "Wombkeepers guide p.5", "category": "Appointment" },
+    { "id": "wa-31-concierge-balance", "week": 31, "title": "Pay concierge balance before the trip", "detail": "Due by wk 32; no payment plans after 32 · Wombkeepers guide p.2, 20", "category": "Logistics" },
+    { "id": "wa-36-gbs", "week": 36, "title": "GBS culture; weekly visits begin", "detail": "Wombkeepers guide p.5, 7", "category": "Appointment", "linkTo": "visit:Lab draw" },
+    { "id": "wa-37-primrose", "week": 37, "title": "Primrose oil available from the office for weeks 37+", "detail": "Wombkeepers guide p.10", "category": "Purchase" }
   ]
 }

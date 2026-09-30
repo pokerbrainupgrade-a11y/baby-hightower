@@ -21,7 +21,7 @@ list, and an "unpriced only" filter with inline estimates; every item on the Pur
 Nursery Build, Clothing, Nursery Essentials and Go Bag lists can carry an estimate,
 actual cost, bought-on date, bought-by, coverage, vendor and link from its ⋯ editor —
 then the **Open decisions** log — a manual mirror of the master plan doc's
-decision layer: eleven seeded decisions with owner, deadline or target week, status,
+decision layer: thirteen seeded decisions with owner, deadline or target week, status,
 context, blocker, what closing unblocks, and the decision itself; closing needs the
 answer written down, and closed ones stay folded at the bottom for good — then Go Bag, Purchases, Legal,
 Nursery Build, First 30 Days, Classes, plus the two sectioned lists — **Baby
@@ -31,7 +31,7 @@ size for clothing), notes, and read-only info cards for the buying rules,
 skin-care and cloth-diaper notes) · **Visits** (the visit log: one-tap add,
 Upcoming pinned on top, each visit with its date + stamped week, type, provider,
 who you saw, vitals as free text, summary, next steps, and the open questions to
-tick off and answer right there; plus the **Results & labs** section — six seeded
+tick off and answer right there; plus the **Results & labs** section — twelve seeded
 records, a status with history, dates, result text, and the dating ultrasound's
 confirmed due date; and the **Symptom log** — by day, with each day's sleep / mood /
 appetite — and **Since last visit**, everything after the latest Completed visit grouped
@@ -99,7 +99,7 @@ npm run icons
 | `js/sync.js` | Optional Firestore mirror, only activates when `firebase-config.js` exists |
 | `js/views.js` · `js/app.js` · `js/ui.js` | The tabs, detail pages, settings · router (with legacy redirects), identity, SW update flow · shared view helpers |
 | `js/symptoms.js` · `js/symptomsview.js` · `data/symptoms.json` · `tests/symptoms.test.js` | Symptom log: the Phoenix day + week stamp, the quick row's ordering, "since last visit" off the latest Completed visit, grouping and the copy text · the quick row, sheet, log and since pages · the tag set + moods (strings only) · tests |
-| `js/weekactions.js` · `data/week-actions.json` · `tests/weekactions.test.js` | "This week": week lookups, the empty-week fallback, the four-week lookahead, link targets · the fourteen seeds (plain logistics) · tests, incl. the pinned check that the pill and the growing card read the same week |
+| `js/weekactions.js` · `data/week-actions.json` · `tests/weekactions.test.js` | "This week": week lookups, the empty-week fallback, the four-week lookahead, link targets · the twenty-seven seeds (plain logistics — the plan timeline plus the Wombkeepers guide's, each citing its page) · tests, incl. the pinned check that the pill and the growing card read the same week |
 | `js/budget.js` · `js/budgetview.js` · `tests/budget.test.js` | Spend tracker: the three numbers, bar tones, breakdowns, the unpriced filter, money parsing, the breast-pump seed overlay · the page + the cost editor / money tags on items · tests against a hand-checked example |
 | `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
@@ -125,10 +125,10 @@ household's due date — absent means the config default; `setBy` / `setAt` /
 math when the date was saved, plus the due date it was counted against —
 `provider`, `seenBy`, `attendees`, `vitals` {weight, bloodPressure,
 fundalHeight, fetalHeartRate — free text}, `summary`, `nextSteps`, `status`
-Upcoming / Completed), `results` (state for the six seeded records in
+Upcoming / Completed), `results` (state for the twelve seeded records in
 `js/visits.js` plus custom ones: `status` with a `history` of {status, at, by},
 `scheduledDate`, `resultDate`, `result`, `notes`, `linkedVisitId`; the dating
-ultrasound also carries `confirmedDueDate`), `decisions` (state for the eleven
+ultrasound also carries `confirmedDueDate`), `decisions` (state for the thirteen
 seeded decisions in `js/decisions.js` plus custom ones: `owner` Q / Staci /
 Both, `decideBy` date, `decideByWeek` integer, `status` Open / Researching /
 Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
@@ -137,6 +137,7 @@ Blocked / Closed, `context`, `blockedBy`, `unblocks`, `decision`, `closedAt`,
 save, never rewritten), `days` (keyed by date: `sleepHours`, `mood`, `appetite`), `weekactions` (done /
 `doneBy` / `doneAt` on the "This week" seeds, plus `custom` items with `week`,
 `title`, `category`).
+Twelve OB questions are seeded as content (`SEED_QUESTIONS` in `js/visits.js`, 1.10.0): they show as Open with no doc, and the first action on one writes its doc (carrying the text). `data/pending-wombkeepers-seeds.json` holds Wombkeepers-sourced seeds for F7–F10; the app doesn't read it.
 Questions gained `askedAtVisitId`
 and the `dropped` status; anything written before 1.5.0 reads as Open. Items on
 the five budget lists may carry `estimatedCost`, `actualCost`, `purchasedAt`,

@@ -98,7 +98,7 @@ export const visits = {
       const answer = ta?.value.trim();
       if (!answer) { ta?.focus(); return; }
       ta.blur();
-      const q = store.get('questions', key) || {};
+      const q = store.question(key) || {};
       store.write('questions', key, { status: 'answered', answer, answeredBy: store.user, answeredAt: Date.now(), askedAtVisitId: t.dataset.visit, askedBy: q.askedBy || store.user, askedAt: q.askedAt || Date.now() });
     } else if (act === 'q-detach') store.write('questions', key, { status: 'to_ask', askedAtVisitId: null });
     else if (act === 'r-status') store.setResultStatus(key, val);

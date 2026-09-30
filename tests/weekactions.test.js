@@ -54,15 +54,20 @@ test('pill week == growing-card week, pinned across Sep→Oct and 2026→2027 in
 });
 
 // ---------- seeds ----------
-test('fourteen seeds from the plan timeline, nothing else on them', () => {
+test('twenty-seven seeds: the plan timeline, then the Wombkeepers guide logistics (1.10.0), nothing else on them', () => {
   const A = DATA.actions;
-  assert.equal(A.length, 14);
+  assert.equal(A.length, 27);
   assert.deepEqual(A.map((a) => [a.week, a.title]), [
     [10, 'NIPT draw window opens'], [12, 'First trimester ends — announcement window opens'],
     [14, "Wyoming trip — tell Staci's parents"], [16, "Thanksgiving — tell Q's parents"], [16, 'Insurance / open-enrollment decision window opens'],
     [20, 'Anatomy scan'], [20, 'Doula decision due'], [28, 'Movement pattern awareness begins'],
     [30, 'Pediatrician selected'], [30, 'Birth preferences sheet drafted'], [31, 'Illinois shower'],
     [34, 'Go bag packed'], [36, 'Birth center orientation'], [36, 'Car seat installed'],
+    [9, 'Call insurance member services: report pregnancy + pending hospitalization'], [9, 'Buy a birth ball (65 cm typical; ask staff for sizing)'],
+    [9, 'Leave/accommodation forms: in person, ≥2 weeks before needed'], [11, 'Wombkeepers NIPT window opens (11–14 wks)'],
+    [12, '$1,000 concierge deposit due'], [16, 'AFP bloodwork'], [18, 'Book 20-week anatomy scan at an outside MFM/perinatology office'],
+    [28, 'Glucose test + 28-week bloodwork'], [29, 'Request air-travel note for Illinois trip'], [30, 'Visits go twice monthly'],
+    [31, 'Pay concierge balance before the trip'], [36, 'GBS culture; weekly visits begin'], [37, 'Primrose oil available from the office for weeks 37+'],
   ]);
   for (const a of A) {
     for (const k of Object.keys(a)) assert.ok(['id', 'week', 'title', 'detail', 'category', 'linkTo'].includes(k), `${a.id}: ${k}`);
@@ -70,7 +75,9 @@ test('fourteen seeds from the plan timeline, nothing else on them', () => {
     assert.equal(categoryOf(a), a.category);
     assert.ok(!/should|feel|symptom|normal/i.test(a.title + ' ' + a.detail), `no clinical copy: ${a.id}`);
   }
-  assert.equal(new Set(A.map((a) => a.id)).size, 14);
+  // every guide-sourced one cites its page
+  for (const a of A.slice(14)) assert.match(a.detail, /Wombkeepers guide p\.[\d–, ]+$/, a.id);
+  assert.equal(new Set(A.map((a) => a.id)).size, 27);
   assert.deepEqual(DATA.categories, ['Appointment', 'Decision', 'Purchase', 'Logistics', 'Class', 'Prep']);
   // the decision links
   assert.equal(A.find((a) => a.id === 'wa-20-doula').linkTo, 'decision:d-doula');
@@ -88,14 +95,16 @@ test('week lookups: this week, the next item for an empty week, the four-week lo
   setDue(null);
   const A = DATA.actions;
   assert.deepEqual(actionsFor(A, 20).map((a) => a.id), ['wa-20-anatomy', 'wa-20-doula']);
-  assert.deepEqual(actionsFor(A, 16).map((a) => a.id), ['wa-16-thanksgiving', 'wa-16-insurance']);
+  assert.deepEqual(actionsFor(A, 16).map((a) => a.id), ['wa-16-thanksgiving', 'wa-16-insurance', 'wa-16-afp']);   // plan seeds, then the guide's, in file order
   assert.deepEqual(actionsFor(A, 7), []);
-  assert.equal(nextAfter(A, 7).id, 'wa-10-nipt');
-  assert.equal(nextAfter(A, 10).id, 'wa-12-t1-ends');
-  assert.equal(nextAfter(A, 36), null);
-  assert.deepEqual(upcoming(A, 8).map((g) => [g.week, g.items.length]), [[10, 1], [12, 1]]);   // weeks 9–12
+  assert.equal(nextAfter(A, 7).id, 'wa-09-member-services');
+  assert.equal(nextAfter(A, 10).id, 'wa-11-nipt-window');
+  assert.equal(nextAfter(A, 36).id, 'wa-37-primrose');
+  assert.equal(nextAfter(A, 37), null);
+  assert.deepEqual(upcoming(A, 8).map((g) => [g.week, g.items.length]), [[9, 3], [10, 1], [11, 1], [12, 2]]);   // weeks 9–12
   assert.deepEqual(upcoming(A, 12).map((g) => g.week), [14, 16]);
-  assert.deepEqual(upcoming(A, 36), []);
+  assert.deepEqual(upcoming(A, 36).map((g) => g.week), [37]);
+  assert.deepEqual(upcoming(A, 37), []);
   // week 20 is Mon Dec 21 – Sun Dec 27, 2026 under the default anchor
   assert.deepEqual(weekRange(20), { from: '2026-12-21', to: '2026-12-27', label: 'Mon, Dec 21 – Sun, Dec 27' });
   assert.equal(weekRange(21).from, '2026-12-28');
@@ -122,7 +131,7 @@ test('the card follows the anchor: Dec 21, 2026 is week 20 by default and week 1
 });
 test('store: ticks sync-shaped with who/when, custom items land in their week, seeds untouched', async () => {
   fresh();
-  assert.equal(store.weekActionList().length, 14);
+  assert.equal(store.weekActionList().length, 27);
   assert.equal(store.docs.size, 0);
   const d = await store.setActionDone('wa-20-doula', true);
   assert.deepEqual([d.done, d.doneBy, d.doneAt > 0], [true, 'Q', true]);

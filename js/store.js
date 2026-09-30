@@ -20,8 +20,8 @@
 import * as db from './db.js';
 import { DUE } from './config.js';
 import { setDue, estimateWindow, trimester, isISO, todayISO } from './dates.js';
-import { SEED_RESULTS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
-import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch } from './decisions.js';
+import { SEED_RESULTS, SEED_QUESTIONS, DATING_ULTRASOUND_ID, DEFAULT_PROVIDER, gestFor, statusForDate, statusPatch, isOpenQ, dueBanner, resultStatus } from './visits.js';
+import { SEED_DECISIONS, DEC_STATUS, decStatus, closePatch, mergeDecision } from './decisions.js';
 import { stampFor, severityOf, rankTags, lastCompletedVisit, sinceVisit, daysSince } from './symptoms.js';
 import { BUDGET_LISTS, DEFAULT_CEILING, SEED_COSTS, PURCHASERS, COVERAGE, DEFAULT_COVERAGE, parseMoney } from './budget.js';
 import { CATEGORIES as WA_CATEGORIES, weekOf as waWeek } from './weekactions.js';
@@ -91,7 +91,12 @@ export const store = {
   /** Merge `patch` into coll/key, stamp author + time, persist, mirror. */
   async write(coll, key, patch) {
     const id = `${coll}/${key}`;
-    const prev = this.docs.get(id) || { id, coll, key, createdAt: Date.now(), createdBy: this.user };
+    let prev = this.docs.get(id) || { id, coll, key, createdAt: Date.now(), createdBy: this.user };
+    // a seeded question's first doc carries its text, so the JSON export reads on its own
+    if (coll === 'questions' && !this.docs.has(id)) {
+      const sq = SEED_QUESTIONS.find((q) => q.id === key);
+      if (sq) prev = { ...prev, text: sq.text, author: sq.author, seeded: true };
+    }
     const doc = { ...prev, ...patch, updatedAt: Date.now(), updatedBy: this.user };
     this.docs.set(id, doc);
     await db.put(doc);
@@ -191,7 +196,19 @@ export const store = {
   listenProgress(episodes) { return this.tally(episodes.map((e) => this.listened(e.id))); },
 
   notes() { return this.list('notes').sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); },
-  questions() { return this.list('questions').sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0)); },
+  /** Seeded questions (content, 1.10.0) with their state merged in, plus every written one, minus deleted — oldest first. */
+  questions() {
+    const out = [];
+    for (const q of SEED_QUESTIONS) {
+      const d = this.get('questions', q.id);
+      if (d?.deleted) continue;
+      out.push({ ...q, ...(d || {}), id: q.id, key: q.id, text: q.text, createdAt: q.createdAt, seed: true });
+    }
+    const seeded = new Set(SEED_QUESTIONS.map((q) => q.id));
+    for (const d of this.list('questions')) if (!seeded.has(d.key)) out.push(d);
+    return out.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  },
+  question(key) { return this.questions().find((q) => q.key === key) || null; },
   /** Questions still waiting on a visit: Open or Asked (no status at all — pre-1.5.0 — counts as Open). */
   openQuestions() { return this.questions().filter(isOpenQ); },
   /** Questions attached to a visit (asked or answered there). */
@@ -256,10 +273,10 @@ export const store = {
   },
 
   // ---------- open decisions log ----------
-  /** The eleven seeded decisions (content) + what's been typed on them (state) + custom ones. Nothing is ever removed. */
+  /** The thirteen seeded decisions (content) + what's been typed on them (state) + custom ones. Nothing is ever removed. */
   decisions() {
     const out = [];
-    for (const d of SEED_DECISIONS) out.push({ ...d, ...(this.get('decisions', d.id) || {}), id: d.id, key: d.id, title: d.title, seed: true });
+    for (const d of SEED_DECISIONS) out.push(mergeDecision(d, this.get('decisions', d.id) || {}));
     const custom = this.list('decisions').filter((d) => d.custom).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
     for (const d of custom) out.push({ ...d, id: d.key, seed: false });
     return out;

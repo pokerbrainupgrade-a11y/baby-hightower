@@ -614,6 +614,24 @@
           "order": 8,
           "group": "Transfer kit — stays in the car, hopefully never opened",
           "text": "Pillow from home, longer snack supply"
+        },
+        {
+          "id": "gobag-10",
+          "order": 9,
+          "group": "Main bag — the birth center hours",
+          "text": "Partner bag (Wombkeepers list p.17): fan/water spray, comfortable shoes, change of clothes, bendy straws, swimwear, phone + charger, camera, snacks"
+        },
+        {
+          "id": "gobag-11",
+          "order": 10,
+          "group": "Main bag — the birth center hours",
+          "text": "Nursing bras & camis (2–3) + breast pads · Wombkeepers list p.17"
+        },
+        {
+          "id": "gobag-12",
+          "order": 11,
+          "group": "Main bag — the birth center hours",
+          "text": "Birth ball + pump · Wombkeepers list p.17"
         }
       ]
     },
@@ -664,6 +682,30 @@
           "order": 6,
           "group": "Spend schedule",
           "text": "Buffer for what you learn you need after baby arrives — Held back · $800"
+        },
+        {
+          "id": "purchases-8",
+          "order": 7,
+          "group": "Spend schedule",
+          "text": "Birth ball (55/65/75 cm by height) — now · Wombkeepers guide p.19"
+        },
+        {
+          "id": "purchases-9",
+          "order": 8,
+          "group": "Spend schedule",
+          "text": "V-shaped nursing pillow · Wombkeepers guide p.17"
+        },
+        {
+          "id": "purchases-10",
+          "order": 9,
+          "group": "Spend schedule",
+          "text": "Evening primrose oil — wk 37 · Wombkeepers guide p.10"
+        },
+        {
+          "id": "purchases-11",
+          "order": 10,
+          "group": "Spend schedule",
+          "text": "Witch hazel pads · Wombkeepers guide p.9, 27"
         }
       ]
     },
@@ -804,6 +846,12 @@
           "order": 4,
           "group": "The skills schedule",
           "text": "Birth-center orientation — Renewal Center walkthrough + paperwork; do it in March, done before week 36."
+        },
+        {
+          "id": "classes-6",
+          "order": 5,
+          "group": "The skills schedule",
+          "text": "Included in concierge fee: childbirth, breastfeeding, parenting education, prenatal yoga, lactation group — see wombkeepers.com calendar (p.1–2)"
         }
       ]
     }

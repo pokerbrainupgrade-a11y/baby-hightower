@@ -1,0 +1,44 @@
+{
+  "note": "Wombkeepers-sourced seeds for features not built yet (F7–F10). Not read by the app; the future builds consume this. Every string below is copied from data/wombkeepers.json as-is.",
+  "source": "data/wombkeepers.json",
+  "F7": {
+    "title": "Contacts",
+    "from": "data/wombkeepers.json → contacts",
+    "note": "Seed F7 Contacts from that array (label, organization, phone, email, address, category, pinned, notes, pages)."
+  },
+  "F8": {
+    "title": "What Wombkeepers told us to watch for",
+    "band": "Weeks 28 through 34",
+    "fromWeek": 28,
+    "toWeek": 34,
+    "items": [
+      "Call for all of the same reasons you called from 16-28 weeks and also for:",
+      "Decreased Fetal Movement: From now on, one time per day, you should sit down with your hands on your belly and count your baby's movements. The baby should move at least 10 times in one hour. Choose a time when the baby tends to be the most active and once you get to ten, you are done. The importance of the counts is to make you pay attention to the way the baby moves, so if there was ever a day that it was not normal, you would try to get your counts and if you could not, we would send you to have the baby monitored right away."
+    ],
+    "pages": "p.14"
+  },
+  "F9": {
+    "title": "When Wombkeepers said to call",
+    "text": "When your contractions are lasting between 30s to 1 minute, coming every 3-5 minutes, for at least an hour, it is time to notify the doctor that you are likely in labor if you are a first time mom. Second time moms should notify the doctor when contractions are coming every 5-7 minutes, as second labor can be faster.",
+    "band": "Weeks 34 through delivery",
+    "pages": "p.14"
+  },
+  "F10": {
+    "transferHospitals": [
+      {
+        "name": "HonorHealth Scottsdale Shea",
+        "nicu": "Level 3 NICU",
+        "pages": "p.16"
+      },
+      {
+        "name": "HonorHealth Sonoran Crossing",
+        "nicu": "Level 2 NICU",
+        "pages": "p.16"
+      }
+    ],
+    "pediatrician": {
+      "text": "You need to decide on a pediatrician prior to the delivery of your baby and this should be indicated on your birth plan.",
+      "pages": "p.18"
+    }
+  }
+}

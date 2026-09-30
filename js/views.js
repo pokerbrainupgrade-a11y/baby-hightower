@@ -612,7 +612,7 @@ const questions = {
       const t = e.target.closest('[data-q]');
       if (!t) return;
       const key = t.dataset.q, act = t.dataset.act;
-      const q = store.get('questions', key);
+      const q = store.question(key) || {};
       if (act === 'asked') store.write('questions', key, { status: 'asked', askedBy: store.user, askedAt: Date.now() });
       else if (act === 'answer') { uiState.answering.add(key); this.update(); this.frame.querySelector(`textarea[data-q-ans="${CSS.escape(key)}"]`)?.focus(); }
       else if (act === 'save') {

@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { DUE, LMP } from '../js/config.js';
 import { setDue, summary, todayISO, currentLMP, currentDue, formatGestation } from '../js/dates.js';
 import {
-  SEED_RESULTS, RESULT_STATUS, RESULT_CATEGORIES, DATING_ULTRASOUND_ID, VISIT_TYPES, VITALS,
+  SEED_RESULTS, SEED_QUESTIONS, RESULT_STATUS, RESULT_CATEGORIES, DATING_ULTRASOUND_ID, VISIT_TYPES, VITALS,
   gestFor, gestLabel, statusForDate, sortVisits, statusPatch, dueBanner,
   qStatus, qLabel, isOpenQ, qPasses, resultStatus,
 } from '../js/visits.js';
@@ -26,29 +26,59 @@ store.write = async function (coll, key, patch) {
 };
 
 // ---------- seeds + vocab ----------
-test('six results are seeded as "Not yet ordered", name only', () => {
-  assert.deepEqual(SEED_RESULTS.map((r) => r.name), ['Dating ultrasound', 'First trimester bloodwork', 'NIPT (cell-free DNA)', 'Anatomy scan', 'Glucose screening', 'Group B strep']);
+test('twelve results are seeded as "Not yet ordered", name only (the 1.10.0 six also carry their guide page)', () => {
+  assert.deepEqual(SEED_RESULTS.map((r) => r.name), ['Dating ultrasound', 'First trimester bloodwork', 'NIPT (cell-free DNA)', 'Anatomy scan', 'Glucose screening', 'Group B strep',
+    'Recessive carrier screening', 'Nuchal translucency ultrasound', 'AFP bloodwork', '28-week bloodwork — HIV/anemia repeat', 'Blood type & Rh', 'Pap smear']);
   for (const r of SEED_RESULTS) {
-    assert.deepEqual(Object.keys(r).sort(), ['category', 'id', 'name']);   // no dates, no descriptions, no status text
+    const keys = r.id.startsWith('res-') ? ['category', 'id', 'name', 'notes'] : ['category', 'id', 'name'];
+    assert.deepEqual(Object.keys(r).sort(), keys);   // no dates, no descriptions, no status text
+    if (r.notes) assert.match(r.notes, /^Per Wombkeepers guide p\.[\d–]+$/, r.id);
     assert.ok(RESULT_CATEGORIES.includes(r.category));
     assert.equal(resultStatus(r), 'Not yet ordered');
   }
-  assert.equal(new Set(SEED_RESULTS.map((r) => r.id)).size, 6);
+  assert.equal(new Set(SEED_RESULTS.map((r) => r.id)).size, 12);
   assert.equal(SEED_RESULTS[0].id, DATING_ULTRASOUND_ID);
   assert.deepEqual(RESULT_STATUS, ['Not yet ordered', 'Ordered', 'Scheduled', 'Sample taken', 'Resulted', 'Reviewed with provider']);
   assert.deepEqual(VISIT_TYPES, ['Prenatal', 'Ultrasound', 'Lab draw', 'Class', 'Other']);
   assert.deepEqual(VITALS.map((v) => v.key), ['weight', 'bloodPressure', 'fundalHeight', 'fetalHeartRate']);
 });
 
-test('seeded results are content: store.results() shows all six with no docs, and a doc only adds state', () => {
+test('seeded results are content: store.results() shows all twelve with no docs, and a doc only adds state', () => {
   fresh();
-  assert.equal(store.results().length, 6);
+  assert.equal(store.results().length, 12);
   assert.equal(store.docs.size, 0);
   store.docs.set('results/r-nipt', { id: 'results/r-nipt', coll: 'results', key: 'r-nipt', status: 'Ordered', notes: 'x' });
   const nipt = store.result('r-nipt');
   assert.equal(nipt.name, 'NIPT (cell-free DNA)');   // name still from the seed
   assert.equal(nipt.status, 'Ordered');
-  assert.equal(store.results().length, 6);
+  assert.equal(store.results().length, 12);
+  // a typed note wins over the seeded page note
+  assert.equal(store.result('res-afp').notes, 'Per Wombkeepers guide p.7');
+  store.docs.set('results/res-afp', { id: 'results/res-afp', coll: 'results', key: 'res-afp', notes: 'booked' });
+  assert.equal(store.result('res-afp').notes, 'booked');
+});
+
+test('twelve seeded OB questions: Open, no visit, in order; state docs merge, deletes hide, written ones follow', () => {
+  fresh();
+  assert.equal(SEED_QUESTIONS.length, 12);
+  assert.equal(new Set(SEED_QUESTIONS.map((q) => q.id)).size, 12);
+  const qs = store.questions();
+  assert.equal(qs.length, 12);
+  assert.equal(store.docs.size, 0);
+  assert.ok(qs.every((q) => qStatus(q) === 'to_ask' && !q.askedAtVisitId && q.author === 'Q'));
+  assert.match(qs[0].text, /^Is Staci's Banner\|Aetna plan/);
+  assert.match(qs[11].text, /^Vaccines — we want the minimum/);
+  assert.equal(store.openQuestions().length, 12);
+  store.docs.set('questions/q-wk-02', { id: 'questions/q-wk-02', coll: 'questions', key: 'q-wk-02', status: 'answered', answer: '$x' });
+  store.docs.set('questions/q-wk-03', { id: 'questions/q-wk-03', coll: 'questions', key: 'q-wk-03', deleted: true });
+  store.docs.set('questions/q-mine', { id: 'questions/q-mine', coll: 'questions', key: 'q-mine', text: 'mine', status: 'to_ask', createdAt: Date.parse('2026-10-01') });
+  const after = store.questions();
+  assert.equal(after.length, 12);                       // 12 − 1 deleted + 1 of ours
+  assert.equal(store.question('q-wk-02').answer, '$x');
+  assert.match(store.question('q-wk-02').text, /^Renewal Center facility fee/);   // text stays the seed's
+  assert.equal(store.question('q-wk-03'), null);
+  assert.equal(after[after.length - 1].key, 'q-mine');
+  assert.equal(store.openQuestions().length, 11);
 });
 
 test('a status change appends to history with who and when; unknown statuses are refused', () => {
