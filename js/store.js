@@ -27,6 +27,8 @@ import { BUDGET_LISTS, DEFAULT_CEILING, SEED_COSTS, PURCHASERS, COVERAGE, DEFAUL
 import { CATEGORIES as WA_CATEGORIES, weekOf as waWeek } from './weekactions.js';
 
 const IDENTITY_KEY = 'bh.identity';
+/** R-1 themes. The choice is a household setting (settings/theme), so both phones follow it. */
+export const THEMES = ['current', 'boy', 'girl'];
 
 export const store = {
   docs: new Map(),
@@ -64,6 +66,18 @@ export const store = {
   // Every change (local or from the other phone) re-anchors the date math
   // first, so a due-date edit is already in effect when the views redraw.
   emit() { setDue(this.due); for (const fn of this.listeners) fn(); },
+
+  // ---------- theme ----------
+  /** The household's theme: settings/theme if set (and known), else 'current'. */
+  get theme() {
+    const t = this.get('settings', 'theme')?.theme;
+    return THEMES.includes(t) ? t : 'current';
+  },
+  get themeDoc() { return this.get('settings', 'theme') || null; },
+  setTheme(theme) {
+    if (!THEMES.includes(theme)) return Promise.resolve(null);
+    return this.write('settings', 'theme', { theme, setBy: this.user, setAt: Date.now() });
+  },
 
   // ---------- due date ----------
   /** The household's due date: settings/due if set (and sane), else the config default. */

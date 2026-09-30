@@ -77,6 +77,14 @@ document.addEventListener('click', (e) => {
 addEventListener('hashchange', route);
 
 // Re-render on data changes, but never yank an in-progress edit out from under a thumb.
+// The theme is a household setting: apply it on every change (including the other phone's), and
+// remember it on this phone so index.html can paint it before the app boots next time.
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', store.theme);
+  try { localStorage.setItem('bh.theme', store.theme); } catch { /* private mode: paint catches up at boot */ }
+}
+store.subscribe(applyTheme);
+
 store.subscribe(() => {
   const a = document.activeElement;
   if (a && a.hasAttribute('data-hold') && $('#view').contains(a)) { pendingUpdate = true; return; }
@@ -140,6 +148,7 @@ async function registerSW() {
     document.body.innerHTML = `<div class="empty" style="padding:var(--sp-60) var(--sp-20)"><b>Couldn't start</b>${e.message}</div>`;
     return;
   }
+  applyTheme();
   $('#app').hidden = false;
   dateEditor.bind();
   symptomSheet.bind();

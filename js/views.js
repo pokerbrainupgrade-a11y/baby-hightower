@@ -4,7 +4,7 @@
 // frame and its inputs are kept.
 // render() builds the static frame once and binds listeners on it; update()
 // re-renders only the live containers, so the frame's inputs keep focus.
-import { store } from './store.js';
+import { store, THEMES } from './store.js';
 import { summary, todayISO, formatGestation, formatStamp, formatDate, formatTime, windowLabel, dateAt, currentLMP, noteFor } from './dates.js';
 import { APP_VERSION, DUE, USERS } from './config.js';
 import { OB_CALL } from './obcall.js';
@@ -987,6 +987,7 @@ const resources = {
 };
 
 // ---------- SETTINGS ----------
+const THEME_LABEL = { current: 'Current', boy: 'Boy', girl: 'Girl' };
 const settings = {
   render(root) {
     root.innerHTML = `<section id="setFrame"></section>`;
@@ -1000,6 +1001,12 @@ const settings = {
       else if (act === 'update') navigator.serviceWorker?.getRegistration().then((r) => r?.update()).then(() => window.toast?.('Checked for updates'));
       else if (act === 'reload') location.reload();
       else if (act === 'due-reset') store.setDueDate(null).then(() => window.toast?.(`Due date back to ${formatDate(DUE, { year: true })}`));
+      else if (act === 'theme') {
+        const theme = t.dataset.val;
+        if (theme === store.theme) return;
+        if (!confirm(`Switch the app to the ${THEME_LABEL[theme]} theme?\n\nIt changes on both phones.`)) return;
+        store.setTheme(theme).then(() => window.toast?.(`${THEME_LABEL[theme]} theme on both phones`));
+      }
     });
     this.frame.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1034,6 +1041,10 @@ const settings = {
         <div class="row"><span class="l">Switch</span><span>${USERS.filter((u) => u !== id.user).map((u) => `<button class="btn sm" data-act="switch" data-user="${u}">I'm ${u}</button>`).join(' ')}</span></div>
         <div class="row"><span class="l">Sync</span><b class="status" data-state="${esc(s.state)}"><i></i>${esc(s.msg)}</b></div>
         <div class="row"><span class="l">Network</span><b>${navigator.onLine ? 'Online' : 'Offline'}</b></div>
+      </div>
+      <div class="field"><span>Theme</span>
+        <div class="opts theme-opts" role="group" aria-label="Theme">${THEMES.map((th) => `<button type="button" class="opt${store.theme === th ? ' on' : ''}" data-act="theme" data-val="${th}" aria-pressed="${store.theme === th}"><i class="swatch" data-swatch="${th}" aria-hidden="true"></i>${THEME_LABEL[th]}</button>`).join('')}</div>
+        <small>${store.themeDoc?.theme ? `Set by ${stamp(store.themeDoc.setBy, store.themeDoc.setAt)}. ` : 'The default. '}Shared: both phones follow it.</small>
       </div>
       <form class="field" id="dueForm"><span>Due date</span>
         <div class="addrow" style="padding:0"><input type="date" name="due" data-hold value="${esc(store.due)}" required><button class="btn sm primary" type="submit">Save</button></div>

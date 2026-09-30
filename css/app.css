@@ -1,15 +1,18 @@
 @font-face{font-family:'Fraunces';src:url('../fonts/fraunces.woff2') format('woff2');font-weight:100 900;font-display:swap}
 :root{
-  /* colour roles. light / light-bg / deep / accent2* change with the theme (R-1); the rest are shared */
+  /* colour roles. The theme (data-theme on <html>: current · boy · girl) sets light / light-bg / deep and
+     accent2, plus what's derived from them; everything else is shared. "current" is these defaults.
+     sand-deep is #7A6940 (not #8D7A4E) so date-chip text passes 4.5:1. */
   --bg:#FFF9F2; --surface:#FFFFFF; --surface-alt:#FBF4E9;
   --ink:#443E36; --ink-soft:#77705F; --ink-body:#554E42; --ink-script:#33382C; --ink-pressed:#2E2A25; --line:#EFE6D8;
-  --light:#C7D9A0; --light-bg:#EDF3DC; --light-wash:#F7FAEE; --light-glow:rgba(199,217,160,.9); --deep:#5C7038;
+  --light:#C7D9A0; --light-bg:#EEF3E2; --light-wash:#F7FAEE; --light-glow:rgba(199,217,160,.9); --deep:#5C7038;
   /* 8-bit alpha, written as hex: rgba(92,112,56,.16) / .18 through a var() blends a shade differently in Chrome */
   --deep-rule:#5C703829; --deep-rule-2:#5C70382E;
   --accent2:#EBCFD1; --accent2-bg:#F7E8EA; --accent2-wash:#FBF0F1; --accent2-deep:#B0716F;
-  --sand:#E6D9BC; --sand-bg:#F2EAD4; --sand-deep:#8D7A4E; --hero-glow:#F3E9DA;
+  --sand:#E6D9BC; --sand-bg:#F3EBDA; --sand-deep:#7A6940; --hero-glow:#F3E9DA;
   --warn:#B0716F; --warn-bg:#F7E8EA; --warn-line:#EBCFD1;
   --er:#8C3A45; --er-bg:#F8ECEE; --on-er:#FFFFFF; --er-shadow:rgba(140,58,69,.32);
+  --swatch-current:#C7D9A0; --swatch-boy:#C9DCEB; --swatch-girl:#FFAAAA;   /* Settings → Theme: each theme's light colour, whatever theme is on */
   --status-off:#C9C2B6; --neutral-bg:#EEEAE3;
   --scrim:rgba(68,62,54,.45); --shadow-seg:rgba(68,62,54,.12); --shadow-toast:rgba(0,0,0,.2); --shadow-modal:rgba(0,0,0,.25);
   /* type */
@@ -28,8 +31,21 @@
   /* radii — a value scale for now */
   --r-2:2px; --r-6:6px; --r-8:8px; --r-9:9px; --r-10:10px; --r-11:11px; --r-12:12px; --r-14:14px; --r-16:16px; --r-18:18px; --r-22:22px;
   /* element sizes — a value scale for now (width / height / min / max) */
-  --size-2:2px; --size-2-5:2.5px; --size-8:8px; --size-9:9px; --size-10:10px; --size-11:11px; --size-12:12px; --size-13:13px; --size-15:15px; --size-20:20px; --size-22:22px; --size-24:24px; --size-26:26px; --size-32:32px; --size-36:36px; --size-38:38px; --size-40:40px; --size-42:42px; --size-44:44px; --size-46:46px; --size-48:48px; --size-50:50px; --size-52:52px; --size-54:54px; --size-58:58px; --size-64:64px; --size-72:72px; --size-76:76px; --size-88:88px; --size-120:120px; --size-440:440px; --size-636:636px; --size-660:660px;
+  --size-2:2px; --size-2-5:2.5px; --size-8:8px; --size-9:9px; --size-10:10px; --size-11:11px; --size-12:12px; --size-13:13px; --size-14:14px; --size-15:15px; --size-20:20px; --size-22:22px; --size-24:24px; --size-26:26px; --size-32:32px; --size-36:36px; --size-38:38px; --size-40:40px; --size-42:42px; --size-44:44px; --size-46:46px; --size-48:48px; --size-50:50px; --size-52:52px; --size-54:54px; --size-58:58px; --size-64:64px; --size-72:72px; --size-76:76px; --size-88:88px; --size-120:120px; --size-440:440px; --size-636:636px; --size-660:660px;
 }
+/* ---------- themes (R-1). Chosen in Settings, stored as the household's settings/theme ---------- */
+:root[data-theme="boy"]{
+  --light:#C9DCEB; --light-bg:#E6EFF6; --light-wash:#F2F7FB; --light-glow:rgba(201,220,235,.9); --deep:#3F6283;
+  --deep-rule:#3F628329; --deep-rule-2:#3F62832E;
+  --accent2:#E6D9BC; --accent2-bg:#F3EBDA; --accent2-wash:#F8F3E8; --accent2-deep:#7A6940;
+}
+:root[data-theme="girl"]{
+  /* #FFAAAA is too light for text: it's used only for fills, borders and the glass tint; text uses deep */
+  --light:#FFAAAA; --light-bg:#FFE9E9; --light-wash:#FFF4F4; --light-glow:rgba(255,170,170,.9); --deep:#B24848;
+  --deep-rule:#B2484829; --deep-rule-2:#B248482E;
+  --accent2:#C7D9A0; --accent2-bg:#EEF3E2; --accent2-wash:#F7FAEE; --accent2-deep:#5C7038;
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--fs-16);line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;min-height:100dvh}
@@ -595,3 +611,11 @@ details.wa-ahead .wa-list{margin:0}
 .wk-acts{display:flex;flex-wrap:wrap;gap:var(--sp-6);margin:var(--sp-8) 0 var(--sp-4)}
 .wk-acts .btn{text-decoration:none}
 .info-body p.wk-src{font-size:var(--fs-11-5);color:var(--sand-deep);margin:var(--sp-2) 0 var(--sp-6)}
+
+/* ---------- Settings → Theme ---------- */
+.theme-opts{display:flex;gap:var(--sp-8);flex-wrap:wrap;margin-top:var(--sp-4)}
+.theme-opts .opt{display:inline-flex;align-items:center;gap:var(--sp-8)}
+.swatch{display:inline-block;width:var(--size-14);height:var(--size-14);border-radius:50%;border:1px solid var(--line)}
+.swatch[data-swatch="current"]{background:var(--swatch-current)}
+.swatch[data-swatch="boy"]{background:var(--swatch-boy)}
+.swatch[data-swatch="girl"]{background:var(--swatch-girl)}

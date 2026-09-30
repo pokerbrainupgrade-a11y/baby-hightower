@@ -23,6 +23,8 @@
 
 <link rel="preload" href="fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
+<!-- the household's theme, as last seen on this phone, before first paint (app.js keeps it current) -->
+<script>try { var t = localStorage.getItem('bh.theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
 </head>
 <body>
 <div id="app" hidden>
