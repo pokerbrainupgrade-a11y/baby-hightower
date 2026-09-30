@@ -1,4 +1,4 @@
-// The Wombkeepers emergency pager card on Today. Every sentence on it comes
+// The Wombkeepers emergency pager card, at the top of Resources. Every sentence on it comes
 // verbatim from data/wombkeepers.json → emergencyPager; the app adds only
 // button labels. Calm on purpose: the existing palette, no red, no alarm.
 import { store } from './store.js';
@@ -22,7 +22,6 @@ export function pagerCard() {
     <p class="pager-small">${esc(p.responseTime)}</p>
     <p class="pager-small">${esc(p.beforeHospital)}</p>
     <small class="range">${esc(attribution(p.pages))}</small>
-    <button class="linkrow" data-go="resources/wombkeepers"><span>Wombkeepers reference<small>Contacts, when to call, schedule, fees and more</small></span><span class="arrow">→</span></button>
   </div></div>`;
 }
 

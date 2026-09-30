@@ -545,7 +545,7 @@ details.wa-ahead{margin:10px 0 0;background:var(--paper)}
 .wa-grp small{font-weight:500;letter-spacing:0;text-transform:none;font-size:12px}
 details.wa-ahead .wa-list{margin:0}
 
-/* ---------- Wombkeepers pager card (Today) — calm: palette only, no alarm styling ---------- */
+/* ---------- Wombkeepers pager card (Resources) — calm: palette only, no alarm styling ---------- */
 .pager-card{border-color:var(--sand)}
 .pager-card .k{color:var(--sand-deep)}
 .pager-btns{display:flex;flex-direction:column;gap:6px;margin:12px 0 8px}
@@ -572,4 +572,3 @@ details.wa-ahead .wa-list{margin:0}
 .wk-acts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
 .wk-acts .btn{text-decoration:none}
 .info-body p.wk-src{font-size:11.5px;color:var(--sand-deep);margin:2px 0 6px}
-.pager-card .linkrow{margin-top:12px}

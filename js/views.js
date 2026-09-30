@@ -237,7 +237,6 @@ const today = {
     root.innerHTML = `<section class="today" id="todayFrame"></section>`;
     this.frame = root.firstElementChild;
     bindQuickRow(this.frame);
-    bindPager(this.frame);
     // "This week": ticks, show-all, add, and links into decisions / lists / visits
     this.frame.addEventListener('change', (e) => {
       const cb = e.target.closest('input[data-wa]');
@@ -308,7 +307,6 @@ const today = {
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
       </div>
-      ${pagerCard()}
       ${quickRow()}
       ${banner ? `<div class="sec"><div class="due-banner ${banner.kind}">
         <div class="k">Dating ultrasound</div>
@@ -908,7 +906,8 @@ const obcall = {
 };
 
 // ---------- RESOURCES ----------
-// #resources → OB First Call entry + the Listen list (data/resources.json).
+// #resources → the Wombkeepers pager card, the Wombkeepers reference + OB First Call
+// entries, and the Listen list (data/resources.json).
 // #resources/obcall → the OB Call page above, unchanged, under a back button.
 // #resources/wombkeepers → the Wombkeepers reference (js/wombkeepersview.js).
 // Listened state is the `resources` collection, one doc per episode id:
@@ -930,6 +929,7 @@ const resources = {
     }
     root.innerHTML = `<section id="resFrame"></section>`;
     this.frame = root.firstElementChild;
+    bindPager(this.frame);
     this.frame.addEventListener('change', (e) => {
       const cb = e.target.closest('input[data-listen]');
       if (!cb) return;
@@ -948,6 +948,7 @@ const resources = {
     const lp = store.listenProgress(all);
     this.frame.innerHTML = `
       <div class="sec-head"><h2 class="serif">Resources</h2><small>guides & listening, shared</small></div>
+      ${pagerCard()}
       <div class="grp">Wombkeepers</div>
       <button class="list-card" data-go="resources/wombkeepers">
         <div class="t"><b>Wombkeepers reference</b><span>→</span></div>

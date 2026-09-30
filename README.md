@@ -38,7 +38,7 @@ appetite — and **Since last visit**, everything after the latest Completed vis
 by tag with counts and a Copy-as-text button for the waiting room) · **Notes & Questions** (one tab, two segments:
 **Questions** — Open / Asked / Answered / No longer relevant, with an Open ·
 Answered · All filter; answered ones fold up with the answer and the visit they
-came from — and **Notes**) · **Resources** (**OB First Call**: the
+came from — and **Notes**) · **Resources** (the **Wombkeepers emergency pager** card — text or call the pager in one tap, with the provider's instructions — then the **Wombkeepers reference** and **OB First Call**: the
 Wombkeepers first-call phone guide as a live checklist — facts, Steps 1–4 with
 the scripted lines, fill-in fields, nice-to-haves and the ER box; and
 **Listen**: podcast episodes grouped by host, each opening in the browser, with
@@ -103,7 +103,7 @@ npm run icons
 | `js/budget.js` · `js/budgetview.js` · `tests/budget.test.js` | Spend tracker: the three numbers, bar tones, breakdowns, the unpriced filter, money parsing, the breast-pump seed overlay · the page + the cost editor / money tags on items · tests against a hand-checked example |
 | `js/decisions.js` · `js/decisionsview.js` · `tests/decisions.test.js` | Open Decisions Log: seeds (titles, owners, the two target weeks), sort order, week → date under the live anchor, the close gate · the page · tests |
 | `js/visits.js` · `js/visitsview.js` · `tests/visits.test.js` | Visits + Results & labs: pure logic and seeds (types, statuses, the gestational stamp, the due-date banner) · the tab · tests, pinned to Phoenix dates across 2026→2027 |
-| `js/wombkeepers.js` · `js/wombkeepersview.js` · `data/wombkeepers.json` · `tests/wombkeepers.test.js` | Wombkeepers provider content (1.10.0): the guide extract copied as-is · link + band helpers · the pager card on Today and the reference page at `#resources/wombkeepers` (fifteen collapsible sections, each with its page attribution; First Call linked at the end) · shape + helper tests. Display only — nothing reads it into logic; the one derivation is which "When to call" band starts open, from the pill's week. |
+| `js/wombkeepers.js` · `js/wombkeepersview.js` · `data/wombkeepers.json` · `tests/wombkeepers.test.js` | Wombkeepers provider content (1.10.0): the guide extract copied as-is · link + band helpers · the pager card at the top of Resources and the reference page at `#resources/wombkeepers` (fifteen collapsible sections, each with its page attribution; First Call linked at the end) · shape + helper tests. Display only — nothing reads it into logic; the one derivation is which "When to call" band starts open, from the pill's week. |
 | `js/obcall.js` · `tests/obcall.test.js` | OB Call content, verbatim from `2026-09-16_OB_First_Call_Guide_v1.pdf` (pure data) + shape tests |
 | `data/seed.json` | All events, guide sections and checklist items extracted verbatim from v1; each event also carries `est` — its estimate as week/day of pregnancy, or a fixed calendar date |
 | `data/resources.json` · `tests/resources.test.js` | Resources tab content (Listen episodes, verbatim from `Pregnancy_Podcast_Guide_v2.pdf`) + shape tests. Add new resources here. |
