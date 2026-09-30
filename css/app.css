@@ -630,3 +630,16 @@ details.wa-ahead .wa-list{margin:0}
 .swatch[data-swatch="current"]{background:var(--swatch-current)}
 .swatch[data-swatch="boy"]{background:var(--swatch-boy)}
 .swatch[data-swatch="girl"]{background:var(--swatch-girl)}
+
+/* ---------- pill controls (R-1): quick-log tags, filters / option chips, secondary buttons ----------
+   min-height 44px, fully rounded, a 2px border in the theme's light colour. Primary (dark) buttons keep
+   their shape; ghost buttons stay borderless. */
+.btn{border-radius:var(--r-pill);border:2px solid var(--light)}
+.btn.sm{min-height:var(--size-44);border-radius:var(--r-pill)}
+.btn.primary{border-radius:var(--r-12);border-color:var(--ink)}
+.btn.ghost{border-color:transparent}
+.opt,.filters .opt,.cost-editor .opts .opt{min-height:var(--size-44);border:2px solid var(--light);border-radius:var(--r-pill)}
+.opt.on{border-color:var(--deep)}
+.quick-grid{display:flex;flex-wrap:wrap;gap:var(--sp-8)}
+.quick-tag{min-height:var(--size-44);padding:0 var(--sp-16);border-radius:var(--r-pill);border:2px solid var(--light);background:var(--bg);font-size:var(--fs-15);font-weight:700}
+.quick-tag.press,.quick-tag:active{background:var(--light-bg);border-color:var(--deep)}
