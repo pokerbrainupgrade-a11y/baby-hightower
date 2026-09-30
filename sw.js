@@ -14,7 +14,7 @@ const ASSETS = [
   './', './manifest.webmanifest',
   './css/app.css',
   './js/app.js', './js/views.js', './js/store.js', './js/sync.js', './js/db.js', './js/dates.js', './js/config.js', './js/obcall.js', './js/ui.js', './js/visits.js', './js/visitsview.js', './js/decisions.js', './js/decisionsview.js', './js/symptoms.js', './js/symptomsview.js', './js/budget.js', './js/budgetview.js', './js/weekactions.js',
-  './data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json', './data/week-actions.json',
+  './data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json', './data/week-actions.json', './data/wombkeepers.json',
   './fonts/fraunces.woff2',
   './icons/icon.svg', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png',
 ];

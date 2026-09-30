@@ -1,0 +1,730 @@
+{
+  "source": {
+    "title": "Wombkeepers Pregnancy Guide 2025-2026",
+    "practice": "Wombkeepers Obstetrics & Gynecology / Maternity Wellness Center, Scottsdale AZ",
+    "received": "2026-09-30",
+    "addedBy": "Q",
+    "note": "Provider-supplied content from the Wombkeepers guide and the practice's business/pager cards. All call criteria, medication lists, avoid lists, and postpartum/newborn guidance are verbatim or near-verbatim; fee, schedule, and paperwork entries are faithful condensations. 'p.' = printed page number. The app displays this as reference only; it never drives logic, alerts, or thresholds."
+  },
+  "emergencyPager": {
+    "number": "602-201-0865",
+    "tel": "+16022010865",
+    "use": "Emergencies and labor calls only.",
+    "textInstructions": "Text: name, DOB, telephone number, brief description of concern.",
+    "dialInstructions": "Dial the number, wait for the tone (3 beeps), enter your telephone number, press #, hang up.",
+    "responseTime": "Allow up to 20 minutes for a response. If truly urgent, you may also go straight to HonorHealth Shea and the hospital will contact the doctor or midwife directly for you.",
+    "beforeHospital": "You should always notify us via the emergency line before you head to any hospital and you should only go to one of the hospitals where we have privileges.",
+    "notFor": "Appointment requests, prescription refills, and routine questions that can be addressed during normal office hours will not be answered from the emergency line.",
+    "smsTemplate": "Name: \nDOB: \nCallback: \nConcern: ",
+    "pages": "p.4; emergency pager card"
+  },
+  "contacts": [
+    {
+      "label": "Wombkeepers main office",
+      "organization": "Wombkeepers",
+      "phone": "480-454-4490",
+      "email": "staff@wombkeepers.com",
+      "address": "16700 N. Thompson Peak Pkwy, Unit 130, Scottsdale AZ 85260",
+      "category": "Provider",
+      "pinned": true,
+      "notes": "Auto-attendant; leave ONE detailed message with name, phone, DOB. Office staffed Mon–Thu; most days closed by 3:00 p.m. Parking: any uncovered spot (covered spots reserved). Billing questions → staff@wombkeepers.com (include any insurance/lab correspondence; an EOB is not a bill).",
+      "pages": "p.4–5"
+    },
+    {
+      "label": "Emergency pager (Dr. Aristizabal)",
+      "organization": "Wombkeepers",
+      "phone": "602-201-0865",
+      "category": "Emergency",
+      "pinned": true,
+      "notes": "Text or dial. Emergencies and labor only. Midwives work part time and all calls go to Dr. A even if you see a midwife.",
+      "pages": "p.4; pager card"
+    },
+    {
+      "label": "Dr. Michelle Aristizabal, MD",
+      "organization": "Wombkeepers",
+      "phone": "480-454-4490",
+      "email": "dr.aristizabal@wombkeepers.com",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Physician. Covers the midwife team.",
+      "pages": "business card"
+    },
+    {
+      "label": "Catherine (Cathie) Traines",
+      "organization": "Wombkeepers / The Renewal Center for Birth",
+      "phone": "480-285-8314",
+      "email": "cathie@wombkeepers.com",
+      "category": "Provider",
+      "pinned": true,
+      "notes": "Practice Manager, Director of Wellness (Services), Doula & CLC. Contact for childbirth education, doulas, billing, disability paperwork, appointment changes. Home office (Tue & Fri): 480-590-8221. Leave plenty of lead time.",
+      "pages": "p.4–5; business card"
+    },
+    {
+      "label": "Wombkeepers remote office (Fridays)",
+      "organization": "Wombkeepers",
+      "phone": "480-590-8221",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Office not staffed Fri–Sun; Fridays call the remote office.",
+      "pages": "p.4"
+    },
+    {
+      "label": "Wombkeepers fax",
+      "organization": "Wombkeepers",
+      "phone": "480-546-5433",
+      "category": "Service",
+      "pinned": false,
+      "notes": "",
+      "pages": "p.4"
+    },
+    {
+      "label": "Carey Miller, IBCLC, RN",
+      "organization": "Wombkeepers",
+      "phone": "410-980-0392",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Postpartum nursing care.",
+      "pages": "p.4"
+    },
+    {
+      "label": "Amber Parker",
+      "organization": "Wombkeepers",
+      "phone": "503-840-7380",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Lactation Counselor — call if having trouble with breastfeeding.",
+      "pages": "p.28"
+    },
+    {
+      "label": "Brenlie Nagy (doula)",
+      "organization": "Wombkeepers",
+      "phone": "602-662-7551",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Doula for Shea Hospital.",
+      "pages": "p.4"
+    },
+    {
+      "label": "Jade Passamonte (doula)",
+      "organization": "Wombkeepers",
+      "phone": "480-772-3816",
+      "category": "Provider",
+      "pinned": false,
+      "notes": "Doula for Sonoran Hospital.",
+      "pages": "p.4"
+    },
+    {
+      "label": "HonorHealth Scottsdale Shea",
+      "organization": "HonorHealth",
+      "phone": "",
+      "category": "Hospital",
+      "pinned": true,
+      "notes": "Primary delivery hospital for Wombkeepers. Level 3 NICU (23 weeks on). 24/7 in-house obstetrician, anesthesiologist, neonatologist. Private L&D and postpartum rooms. Tours: https://www.honorhealth.com/medical-services/maternity/family-birthing-center-shea#sheatours",
+      "pages": "p.16"
+    },
+    {
+      "label": "HonorHealth Sonoran Crossing",
+      "organization": "HonorHealth",
+      "phone": "",
+      "category": "Hospital",
+      "pinned": false,
+      "notes": "Phoenix. Wombkeepers credentialed. Level 2 NICU (air vac to Level 3 if needed). 24/7 in-house anesthesiologist, off-site neonatologist, OB on-call 24/7. Opened 2020. Virtual tour: https://www.honorhealth.com/medical-services/maternity/labor-delivery-sonoran-crossing#sonoranvirtualtour",
+      "pages": "p.16"
+    }
+  ],
+  "whenToCall": [
+    {
+      "band": "Up through week 16",
+      "fromWeek": 0,
+      "toWeek": 16,
+      "items": [
+        "Bright red vaginal bleeding (Some brownish pinkish discharge can be normal in the first trimester or after a bowel movement or intercourse)",
+        "Bad cramping/abdominal pain (Small tightening, pulling, and mild cramping is normal, but call if the pain is keeping you from your normal activities)",
+        "Fever greater than 100.4",
+        "Protracted Nausea and Vomiting keeping you from eating or drinking > 6 hours"
+      ],
+      "pages": "p.14"
+    },
+    {
+      "band": "Weeks 16 through 28",
+      "fromWeek": 16,
+      "toWeek": 28,
+      "items": [
+        "Any vaginal bleeding",
+        "Tightening, cramping, abdominal pain, or back pain that is coming and going more than four times per hour for more than two hours in a row",
+        "Any leakage of clear fluid that soaks through underwear or clothing or seems excessive beyond that of your normal discharge",
+        "Any fall, car accident, or trauma to the belly",
+        "Any headache not going away with Tylenol or changes in your vision",
+        "Fever greater than 100.4"
+      ],
+      "pages": "p.14"
+    },
+    {
+      "band": "Weeks 28 through 34",
+      "fromWeek": 28,
+      "toWeek": 34,
+      "items": [
+        "Call for all of the same reasons you called from 16-28 weeks and also for:",
+        "Decreased Fetal Movement: From now on, one time per day, you should sit down with your hands on your belly and count your baby's movements. The baby should move at least 10 times in one hour. Choose a time when the baby tends to be the most active and once you get to ten, you are done. The importance of the counts is to make you pay attention to the way the baby moves, so if there was ever a day that it was not normal, you would try to get your counts and if you could not, we would send you to have the baby monitored right away."
+      ],
+      "pages": "p.14"
+    },
+    {
+      "band": "Weeks 34 through delivery",
+      "fromWeek": 34,
+      "toWeek": 42,
+      "items": [
+        "Any vaginal bleeding (Some brownish discharge or mucus with small amounts of blood is normal in early labor or with the passage of your mucus plug. You do NOT need to alert the doctor when you pass your mucus plug (baby gel).)",
+        "Leakage of clear fluid like your water broke",
+        "Any fall, car accident, or trauma to the belly",
+        "Any headache not going away with Tylenol or changes in your vision",
+        "Fever greater than 100.4",
+        "When your contractions are lasting between 30s to 1 minute, coming every 3-5 minutes, for at least an hour, it is time to notify the doctor that you are likely in labor if you are a first time mom. Second time moms should notify the doctor when contractions are coming every 5-7 minutes, as second labor can be faster."
+      ],
+      "pages": "p.14"
+    }
+  ],
+  "earlyPregnancyNote": {
+    "text": "Call the office if you experience any significant vaginal bleeding, abdominal pain, or vomiting preventing you holding liquids down for >6 hours. Light spotting, mild cramping, and mild to moderate nausea and vomiting 3-4x per day is normal in early pregnancy.",
+    "pages": "p.3"
+  },
+  "visitSchedule": [
+    {
+      "label": "Initial visit",
+      "text": "About 60 minutes: complete review of medical history, confirmation of pregnancy, review of diet and exercise recommendations, explanation of testing and prenatal care. An ultrasound and bloodwork to confirm the pregnancy will be performed during or prior to this visit.",
+      "pages": "p.5"
+    },
+    {
+      "label": "Monthly visits (9–28 wks)",
+      "text": "Approximately 30 minutes; may be combined with formal ultrasounds for Down Syndrome Screening or Anatomy. With a formal ultrasound, plan up to 1.5 hours. If seeing an outside MFM doctor for the 12 and 20 week ultrasounds, you see the doctor there, not Wombkeepers providers, for those visits.",
+      "pages": "p.5"
+    },
+    {
+      "label": "Twice monthly (from 30 wks)",
+      "text": "30 minute checkups.",
+      "pages": "p.5"
+    },
+    {
+      "label": "Weekly (from 36 wks)",
+      "text": "Low risk patients do not require formal testing unless their pregnancy extends beyond their due date. (40+ or high-risk conditions add antepartum testing; plan up to 1.5 hr.)",
+      "pages": "p.5"
+    },
+    {
+      "label": "Scheduling",
+      "text": "Each follow-up appointment should be made at the conclusion of your previous appointment. You can book appointments in advance with the Practice Manager and get a printout of all future visits. More than 15 minutes late may be rescheduled.",
+      "pages": "p.6, p.24"
+    },
+    {
+      "label": "Birth center patients after delivery",
+      "text": "Seen at 24-36 hours post delivery for an exam and newborn screening. Time arranged by your midwife prior to discharge.",
+      "pages": "p.33"
+    },
+    {
+      "label": "Weigh-in Wednesdays (first 4 weeks postpartum)",
+      "text": "All postpartum patients seen weekly on Wednesdays for the first four weeks, as needed, in a group setting. Lactation, counseling, and a provider available. Open office hours 12-2pm; no appointment necessary. Postpartum staff leave at 2, provider by 3. If you can't come, call Cathie to schedule another day.",
+      "pages": "p.33"
+    },
+    {
+      "label": "Postpartum annual",
+      "text": "Complete postpartum annual at 6-8 weeks postpartum, where contraception needs will be addressed. (p.5 states 7-10 weeks and that this visit is billed to insurance separately, not part of the comprehensive fee.)",
+      "pages": "p.33, p.5"
+    }
+  ],
+  "screening": [
+    {
+      "when": "Initial visits",
+      "text": "Pap smear, if not done within the last 3 years. Prenatal Panel blood work: Blood Type, screening for abnormal antibodies, thyroid dysfunction, infections, anemia. Recessive Genetic Disorder Carrier Screening (cystic fibrosis, SMA, fragile X) via Natera, Labcorp, or BioReference. Ultrasound to confirm the due date and viability.",
+      "pages": "p.6"
+    },
+    {
+      "when": "11-14 weeks",
+      "text": "Screening for Down Syndrome and other chromosomal abnormalities (offered to all women): Nuchal Translucency Ultrasound and blood work; non-invasive, not diagnostic — a positive/high-risk result should be confirmed with CVS or amnio. NIPT blood work (Qnatal/Quest, Panorama/Natera, Maternity 21/Labcorp) can also determine the baby's sex. Covered by most insurance; may not be covered for women under 35 — cash pay option $299.00 for low risk women under 35. Diagnostic tests (CVS, amniocentesis) are invasive and carry a miscarriage risk of 1 in 300 procedures.",
+      "pages": "p.6–7"
+    },
+    {
+      "when": "16 weeks",
+      "text": "Blood work: AFP (alpha-fetoprotein), screening for Spina Bifida. Early Gestational Diabetes Screening for patients with a history of gestational diabetes, PCOS, or elevated BMI or HgbA1C on initial prenatal blood work.",
+      "pages": "p.7"
+    },
+    {
+      "when": "20 weeks",
+      "text": "Level 2 Anatomy Ultrasound, performed at a Perinatology/MFM center of your choice. (Dr. Aristizabal cannot perform Down syndrome screening, Level 2 anatomy, or formal growth scans — these must be done at an outside perinatology office.)",
+      "pages": "p.7–8"
+    },
+    {
+      "when": "28 weeks",
+      "text": "One Hour Glucose Test (gestational diabetes screening); repeat screening for HIV and anemia. Rhogam injection if RH neg.",
+      "pages": "p.7"
+    },
+    {
+      "when": "36 weeks",
+      "text": "GBS vaginal culture, screening for prevention of neonatal GBS sepsis.",
+      "pages": "p.7"
+    },
+    {
+      "when": "Results",
+      "text": "Available via the Patient Portal once reviewed by the physician. Many results 'flag' as abnormal by standard lab values when they are normal for pregnancy; you will be told of anything abnormal. Down Syndrome Screening results: allow up to 12 business days from the blood draw before calling; they take a minimum of ten days to reach the office.",
+      "pages": "p.7–8"
+    },
+    {
+      "when": "Choice",
+      "text": "Wombkeepers do not insist on patients undergoing any diagnostic or screening tests. It is a personal choice.",
+      "pages": "p.6"
+    }
+  ],
+  "medications": {
+    "mayUse": [
+      {
+        "category": "Allergy",
+        "items": [
+          "Benadryl (diphenhydramine), Claritin, Zyrtec, Allegra",
+          "Neti Pot used according to directions"
+        ]
+      },
+      {
+        "category": "Cold and Flu",
+        "items": [
+          "Flu/Covid Vaccination - recommended in pregnancy",
+          "Benadryl (diphenhydramine), Claritin, Zyrtec, Allegra",
+          "Robitussin, Guaifenesin, Mucinex",
+          "Decongestants (Sudafed) should only be used sparingly, as they can increase both mom and baby's heart rate",
+          "Neti Pot according to directions"
+        ]
+      },
+      {
+        "category": "Constipation",
+        "items": [
+          "Colace",
+          "Metamucil",
+          "Increase intake of fresh fruits and vegetables, eat dried prunes, figs, raisins",
+          "Alfalfa",
+          "Increase fluid intake"
+        ]
+      },
+      {
+        "category": "Gas Discomfort",
+        "items": [
+          "Gas X",
+          "Smaller meals eaten at slower pace",
+          "Cardamom, cinnamon, bay",
+          "Fennel tea after meals"
+        ]
+      },
+      {
+        "category": "Hemorrhoids",
+        "items": [
+          "Avoid constipation with above recommendations and use a Squatty Potty",
+          "Witch Hazel pads",
+          "Preparation H",
+          "Rhoid Cream from MotherLove"
+        ]
+      },
+      {
+        "category": "Nausea",
+        "items": [
+          "Acupuncture, acupressure, ginger root (250 milligram capsules 4 times a day), and vitamin B6 (pyridoxine, 25 milligrams two or three times a day) works well. Sipping the thick syrup from inside a can of peaches, pears, mixed fruits, pineapples, or orange slices may also help.",
+          "Diclegis (prescription)",
+          "Zofran, only used with protracted cases of vomiting (prescription)"
+        ]
+      },
+      {
+        "category": "Heartburn",
+        "items": [
+          "Eat smaller meals with less grease and fat",
+          "Slippery elm lozenges",
+          "Alfalfa, Milk, yogurt",
+          "Coriander, cumin, fennel seeds, cardamom, cinnamon, bay",
+          "Tums",
+          "Pepcid, Zantac, and Nexium for prevention (not Prilosec)"
+        ]
+      },
+      {
+        "category": "Musculoskeletal Pain",
+        "items": [
+          "Tylenol - should only be used sparingly in pregnancy",
+          "Massage, Warm Shower or Bath",
+          "Chiropractic Care and Acupuncture",
+          "Practice Yoga and Ball Exercises"
+        ]
+      },
+      {
+        "category": "First Aid Ointment",
+        "items": [
+          "Bacitracin",
+          "Neosporin, Polysporin",
+          "Green Salve from MotherLove"
+        ]
+      },
+      {
+        "category": "Rashes",
+        "items": [
+          "Benadryl cream",
+          "Caladryl lotion or cream",
+          "Hydrocortisone cream or ointment",
+          "Oatmeal bath (Aveeno)"
+        ]
+      },
+      {
+        "category": "Skin care",
+        "items": [
+          "MotherLove Pregnant Belly Oil and Pregnant Belly Salve"
+        ]
+      },
+      {
+        "category": "Perineal massage (from 37 weeks)",
+        "items": [
+          "Primrose oil as a perineal massage in the last weeks of pregnancy; Primrose Oil tablets also available. Both can be used from 37 weeks on."
+        ]
+      }
+    ],
+    "avoid": {
+      "medications": "Aspirin products, including skin products containing Salicylic Acid, Bismuth subsalicylate (Pepto-Bismol), Brompheniramine, Chlorpheniramine, Ibuprofen, Naproxen, Pseudoephedrine",
+      "supplements": "Arbor vitae, beth root, black cohosh, blue cohosh, cascara, chaste tree berry, Chinese angelica (dong quai), cinchona, cotton root bark, feverfew, ginseng, goldenseal, juniper, kava kava, licorice, meadow saffron, pennyroyal, poke root, rue, sage, St. John's wort, senna, tansy, white peony, wormwood, yarrow, yellow dock",
+      "essentialOils": "Calamus, mugwort, pennyroyal, sage, wintergreen, basil, hyssop, myrrh, marjoram, and thyme"
+    },
+    "disclaimer": "This is meant as an informative guide only, no medication or treatment can ever be determined 100% safe and list of medications to avoid is in no way comprehensive. If you are uncertain of the safety of something you are taking, always ask!",
+    "practicePolicy": "During my pregnancy Wombkeepers serve as my primary Doctor and all medications and procedures should be approved through the Doctor including any and all dental work.",
+    "pages": "p.9–10, p.24"
+  },
+  "food": {
+    "avoid": [
+      "Raw Meat: uncooked seafood and rare or undercooked beef or poultry",
+      "Deli Meat: cook all deli meat prior to eating (listeria)",
+      "Fish with Mercury: shark, swordfish, king mackerel, tilefish. Canned chunk light tuna in moderation. Limit fish to less than 12 oz per week or 3 average sized portions",
+      "Smoked Seafood (refrigerated lox, nova, kippered, jerky) — safe when cooked into a meal; canned or shelf-safe usually OK",
+      "Raw Shellfish: oysters, clams, mussels — avoid altogether",
+      "Raw Eggs and foods containing raw eggs (homemade Caesar, mayonnaise, ice cream, custards, Hollandaise). Commercial pasteurized versions are fine",
+      "Unpasteurized Soft Cheeses: Brie, Camembert, Roquefort, Feta, Gorgonzola, queso blanco, queso fresco — unless clearly made from pasteurized milk",
+      "Pate: refrigerated pate or meat spreads. Canned or shelf-safe can be eaten",
+      "Caffeine: Avoid caffeine during the first trimester to reduce the likelihood of a miscarriage. As a general rule, caffeine should be limited to fewer than 200 mg per day during pregnancy, or less than 20oz of a caffeinated beverage",
+      "Alcohol: There is NO amount of alcohol that is known to be safe during pregnancy",
+      "Unwashed Vegetables: wash before eating"
+    ],
+    "dietRecs": [
+      "65-80 gm. of protein daily, which can include up to 12 oz of fish weekly (three normal size servings)",
+      "Lots of fruits and veggies including green leafy veggies such as spinach and kale, 10 servings per day",
+      "2L of water daily",
+      "Avoid the \"white stuff\" such as white breads, pastries, sugar, white rice, starchy potatoes and other foods that raise your blood sugar. Go for whole grain, high fiber alternatives and limit carbohydrates to a cup per meal. Make desserts a once or twice weekly treat as opposed to a daily event."
+    ],
+    "firstVisitSupplements": "Prior to your appointment, please start taking a prenatal vitamin, if you have not already, with a DHA and Vitamin D supplement as well.",
+    "pages": "p.3, p.11–12"
+  },
+  "exercise": {
+    "recommendation": "30 minutes for at least three days of the week is recommended for all women, regardless of fitness level prior to pregnancy. Great forms of exercise include yoga, walking, jogging, swimming, light weight lifting, stationary bike riding, light aerobic classes, and pilates.",
+    "notSafe": [
+      "Scuba diving and mountain climbing",
+      "Downhill skiing",
+      "Contact sports such as baseball, football, hockey and soccer - after 15 weeks",
+      "Be careful with high impact calorie burners such as spin classes"
+    ],
+    "discussFirst": [
+      "High blood pressure or Preeclampsia",
+      "Have threatened or been treated for preterm labor",
+      "Second or third trimester bleeding/Placenta Previa",
+      "Incompetent cervix",
+      "Signs of growth restriction in the baby"
+    ],
+    "safely": [
+      "Drink water before, during and after exercise",
+      "Wear clothing that is not restrictive and allows you to move and keep cool",
+      "Wear a supportive, well-fitting bra",
+      "Avoid exercise in hot, humid weather or if you have a fever",
+      "Avoid inverted exercises that place your head or heart below the level of your uterus",
+      "After the first trimester, avoid doing any prolonged exercises on your back",
+      "Avoid exercises with repetitive bouncing or jerky movements, or sudden direction changes - especially in the third trimester",
+      "Avoid weight lifting exercises that require significant core strength, especially during the third trimester",
+      "Consume adequate complex carbohydrates to replace the muscle glycogen lost during exercise"
+    ],
+    "stopAndContact": [
+      "Vaginal bleeding",
+      "Dizziness or feeling faint",
+      "Increased shortness of breath",
+      "Chest pain",
+      "Headache",
+      "Calf pain or swelling",
+      "Uterine contractions",
+      "Decreased fetal movement",
+      "Fluid leaking from the vagina"
+    ],
+    "birthBall": "Consider purchasing a birth ball or exercise ball at the onset of pregnancy. Most average moms use a 65cm ball; shorter moms may need 55cm and taller moms 75cm (ask staff). Begin circling your hips and doing pelvic tilts on the ball.",
+    "pages": "p.12–13, p.19"
+  },
+  "vaccines": {
+    "recommended": [
+      "Flu Vaccine: given starting September of each year",
+      "COVID vaccine: given according to guidelines",
+      "Tdap: given 28-36 weeks to protect your baby during the first six months of life from Pertussis",
+      "RSV: given at 28-36 weeks to protect your baby from RSV during the first six months of life"
+    ],
+    "where": "Available at local Walgreens or CVS pharmacies.",
+    "stance": "Wombkeepers know that vaccines can be controversial and the information can be confusing. We respect your decisions regarding vaccines and, if you have concerns, we welcome the chance to discuss them with you and provide guidance.",
+    "pages": "p.19"
+  },
+  "travel": {
+    "text": [
+      "Patients may safely travel up to 36 weeks of pregnancy.",
+      "We do not recommend transcontinental flights after 32 weeks and we do not recommend travel to locations without comparable medical care after 24 weeks.",
+      "If you are taking a flight longer than 4 hours, you should take a baby aspirin prior to your flight to minimize the risk of blood clots.",
+      "You should also avoid total body scanners during pregnancy.",
+      "Please see the office staff for a note okaying air travel prior to your trip."
+    ],
+    "pages": "p.19"
+  },
+  "holidayCoverage": {
+    "text": "If you deliver on a major holiday, especially Thanksgiving Day, Christmas Eve or Christmas Day, or during one of Dr. Aristizabal's vacations, a coverage group may provide care. 97% or more of patients are delivered by our doctor or midwife. The birth center is closed for major holidays. You cannot elect a specific doula or provider for every visit or delivery if you are a low risk patient.",
+    "pages": "p.16, p.24"
+  },
+  "birthCenter": {
+    "text": "The Practice (Wombkeepers) and THE RENEWAL CENTER FOR BIRTH reserve the right to make final decisions of admittance to low risk birth at the Birth Center. Patients who enter as low risk may develop conditions that place them in a high risk category; preferences for place of birth, type of care and choices may vary or need to be amended. If you plan to birth within the Wombkeepers Birthing Center, a separate facility fee will be charged to your insurance and a separate financial form will be signed closer to your delivery date. Currently our Birth Center is not in network with any major insurance company; affordable cash pay options are offered.",
+    "pages": "p.6, p.21"
+  },
+  "fees": [
+    {
+      "label": "In-network carriers",
+      "text": "In network with Aetna, Blue Cross, Blue Shield, Cigna, United Health Care and Oscar at this time. Other commercial insurance accepted with out-of-network benefits. No state-funded or Medicaid plans.",
+      "pages": "p.2"
+    },
+    {
+      "label": "Concierge fee",
+      "text": "$3,500 for in-network patients, mandatory, self-pay. Due and payable by 32 weeks. First $1,000 deposit due by the 12th week of pregnancy (or four weeks after transferring care). Not prorated, not reduced if wellness services go unused, does not apply toward the deductible, not billable to insurance (a superbill is available on request). Monthly payment plans available; no early-pay discounts. First $1,000 non-refundable if you leave the practice.",
+      "pages": "p.2–3, p.20–21, p.25"
+    },
+    {
+      "label": "What the concierge fee covers",
+      "text": "Wellness Center services: doula/labor support at birth center or hospital, prenatal yoga weekly, postnatal baby & me yoga twice monthly to 6 months, childbirth/breastfeeding/nutrition/parenting education, weekly lactation group, support groups and counseling, disability paperwork, extra visit time, 24-hour access to doctor and staff. Additional doctor/midwife ultrasounds not covered by insurance are included.",
+      "pages": "p.2, p.21"
+    },
+    {
+      "label": "Global fee",
+      "text": "Antepartum visits, delivery, and postpartum care are billed as one global obstetric fee to insurance within one week after delivery. Initial visit, ultrasounds, and NSTs are billed at time of service. Hospital, pediatrician, and baby are billed separately.",
+      "pages": "p.20–21"
+    },
+    {
+      "label": "Large deductibles",
+      "text": "If your deductible exceeds $2,000 per calendar year, a full deposit of your payable amount for the global fee is taken after 20 weeks. No payment plans after 32 weeks. A deposit agreement must be signed with the Practice Manager before your second visit.",
+      "pages": "p.20"
+    },
+    {
+      "label": "Labs billed separately",
+      "text": "Wombkeepers do not bill blood work. Labcorp (and Natera for carrier screening/Panorama NIPT) bill you directly. First-trimester bloodwork alone costs nearly $3,000, so most patients meet their deductible in the first trimester. If your pregnancy extends between two insurance years, you will meet your deductible twice — once for antepartum care and testing and once for delivery.",
+      "pages": "p.8, p.22"
+    },
+    {
+      "label": "Outside ultrasounds/MFM",
+      "text": "Ultrasounds, MFM consults, and prenatal blood work from affiliated or outside groups bill separately; call them directly with questions.",
+      "pages": "p.21"
+    },
+    {
+      "label": "Circumcision",
+      "text": "Optional, cash pay only: $400 (Dr. Aristizabal), includes a follow-up visit one week later. Managed at The Renewal Center for Birth. Many insurers consider it cosmetic and will not cover it.",
+      "pages": "p.21"
+    },
+    {
+      "label": "Insurance changes",
+      "text": "Notify the office of any insurance change and present a current card. If you change to a plan Wombkeepers does not accept, you may be asked to complete care with another provider — check with the office before modifying or changing insurance during pregnancy. Call your member services once pregnancy is confirmed to report you will be an OB patient with a pending hospitalization, and discuss how and when to add the baby to your policy.",
+      "pages": "p.21–22"
+    },
+    {
+      "label": "Billing timing and late fees",
+      "text": "Claims can take 30-40 days. Final obstetric bills settle within 30 days of receipt. Late fees: 30 days $25, 60 days $50, 90 days $100; after 120 days 18% interest and possible collections.",
+      "pages": "p.20–22"
+    }
+  ],
+  "paperwork": {
+    "text": [
+      "Arizona does not have a mandated maternity leave; leave is applied for under federal FMLA guidelines.",
+      "We need at least two weeks to complete any paperwork requests, so make sure you know when you need your paperwork submitted.",
+      "All patient portions must be filled out and signed first; many companies want a signed medical release form.",
+      "Most forms want current weight and blood pressure, dates of pregnancy, and evidence of all appointments.",
+      "Do not email paperwork — bring it in person, with: 1) the date you will take off (last day), 2) the date you plan on returning (estimate from the due date if forms are required before delivery).",
+      "If your spouse or another family member is taking leave because of the pregnancy, they need to discuss options with their HR before bringing forms."
+    ],
+    "firstVisitForms": "New patient OB forms (medical history, HIPAA, financial) are on www.wombkeepers.com and must be received before the first appointment.",
+    "pages": "p.2, p.15"
+  },
+  "packing": {
+    "mother": [
+      "Backless slip-on slippers",
+      "Socks",
+      "Flip flops for shower; bathing suit if you want clothing for shower during labor",
+      "Old nightdress or T-shirt for labor (or birthing skirt and tank top, or birthing dress)",
+      "Massage oil or lotion",
+      "Birth ball (and pump to blow it up)",
+      "Lip balm",
+      "Snacks and drinks for labor (isotonic sports drinks, honey sticks, protein bars, Rice Krispy Treats)",
+      "Hair bands or a clip",
+      "Pillows; V-shaped pillow for breastfeeding support",
+      "TENS pain relief machine, if planning to use one",
+      "Music and speakers",
+      "Electric or battery candles",
+      "Aromatherapy items",
+      "Hot and cold packs"
+    ],
+    "partner": [
+      "Water spray or hand-held fan",
+      "Comfortable shoes",
+      "A change of clothes",
+      "Bendy straws",
+      "Swimwear, to join in the shower",
+      "Mobile phone and charger (contraction timing)",
+      "Camera or camera phone",
+      "Snacks and drinks"
+    ],
+    "afterDelivery": [
+      "Going-home outfit (loose, maternity clothes)",
+      "Breastfeeding handouts from childbirth classes",
+      "Nursing bras & camis (two or three)",
+      "Breast pads",
+      "Front-opening nightshirt or T-shirt",
+      "Travel-size toiletries and deodorant",
+      "Towels, hairbrush, toothbrush and toothpaste",
+      "Baby blanket",
+      "One pair of baby socks or booties",
+      "Baby going-home outfit and hat",
+      "Baby car seat"
+    ],
+    "pages": "p.17"
+  },
+  "pediatricians": {
+    "note": "You need to decide on a pediatrician prior to the delivery of your baby and this should be indicated on your birth plan.",
+    "groups": [
+      {
+        "name": "Agave Pediatrics",
+        "where": "Glendale, Phoenix, Scottsdale, Chandler",
+        "notes": "In-office breastfeeding support, tongue tie revision. Vaccines required, some leniency in schedule."
+      },
+      {
+        "name": "North Scottsdale Pediatrics",
+        "where": "Scottsdale",
+        "notes": "See babies in-house at HH Shea, lactation consultants in practice, strongly recommends normal vaccination schedule."
+      },
+      {
+        "name": "Pediatrix",
+        "where": "N. Phoenix (near Sonoran)",
+        "notes": "No vaccination requirement per previous patients."
+      },
+      {
+        "name": "Pimri Pediatrics - Dr. Nick Peters",
+        "where": "Mesa",
+        "notes": "Integrative physician, lactation support in practice and no vaccine requirements."
+      },
+      {
+        "name": "Camelback Pediatrics",
+        "where": "Central Phoenix",
+        "notes": "Quality MD provided care, more conventional medicine approach, vaccines required."
+      },
+      {
+        "name": "Pax Pediatrics",
+        "where": "Phoenix, Cactus and Tatum",
+        "notes": "Small office, vaccine choice supported."
+      }
+    ],
+    "homeCare": [
+      {
+        "name": "Holistic Home Pediatrics",
+        "url": "https://www.holistichomepediatrics.com/"
+      },
+      {
+        "name": "Birdie Pediatrics",
+        "url": "https://www.birdiepediatrics.com/"
+      },
+      {
+        "name": "At Home Pediatrician",
+        "url": "https://www.athomepediatricmedicine.com/about-us"
+      }
+    ],
+    "homeCareNote": "Home Care / Concierge Peds: highly personalized care, support for vaccine choice.",
+    "pages": "p.18"
+  },
+  "wellnessServices": {
+    "items": [
+      "Pre and Post Natal Yoga",
+      "Empowered Motherhood",
+      "Childbirth Education",
+      "Meditation and Sound Bath",
+      "Wombkeepers Concierge Services",
+      "Doula Services for Birth",
+      "Weekly Lactation Group Support",
+      "Support groups (prenatal and postnatal)"
+    ],
+    "calendar": "Monthly class schedule and online calendar at www.wombkeepers.com.",
+    "pages": "p.1–2; wellness card"
+  },
+  "postpartum": {
+    "callIf": [
+      "Fever greater than 100.4",
+      "If you are saturating a pad more frequently than every 2 hours. Bleeding can be expected to continue for up to six weeks, but should get a little less with each passing day. Sometimes around ten days after delivery there may be an increase in bleeding as the placental site heals, but this should be short in duration.",
+      "Severe headaches not responding to tylenol, chest pain, shortness of breath, nausea and vomiting",
+      "Redness or severe pain in the breasts",
+      "Feeling overly sad or overwhelmed, especially if this is interfering in your ability to care for or bond with your baby"
+    ],
+    "painMedication": "If you need pain medication and are not allergic to aspirin, Ibuprofen (Motrin) 600mg (3 regular strength tabs) every 6 hours is preferred, otherwise you can use Tylenol 650mg every 4-6 hours.",
+    "care": [
+      "Continue to use Tucks pads (witch hazel) and hemorrhoid cream as needed",
+      "Nothing should be placed in the vagina for 6 weeks, including intercourse and tampons",
+      "No exercise until cleared",
+      "Warm baths or sitz baths can be soothing if you suffered a vaginal tear"
+    ],
+    "hospitalStay": "Typically a 2 day stay after a vaginal birth and a four day stay for a surgical birth.",
+    "pages": "p.21, p.27"
+  },
+  "newborn": {
+    "feeding": [
+      "Newborn babies need to be fed at least 8 times in 24 hours. Offer feeding opportunities at least every 2-3 hours by putting your baby skin to skin on your chest.",
+      "A baby should have at least 5 wet diapers and at least 5 poopy diapers a day starting around day 5, after your milk has come in. If you think your baby isn't having enough dirty diapers, or if they are inconsolable, contact their provider and a lactation consultant.",
+      "Bottle: never microwave milk. Opened or mixed formula is good at room temperature for two hours, or in the fridge for 24 hours; do not save an unfinished bottle. Clean and sanitize bottles between use. Formula guide: weight in pounds x 2.5 = ounces per 24 hours."
+    ],
+    "cord": [
+      "Keep umbilical cord dry. It will turn from yellow to brown to black and should fall off in one to three weeks.",
+      "If the area around the cord becomes red, or you notice any discharge, call your baby's provider."
+    ],
+    "bathing": [
+      "It is not necessary to bathe a newborn baby; vernix contains beneficial anti-bacterial enzymes and delaying bathing helps the skin microbiome.",
+      "Sponge bath or small tub; tub water warm (not hot), water or mild fragrance-free soap only. NEVER LEAVE YOUR BABY UNATTENDED IN THE TUB, EVEN FOR A MOMENT.",
+      "Limit lotions; pure coconut oil is a good option. Try to avoid soaps; warm water is enough."
+    ],
+    "comforting": [
+      "If fussy, make sure they are fed, warm, dry and burped; a change of environment can help.",
+      "You cannot spoil a baby by comforting them.",
+      "Around 3 weeks to 10-12 weeks babies may cry for no obvious reason, often in the evening (\"witching hour\").",
+      "The 5 S's: Swaddling; Side- or Stomach position (NOT safe for sleeping, only while awake); Shushing/white noise; Swinging (support head and neck); Sucking.",
+      "If you have tried everything, it is ok to put them down in a safe place and walk away for a few minutes.",
+      "Never shake your baby."
+    ],
+    "safeSleep": [
+      "ALONE: own crib or bassinet, not in bed with you; no pillows, crib bumpers, soft bedding or toys.",
+      "BACK: up to one year old, placed to sleep on their back.",
+      "CRIB: firm mattress and tight fitting bottom sheet. Never sofas or arm chairs.",
+      "Also reduce SIDS risk: breastfeeding, room sharing (not bed sharing), pacifier during sleep once breastfeeding is established. Increase risk: maternal drug and alcohol use, secondhand smoke, overheating (one layer more than an adult; no hats for sleep)."
+    ],
+    "temperature": [
+      "Normal newborn temperature ranges from 97.5-99.5 F (36.5-37.5 C).",
+      "Under the armpit is the best place to take a baby's temperature. Do not take a rectal temperature, due to risk for injury.",
+      "Be sure to call your baby's provider if they have a temperature of 100.4 or above."
+    ],
+    "appearance": [
+      "Fontanelles: top closes around 3 months, back between 18 and 36 months. Contact the provider if they look sunken or bulging (bulging may indicate fluid build-up, a medical emergency). A visible pulse is normal.",
+      "Peeling skin as vernix absorbs is normal; erythema toxicum (newborn rash) may appear within 3 days and resolves in 1-2 weeks; milia resolve by 1-2 months; newborn acne around 3-5 weeks — wash with water only; cradle cap — loosen with soft toothbrush and olive oil."
+    ],
+    "jaundice": [
+      "Your baby will be screened for jaundice in the hospital or birth center.",
+      "Signs: yellow discoloration of the skin when pressing lightly on forehead or nose. Signs of worsening jaundice include lethargy, trouble feeding and a high pitched cry. Call your baby's provider if you think your baby has jaundice."
+    ],
+    "carSeat": [
+      "Rear facing until at least two years old. Never in the front seat.",
+      "Harness straps at or below the shoulders, snug (one finger between shoulder and strap); retainer clip at armpit level.",
+      "Free car seat inspections: BeSeatSmart.org lists sites."
+    ],
+    "illness": [
+      "Wash hands 20 seconds and have others do the same before touching baby.",
+      "Keep away from sick people; all visitors healthy and hand-washed. Call the provider for 100.4°F and above.",
+      "No smoking near the baby.",
+      "Strongly consider annual flu vaccines and Tdap boosters for those in close contact with your baby."
+    ],
+    "development": [
+      "Talk and sing to your baby; respond promptly.",
+      "The American Academy of Pediatrics recommends that children under age two avoid digital media altogether."
+    ],
+    "pages": "p.27–32"
+  }
+}

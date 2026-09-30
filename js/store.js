@@ -35,13 +35,14 @@ export const store = {
   resources: null,      // data/resources.json — the Resources tab's content
   symptoms: null,       // data/symptoms.json — the symptom tag set + moods (editable content, no copy attached)
   weekActions: null,    // data/week-actions.json — the "This week" seeds (plan logistics); state lives in `weekactions` docs
+  wombkeepers: null,    // data/wombkeepers.json — provider content from the Wombkeepers guide; display only, never read into logic
   identity: null,       // { user: 'Q' | 'Staci', code: 'household-code' }
   remote: null,         // (doc) => Promise — set by sync.js when active
   listeners: new Set(),
 
   async init() {
-    [this.seed, this.lists, this.resources, this.symptoms, this.weekActions] = await Promise.all(
-      ['./data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json', './data/week-actions.json'].map((u) => fetch(u).then((r) => r.json())),
+    [this.seed, this.lists, this.resources, this.symptoms, this.weekActions, this.wombkeepers] = await Promise.all(
+      ['./data/seed.json', './data/lists.json', './data/resources.json', './data/symptoms.json', './data/week-actions.json', './data/wombkeepers.json'].map((u) => fetch(u).then((r) => r.json())),
     );
     // v1 lists first, then the sectioned lists — ids are disjoint (tests/lists.test.js pins that)
     this.seed.lists = [...this.seed.lists, ...this.lists.lists];
