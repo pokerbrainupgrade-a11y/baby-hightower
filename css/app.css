@@ -5,7 +5,7 @@
      sand-deep is #7A6940 (not #8D7A4E) so date-chip text passes 4.5:1. */
   --bg:#FFF9F2; --surface:#FFFFFF; --surface-alt:#FBF4E9;
   --ink:#443E36; --ink-soft:#77705F; --ink-body:#554E42; --ink-script:#33382C; --ink-pressed:#2E2A25; --line:#EFE6D8;
-  --light:#C7D9A0; --light-bg:#EEF3E2; --light-wash:#F7FAEE; --light-glow:rgba(199,217,160,.9); --deep:#5C7038;
+  --light:#C7D9A0; --light-bg:#EEF3E2; --light-wash:#F7FAEE; --deep:#5C7038;
   /* 8-bit alpha, written as hex: rgba(92,112,56,.16) / .18 through a var() blends a shade differently in Chrome */
   --deep-rule:#5C703829; --deep-rule-2:#5C70382E;
   --accent2:#EBCFD1; --accent2-bg:#F7E8EA; --accent2-wash:#FBF0F1; --accent2-deep:#B0716F;
@@ -22,6 +22,7 @@
   --tabbar:74px; --tabbar-inset:14px; --tabbar-lift:22px; --tabbar-clear:calc(var(--tabbar) + var(--tabbar-lift) + var(--sab));
   --glass-top:rgba(255,255,255,.72); --glass-bottom:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.85); --glass-hi:rgba(255,255,255,.9);
   --glass-shadow:rgba(68,62,54,.16); --glass-fallback:rgba(255,249,242,.94);
+  --glass-tint:rgba(199,217,160,.55); --glass-tab-edge:rgba(255,255,255,.8); --glass-tab-shadow:rgba(68,62,54,.10); --glass-press:rgba(255,255,255,.5);
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
 
   /* font sizes — a value scale for now: 23 fixed sizes + the hero clamp (see the UI-0 rhythm task) */
@@ -38,15 +39,17 @@
 }
 /* ---------- themes (R-1). Chosen in Settings, stored as the household's settings/theme ---------- */
 :root[data-theme="boy"]{
-  --light:#C9DCEB; --light-bg:#E6EFF6; --light-wash:#F2F7FB; --light-glow:rgba(201,220,235,.9); --deep:#3F6283;
+  --light:#C9DCEB; --light-bg:#E6EFF6; --light-wash:#F2F7FB; --deep:#3F6283;
   --deep-rule:#3F628329; --deep-rule-2:#3F62832E;
   --accent2:#E6D9BC; --accent2-bg:#F3EBDA; --accent2-wash:#F8F3E8; --accent2-deep:#7A6940;
+  --glass-tint:rgba(201,220,235,.6);
 }
 :root[data-theme="girl"]{
   /* #FFAAAA is too light for text: it's used only for fills, borders and the glass tint; text uses deep */
-  --light:#FFAAAA; --light-bg:#FFE9E9; --light-wash:#FFF4F4; --light-glow:rgba(255,170,170,.9); --deep:#B24848;
+  --light:#FFAAAA; --light-bg:#FFE9E9; --light-wash:#FFF4F4; --deep:#B24848;
   --deep-rule:#B2484829; --deep-rule-2:#B248482E;
   --accent2:#C7D9A0; --accent2-bg:#EEF3E2; --accent2-wash:#F7FAEE; --accent2-deep:#5C7038;
+  --glass-tint:rgba(255,170,170,.55);
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -78,8 +81,10 @@ b{font-weight:700}
 .tabbar button{flex:1 1 auto;min-width:var(--size-44);background:none;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-2);font-size:var(--fs-11);font-weight:700;color:var(--ink);padding:0;border-radius:var(--r-tab)}
 .tabbar button span{white-space:nowrap;letter-spacing:-.01em}
 .tabbar svg{width:var(--size-24);height:var(--size-24);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tabbar button.on{color:var(--deep)}
-.tabbar button.on svg{filter:drop-shadow(0 0 6px var(--light-glow))}
+.tabbar button:active{background:var(--glass-press)}
+.tabbar button:focus-visible{outline:2px solid var(--deep);outline-offset:-2px}
+/* the selected tab: a glass pill tinted with the theme's light colour */
+.tabbar button.on{color:var(--deep);background:var(--glass-tint);border-color:var(--glass-tab-edge);box-shadow:inset 0 1px 0 var(--glass-edge),0 2px 8px var(--glass-tab-shadow);font-weight:800}
 
 /* ---------- hero (Today) ---------- */
 .hero{text-align:center;padding:var(--sp-14) var(--sp-8) var(--sp-10);margin:calc(var(--sp-16) * -1) calc(var(--sp-16) * -1) var(--sp-6);background:radial-gradient(120% 90% at 50% -20%,var(--hero-glow) 0%,var(--bg) 65%)}
