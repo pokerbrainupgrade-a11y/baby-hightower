@@ -3,10 +3,18 @@
 Measured 2026-09-30 on 1.10.1 (`37d4fd6`), before R-1. Measure only: nothing in the app was changed.
 Screenshots: `docs/ui-baseline/<tab>-<390|1280>.png` for Today, Timeline, Lists (checklists), Visits,
 Notes & Qs, Resources and Settings — full-page, Chromium, clock fixed at Wed Sep 30 2026 12:00
-America/Phoenix, fresh storage, sync off, animations disabled. (In a full-page capture the fixed tab
-bar is drawn where the first viewport ends; that's the capture, not the app.) The same harness run
-twice on unchanged code differs by at most 41 scattered anti-aliased pixels per image (max channel
-delta 49) at 1280 and 0 at 390; that is the noise floor for R-1's "no visual change" diff.
+America/Phoenix, fresh storage, animations disabled, and sync fully off (`firebase-config.js` and the
+Firebase SDK blocked, so the dot is always "Not syncing"). In a full-page capture the fixed tab bar is
+drawn where the first viewport ends; that's the capture, not the app.
+
+The screenshots were retaken once, on the same pre-R-1 code: the first set was captured with sync
+attempting to connect under a throwaway code (denied by the rules), so the sync dot's colour depended on
+timing. Run twice on unchanged code, the harness now differs by at most 65 scattered anti-aliased
+pixels per image (max channel delta 10). That is the noise floor for R-1's "no visual change" diff.
+
+The survival, date and airplane checks below (§3, §4, §6) ran with that throwaway code too. Everything
+they test is local (IndexedDB, the service worker), and the rules refused every sync write, so nothing
+reached Firestore.
 
 ## 1. Rhythm: values off the 4px scale, and font sizes
 
