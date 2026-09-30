@@ -92,7 +92,7 @@ npm run icons
 
 | Path | What |
 |---|---|
-| `index.html`, `css/app.css` | Shell + the v1 visual design (cream/sage/blush/sand, Fraunces) |
+| `index.html`, `css/app.css` | Shell + the look (1.11.0, R-1): every colour, font, size, space and radius is a custom property on `:root` — colours by role (`bg`, `ink*`, `light`, `light-bg`, `deep`, `accent2*`, `sand*`, `warn*`, …), sizes and spacing as value scales (`--fs-*`, `--sp-*`, `--size-*`, `--r-*`). Three themes — current / boy / girl — swap the themable roles via `data-theme` on `<html>`; the floating glass tab bar, the selected-tab glass pill and the pill controls are their own blocks. Fraunces (display) and Nunito (body) are self-hosted in `fonts/`. |
 | `js/config.js` | **LMP, due date, timezone, version** — the only constants |
 | `js/dates.js` · `tests/dates.test.js` · `tests/estimates.test.js` | Week/countdown math, the live due-date anchor, estimate windows + v1-style labels (pure functions) + tests |
 | `js/db.js` · `js/store.js` | IndexedDB wrapper · in-memory state, write-through, last-write-wins |
@@ -288,6 +288,13 @@ export contains every check, note, question and event state. The seed content
 ---
 
 ## 6. Things to know
+
+* **Theme.** Settings → Theme: Current, Boy or Girl. It's a household setting (`settings/theme`, with
+  who and when), so both phones follow it; switching asks first. Each phone also remembers the last
+  theme it saw so the first paint is already right. Warnings (danger, over budget, blocked, late) keep
+  their own colour in every theme.
+* **UI checks.** `docs/ui-baseline.md` + `docs/ui-baseline/` are the pre-R-1 record (UI-0);
+  `docs/ui/<version>/` holds every tab at 390px and 1280px per theme.
 
 * **Week math.** Weeks count from LMP (Aug 3), exactly as v1 did: the due date
   is 40w1d and every "WEEK N" Tuesday on the timeline is Nw1d. The countdown
