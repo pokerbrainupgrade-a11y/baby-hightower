@@ -396,7 +396,7 @@ const timeline = {
         <span><i style="background:var(--light)"></i>${esc(legend[0])}</span>
         <span><i style="background:var(--accent2-deep)"></i>${esc(legend[1])}</span>
         <span><i style="background:var(--sand-deep)"></i>${esc(legend[2])}</span>
-        <span><i style="background:var(--bg);border:2px solid var(--deep);width:8px;height:8px"></i>${esc(legend[3])}</span>
+        <span><i style="background:var(--bg);border:2px solid var(--deep);width:var(--size-8);height:var(--size-8)"></i>${esc(legend[3])}</span>
       </div>
       ${store.seed.trimesters.map((t, i) => `
         <div class="tri"><div class="tri-head"><h2 class="serif">${esc(t.title)}</h2><small>${esc(ranges[i])}</small></div>
