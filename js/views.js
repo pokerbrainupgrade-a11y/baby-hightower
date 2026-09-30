@@ -17,6 +17,7 @@ import { BUDGET_LISTS, summarize, fmtMoney } from './budget.js';
 import { SHOW, actionsFor, nextAfter, upcoming, weekRange, linkHash, linkTarget, categoryOf } from './weekactions.js';
 import { decStatus } from './decisions.js';
 import { Q_FILTERS, qStatus, qPasses, sortVisits, visitType } from './visits.js';
+import { pagerCard, bindPager } from './wombkeepersview.js';
 export { uiState };
 
 // ---------- shared pieces ----------
@@ -236,6 +237,7 @@ const today = {
     root.innerHTML = `<section class="today" id="todayFrame"></section>`;
     this.frame = root.firstElementChild;
     bindQuickRow(this.frame);
+    bindPager(this.frame);
     // "This week": ticks, show-all, add, and links into decisions / lists / visits
     this.frame.addEventListener('change', (e) => {
       const cb = e.target.closest('input[data-wa]');
@@ -306,6 +308,7 @@ const today = {
         <div class="countline">${count}</div>
         <div class="chips"><span class="chip">Trimester ${s.trimester}</span><span class="chip sand">${formatDate(s.iso, { weekday: true })}</span></div>
       </div>
+      ${pagerCard()}
       ${quickRow()}
       ${banner ? `<div class="sec"><div class="due-banner ${banner.kind}">
         <div class="k">Dating ultrasound</div>

@@ -544,3 +544,13 @@ details.wa-ahead{margin:10px 0 0;background:var(--paper)}
 .wa-grp{padding:8px 2px 2px}
 .wa-grp small{font-weight:500;letter-spacing:0;text-transform:none;font-size:12px}
 details.wa-ahead .wa-list{margin:0}
+
+/* ---------- Wombkeepers pager card (Today) — calm: palette only, no alarm styling ---------- */
+.pager-card{border-color:var(--sand)}
+.pager-card .k{color:var(--sand-deep)}
+.pager-btns{display:flex;flex-direction:column;gap:6px;margin:12px 0 8px}
+.pager-btns .btn.big{text-decoration:none}
+.pager-card p.pager-note{font-size:13px;color:var(--ink-soft);line-height:1.4;margin:0 2px 4px}
+.pager-copy{align-self:flex-start;margin:-4px 0 6px -8px}
+.pager-card p.pager-small{font-size:13px;color:var(--ink-soft);line-height:1.45;margin-top:6px}
+.pager-card .k .nw{white-space:nowrap}
