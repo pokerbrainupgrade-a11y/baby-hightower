@@ -137,7 +137,7 @@ async function registerSW() {
   try {
     await store.init();
   } catch (e) {
-    document.body.innerHTML = `<div class="empty" style="padding:60px 20px"><b>Couldn't start</b>${e.message}</div>`;
+    document.body.innerHTML = `<div class="empty" style="padding:var(--sp-60) var(--sp-20)"><b>Couldn't start</b>${e.message}</div>`;
     return;
   }
   $('#app').hidden = false;

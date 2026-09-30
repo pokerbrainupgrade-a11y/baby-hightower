@@ -430,7 +430,7 @@ const timeline = {
         <textarea data-hold data-ev-notes="${esc(id)}" placeholder="Anything to remember about this one…">${esc(st.notes || '')}</textarea>
         ${st.notes ? `<small>Last edited by ${stamp(st.updatedBy, st.updatedAt)}</small>` : ''}
       </label>
-      ${list ? `<div class="sec-head" style="margin-top:18px"><h2 class="serif">${esc(list.title)}</h2><button class="btn sm ghost" data-go="checklists/${esc(list.id)}">Open list →</button></div>${checklistHTML(list.id)}` : ''}
+      ${list ? `<div class="sec-head" style="margin-top:var(--sp-18)"><h2 class="serif">${esc(list.title)}</h2><button class="btn sm ghost" data-go="checklists/${esc(list.id)}">Open list →</button></div>${checklistHTML(list.id)}` : ''}
       ${g ? guideHTML(g) : ''}
     </div>`;
   },
@@ -960,7 +960,7 @@ const resources = {
         <div class="s">${esc(OB_CALL.sub)}</div>
         ${progressBar(p)}
       </button>
-      <div class="sec-head" style="margin-top:22px"><h2 class="serif">${esc(L.title)}</h2><small>${lp.done ? `${lp.done} of ${lp.total} listened` : esc(L.sub)}</small></div>
+      <div class="sec-head" style="margin-top:var(--sp-22)"><h2 class="serif">${esc(L.title)}</h2><small>${lp.done ? `${lp.done} of ${lp.total} listened` : esc(L.sub)}</small></div>
       ${L.groups.map((g) => this.group(g)).join('')}
       <p class="res-note">${esc(L.footer)}</p>`;
   },
@@ -1038,7 +1038,7 @@ const settings = {
       <form class="field" id="dueForm"><span>Due date</span>
         <div class="addrow" style="padding:0"><input type="date" name="due" data-hold value="${esc(store.due)}" required><button class="btn sm primary" type="submit">Save</button></div>
         <small>${dueDoc?.due ? `Set by ${stamp(dueDoc.updatedBy, dueDoc.updatedAt)}. ` : `The default (${formatDate(DUE, { year: true })}). `}Every "week N" estimate on the timeline moves with it; dates you've confirmed stay put. Weeks count from LMP ${formatDate(currentLMP(), { year: true })}.</small>
-        ${store.due !== DUE ? `<div class="stack" style="margin-top:8px"><button type="button" class="btn sm" data-act="due-reset">Reset to ${formatDate(DUE, { weekday: false, year: true })}</button></div>` : ''}
+        ${store.due !== DUE ? `<div class="stack" style="margin-top:var(--sp-8)"><button type="button" class="btn sm" data-act="due-reset">Reset to ${formatDate(DUE, { weekday: false, year: true })}</button></div>` : ''}
       </form>
       <form class="field" id="ceilingForm"><span>Budget ceiling</span>
         <div class="addrow" style="padding:0"><input type="text" inputmode="decimal" name="ceiling" data-hold value="${esc(String(store.ceiling))}" required><button class="btn sm primary" type="submit">Save</button></div>

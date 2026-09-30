@@ -93,7 +93,7 @@ export const budget = {
         </div>
         <div class="bar ${s.tone}"><i style="width:${Math.min(s.pct, 100)}%"></i></div>
         ${s.gifts || s.giftsExpected ? `<div class="gifts-line">${s.gifts ? `${fmtMoney(s.gifts)} received as gifts / registry` : ''}${s.gifts && s.giftsExpected ? ' · ' : ''}${s.giftsExpected ? `${fmtMoney(s.giftsExpected)} expected as gifts / registry` : ''} — not counted</div>` : ''}
-        ${editing ? `<form class="addrow" id="budgetCeiling" style="padding:8px 0 0"><input type="text" inputmode="decimal" name="ceiling" id="ceilingInput" data-hold value="${esc(String(s.ceiling))}" aria-label="Ceiling"><button class="btn sm primary" type="submit">Save</button><button class="btn sm" type="button" data-act="ceiling-edit">Cancel</button></form>`
+        ${editing ? `<form class="addrow" id="budgetCeiling" style="padding:var(--sp-8) 0 0"><input type="text" inputmode="decimal" name="ceiling" id="ceilingInput" data-hold value="${esc(String(s.ceiling))}" aria-label="Ceiling"><button class="btn sm primary" type="submit">Save</button><button class="btn sm" type="button" data-act="ceiling-edit">Cancel</button></form>`
           : `<div class="ceiling-line"><span>${Math.round(s.pct)}% of the ${fmtMoney(s.ceiling)} ceiling${doc?.ceiling ? ` · set by ${esc(doc.setBy || '?')}` : ''}</span><button type="button" class="btn sm ghost" data-act="ceiling-edit">Change ›</button></div>`}
         <p class="hint">Committed = spent + estimates on unpurchased Must and Nice items. Later and Skip items don't count, and neither do gifts or registry items.</p>
       </div>
@@ -107,8 +107,8 @@ export const budget = {
         <div class="s">${g.n} items${g.unpriced ? ` · ${g.unpriced} unpriced` : ''}</div>
       </button>`).join('')}
 
-      <div class="sec-head" style="margin-top:22px"><h2 class="serif">Items</h2><small>${unpricedOnly ? `${s.unpriced} to price` : `${items.length} across five lists`}</small></div>
-      <div class="filters" style="padding:0 0 10px"><button type="button" class="opt${!unpricedOnly ? ' on' : ''}" data-act="filter" data-val="All">All</button><button type="button" class="opt${unpricedOnly ? ' on' : ''}" data-act="filter" data-val="Unpriced">Unpriced only<em>${s.unpriced}</em></button></div>
+      <div class="sec-head" style="margin-top:var(--sp-22)"><h2 class="serif">Items</h2><small>${unpricedOnly ? `${s.unpriced} to price` : `${items.length} across five lists`}</small></div>
+      <div class="filters" style="padding:0 0 var(--sp-10)"><button type="button" class="opt${!unpricedOnly ? ' on' : ''}" data-act="filter" data-val="All">All</button><button type="button" class="opt${unpricedOnly ? ' on' : ''}" data-act="filter" data-val="Unpriced">Unpriced only<em>${s.unpriced}</em></button></div>
       ${s.byList.map((g) => this.group(g, unpricedOnly)).join('')}`;
   },
   group(g, unpricedOnly) {

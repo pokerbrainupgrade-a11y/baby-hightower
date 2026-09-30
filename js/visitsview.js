@@ -140,7 +140,7 @@ export const visits = {
       </div>
       ${upcoming.length ? `<div class="grp vgrp">Upcoming</div>${upcoming.map((v) => this.visitCard(v, today)).join('')}` : ''}
       ${past.length ? `<div class="grp vgrp">Past</div>${past.map((v) => this.visitCard(v, today)).join('')}` : upcoming.length ? '' : `<div class="empty"><b>No visits yet</b>One tap adds one — a date and a type is enough to start.</div>`}
-      <div class="sec-head" style="margin-top:26px"><h2 class="serif">Results &amp; labs</h2><small>ordered · scheduled · back</small></div>
+      <div class="sec-head" style="margin-top:var(--sp-26)"><h2 class="serif">Results &amp; labs</h2><small>ordered · scheduled · back</small></div>
       ${results.map((r) => this.resultCard(r)).join('')}
       ${addOpen ? `<form class="compose" data-add-result>
           <input type="text" name="name" placeholder="Name of the test or scan" autocomplete="off" enterkeyhint="done" data-hold>
@@ -191,7 +191,7 @@ export const visits = {
       <label class="field"><span>Next steps</span><textarea data-hold data-doc="${doc}" data-f="nextSteps" placeholder="What's next, in their words…">${esc(v.nextSteps || '')}</textarea></label>
       <small class="date-meta">Added by ${stamp(v.createdBy, v.createdAt)}${v.updatedAt && v.updatedAt - (v.createdAt || 0) > 2000 ? ` · last saved by ${stamp(v.updatedBy, v.updatedAt)}` : ''}</small>
 
-      <div class="sec-head" style="margin-top:22px"><h2 class="serif">Questions</h2><small>${attached.length ? `${answered.length} of ${attached.length} answered here` : 'from Notes &amp; Qs'}</small></div>
+      <div class="sec-head" style="margin-top:var(--sp-22)"><h2 class="serif">Questions</h2><small>${attached.length ? `${answered.length} of ${attached.length} answered here` : 'from Notes &amp; Qs'}</small></div>
       ${asked.length ? `<div class="grp vgrp">Asking at this visit</div>${asked.map((q) => this.askedCard(q, key)).join('')}` : ''}
       ${answered.length ? `<div class="grp vgrp">Answered here</div>${answered.map((q) => this.answeredCard(q)).join('')}` : ''}
       <div class="grp vgrp">Open questions</div>
@@ -200,8 +200,8 @@ export const visits = {
           <div class="item-body"><div class="item-text">${esc(q.text)}</div><div class="item-meta">Added by ${stamp(q.author || q.createdBy, q.createdAt)} · tick to ask it here</div></div></li>`).join('')}</ul></div>`
         : `<div class="empty"><b>Nothing open</b>Questions added under Notes &amp; Qs show up here.</div>`}
       <button class="linkrow" data-go="notes/questions"><span>Add a question<small>Notes &amp; Qs → Questions</small></span><span class="arrow">→</span></button>
-      ${linked.length ? `<div class="sec-head" style="margin-top:22px"><h2 class="serif">Results from this visit</h2></div>${linked.map((r) => this.resultCard(r)).join('')}` : ''}
-      <div class="stack" style="margin-top:22px"><button class="btn danger ghost" data-act="v-delete" data-key="${esc(key)}">Delete visit</button></div>
+      ${linked.length ? `<div class="sec-head" style="margin-top:var(--sp-22)"><h2 class="serif">Results from this visit</h2></div>${linked.map((r) => this.resultCard(r)).join('')}` : ''}
+      <div class="stack" style="margin-top:var(--sp-22)"><button class="btn danger ghost" data-act="v-delete" data-key="${esc(key)}">Delete visit</button></div>
     </div>`;
   },
   askedCard(q, visitKey) {
@@ -257,7 +257,7 @@ export const visits = {
         <small>${r.confirmedDueDate ? `Set by ${stamp(r.confirmedDueBy, r.confirmedDueAt)}. ` : ''}The date the scan gives. Today shows a banner with one button — the app's due date only changes when someone taps it.</small>
       </label>` : ''}
       <small class="date-meta">${r.updatedBy ? `Last saved by ${stamp(r.updatedBy, r.updatedAt)}` : 'Nothing entered yet'}</small>
-      ${r.seed ? '' : `<div class="stack" style="margin-top:22px"><button class="btn danger ghost" data-act="r-delete" data-key="${esc(key)}">Delete record</button></div>`}
+      ${r.seed ? '' : `<div class="stack" style="margin-top:var(--sp-22)"><button class="btn danger ghost" data-act="r-delete" data-key="${esc(key)}">Delete record</button></div>`}
     </div>`;
   },
 };
